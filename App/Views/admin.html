@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nostalogia Statistics Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.js"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">Nostalogia Statistics Dashboard</h1>
+            <p class="text-gray-600 mt-2">Real-time platform analytics and insights</p>
+        </div>
+
+        <!-- Key Metrics Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Auction Metrics -->
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h3 class="text-gray-600 text-sm font-semibold mb-2">Total Auctions</h3>
+                <p class="text-3xl font-bold text-blue-600">1,234</p>
+                <p class="text-green-500 text-sm mt-2">↑ 12% this month</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h3 class="text-gray-600 text-sm font-semibold mb-2">Active Bidders</h3>
+                <p class="text-3xl font-bold text-blue-600">892</p>
+                <p class="text-green-500 text-sm mt-2">↑ 8% this month</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h3 class="text-gray-600 text-sm font-semibold mb-2">Total Revenue</h3>
+                <p class="text-3xl font-bold text-blue-600">€2.5M</p>
+                <p class="text-green-500 text-sm mt-2">↑ 15% this month</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h3 class="text-gray-600 text-sm font-semibold mb-2">Average Bid Value</h3>
+                <p class="text-3xl font-bold text-blue-600">€2,840</p>
+                <p class="text-red-500 text-sm mt-2">↓ 3% this month</p>
+            </div>
+        </div>
+
+        <!-- Secondary Metrics Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h3 class="text-gray-600 text-sm font-semibold mb-2">Verified Sellers</h3>
+                <p class="text-3xl font-bold text-indigo-600">245</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h3 class="text-gray-600 text-sm font-semibold mb-2">Blog Articles</h3>
+                <p class="text-3xl font-bold text-indigo-600">386</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h3 class="text-gray-600 text-sm font-semibold mb-2">Categories</h3>
+                <p class="text-3xl font-bold text-indigo-600">16</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h3 class="text-gray-600 text-sm font-semibold mb-2">Total Users</h3>
+                <p class="text-3xl font-bold text-indigo-600">2,450</p>
+            </div>
+        </div>
+
+        <!-- Charts Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <!-- Revenue Chart -->
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h3 class="text-gray-800 font-semibold mb-4">Revenue & Commission Trends</h3>
+                <canvas id="revenueChart"></canvas>
+            </div>
+            <!-- Auction Activity Chart -->
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h3 class="text-gray-800 font-semibold mb-4">Auction Activity</h3>
+                <canvas id="auctionChart"></canvas>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h3 class="text-gray-800 font-semibold mb-4">Top Categories</h3>
+            <div id="topCategoriesList" class="space-y-4">
+                <!-- Categories will be injected here dynamically -->
+            </div>
+        </div>
+        
+        <script>
+            // Sample Data (Replace with actual dynamic data)
+            const categories = [
+                { name: "Art", percentage: 85 },
+                { name: "Coins", percentage: 70 },
+                { name: "Manuscripts", percentage: 65 },
+                { name: "Jewelry", percentage: 50 },
+                { name: "Sculptures", percentage: 45 }
+            ];
+        
+            let container = document.getElementById("topCategoriesList");
+            categories.forEach(category => {
+                let categoryItem = `
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">${category.name}</span>
+                        <div class="w-2/3">
+                            <div class="bg-gray-200 rounded-full h-4">
+                                <div class="bg-blue-600 rounded-full h-4" style="width: ${category.percentage}%"></div>
+                            </div>
+                        </div>
+                        <span class="text-gray-800 font-semibold">${category.percentage}%</span>
+                    </div>
+                `;
+                container.innerHTML += categoryItem;
+            });
+        </script>
+        
+    </div>
+
+    <script>
+        // Revenue & Commission Chart
+        const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+        new Chart(revenueCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Total Revenue',
+                    data: [320000, 380000, 350000, 450000, 420000, 480000],
+                    borderColor: '#2563EB',
+                    backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                    fill: true
+                }, {
+                    label: 'Commission',
+                    data: [64000, 76000, 70000, 90000, 84000, 96000],
+                    borderColor: '#10B981',
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    }
+                }
+            }
+        });
+
+        // Auction Activity Chart
+        const auctionCtx = document.getElementById('auctionChart').getContext('2d');
+        new Chart(auctionCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'New Auctions',
+                    data: [150, 180, 160, 200, 190, 220],
+                    backgroundColor: '#2563EB'
+                }, {
+                    label: 'Completed Auctions',
+                    data: [120, 150, 140, 180, 170, 200],
+                    backgroundColor: '#10B981'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    }
+                }
+            }
+        });
+
+// User Statistics Chart
+const userStatsCtx = document.getElementById('userEngagementChart').getContext('2d');
+new Chart(userStatsCtx, {
+    type: 'doughnut',
+    data: {
+        labels: ['Active Users', 'Vendeurs', 'Acheteurs', 'Suspended Users', ],
+        datasets: [{
+            data: [1200, 300, 750, 75], // Example data, adjust as needed
+            backgroundColor: [
+                '#2563EB',  // Blue - Active Users
+                '#10B981',  // Green - Vendeurs
+                '#F59E0B',  // Orange - Acheteurs
+                '#EF4444',  // Red - Suspended Users
+            ]
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'right',
+            }
+        }
+    }
+});
+
+    </script>
+</body>
+</html>

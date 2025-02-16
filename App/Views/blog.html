@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compte Suspendu</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+<body class="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 flex items-center justify-center p-4">
+    <div class="max-w-md w-full bg-white rounded-2xl shadow-xl overflow-hidden">
+        <!-- Top decorative bar -->
+        <div class="h-2 bg-red-500"></div>
+        
+        <div class="p-8">
+            <!-- Icon and content section -->
+            <div class="flex flex-col items-center mb-6">
+                <div class="w-20 h-20 mb-6 text-red-500 flex items-center justify-center">
+                    <i class="fas fa-user-lock text-6xl"></i>
+                </div>
+                <h1 class="text-2xl font-semibold text-gray-900 text-center mb-2">
+                    Compte Suspendu
+                </h1>
+                <p class="text-gray-600 text-center mb-8">
+                    Votre compte a été temporairement suspendu par notre équipe. Si vous pensez qu'il s'agit d'une erreur, veuillez contacter notre support.
+                </p>
+            </div>
+
+            <!-- Actions section -->
+            <div class="flex flex-col gap-3">
+                <a href="mailto:support@company.com" 
+                   class="bg-red-500 hover:bg-red-600 text-white py-3 px-6 rounded-lg text-center transition-colors duration-200 font-medium">
+                    <i class="fas fa-envelope mr-2"></i>Contacter le Support
+                </a>
+                <a href="/" 
+                   class="text-gray-600 hover:text-gray-800 text-center py-2 transition-colors duration-200">
+                    <i class="fas fa-home mr-2"></i>Retour à l'accueil
+                </a>
+            </div>
+        </div>
+
+        <!-- Footer section -->
+        <div class="px-8 py-4 bg-gray-50 border-t border-gray-100">
+            <p class="text-sm text-gray-500 text-center">
+                ID de référence: #SUS-2024-0215
+            </p>
+        </div>
+    </div>
+</body>
+</html>
