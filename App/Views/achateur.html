@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nostalogia - Espace Vendeur</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <span class="text-2xl font-bold text-blue-600">Nostalogia</span>
+                    </div>
+                    <div class="hidden md:ml-6 md:flex md:space-x-8">
+                        <a href="#" class="border-b-2 border-blue-500 text-gray-900 inline-flex items-center px-1 pt-1 text-sm font-medium">
+                            Tableau de bord
+                        </a>
+                        <a href="#" class="text-gray-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 text-sm font-medium">
+                            Mes Articles
+                        </a>
+                        <a href="#" class="text-gray-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 text-sm font-medium">
+                            Nouvelles Ventes
+                        </a>
+                        <a href="#" class="text-gray-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 text-sm font-medium">
+                            Historique
+                        </a>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <button id="notifBtn" class="p-2 rounded-full text-gray-600 hover:text-gray-700 focus:outline-none">
+                        <span class="relative inline-block">
+                            <i class="fas fa-bell text-xl"></i>
+                            <span class="absolute top-0 right-0 block h-4 w-4 rounded-full bg-red-500 text-white text-xs text-center">
+                                3
+                            </span>
+                        </span>
+                    </button>
+                    <div class="ml-4 flex items-center">
+                        <img class="h-8 w-8 rounded-full" src="/api/placeholder/32/32" alt="User avatar">
+                        <span class="ml-2 text-gray-700">Marie Martin</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <!-- Stats Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-gray-500">Ventes en cours</h3>
+                    <i class="fas fa-gavel text-blue-500"></i>
+                </div>
+                <p class="text-2xl font-bold mt-2">8</p>
+                <p class="text-green-500 text-sm">+2 cette semaine</p>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-gray-500">Ventes réussies</h3>
+                    <i class="fas fa-check-circle text-green-500"></i>
+                </div>
+                <p class="text-2xl font-bold mt-2">45</p>
+                <p class="text-gray-500 text-sm">Total</p>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-gray-500">Revenu total</h3>
+                    <i class="fas fa-euro-sign text-yellow-500"></i>
+                </div>
+                <p class="text-2xl font-bold mt-2">15,780 €</p>
+                <p class="text-green-500 text-sm">+1,200 € ce mois</p>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-gray-500">Note vendeur</h3>
+                    <i class="fas fa-star text-yellow-400"></i>
+                </div>
+                <p class="text-2xl font-bold mt-2">4.8/5</p>
+                <p class="text-gray-500 text-sm">32 évaluations</p>
+            </div>
+        </div>
+
+        <!-- Active Auctions and Sales

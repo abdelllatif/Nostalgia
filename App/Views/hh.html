@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Les Guerres qui Ont Façonné l'Histoire</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+        .blur-load {
+            background-size: cover;
+            background-position: center;
+        }
+        .blur-load.loaded > img {
+            opacity: 1;
+        }
+        .blur-load > img {
+            opacity: 0;
+            transition: opacity 200ms ease-in-out;
+        }
+        .progress-bar {
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.2s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Progress Bar -->
+    <div class="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
+        <div class="progress-bar h-full bg-blue-600"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="bg-white/80 backdrop-blur-md shadow-lg fixed w-full z-40 transition-all duration-300">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center space-x-2 group">
+                    <svg class="w-8 h-8 text-blue-600 transform group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                    <span class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">AutoLoc</span>
+                </div>
+
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#" class="nav-link relative text-gray-600 hover:text-blue-600 transition-colors duration-300">
+                        Accueil
+                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#" class="nav-link relative text-gray-600 hover:text-blue-600 transition-colors duration-300">Blog</a>
+                    <button class="relative group">
+                        <img src="/api/placeholder/40/40" alt="Profile Image" class="w-10 h-10 rounded-full border-2 border-transparent group-hover:border-blue-600 transition-all duration-300">
+                        <div class="absolute top-full right-0 mt-2 w-48 bg-white rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-right">
+                            <div class="py-2">
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">Mon Profil</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">Paramètres</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50">Déconnexion</a>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="relative min-h-screen pt-20">
+        <div class="absolute inset-0 bg-gradient-to-b from-blue-600/10 to-white pointer-events-none"></div>
+        <div class="relative container mx-auto px-4 pt-12">
+            <!-- Article Header -->
+            <div class="max-w-4xl mx-auto mb-12 opacity-0" id="articleHeader">
+                <div class="flex flex-wrap gap-3 mb-6">
+                    <span class="px-4 py-1.5 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                        Historique
+                    </span>
+                    <span class="px-4 py-1.5 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                        Colonisation
+                    </span>
+                </div>
+                <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+                    Les Guerres qui Ont Façonné l'Histoire
+                </h1>
+                <div class="flex items-center gap-6">
+                    <div class="flex items-center gap-3">
+                        <img id="profileImage" class="h-24 w-24 rounded-full object-cover border-2 border-blue-500" src="../../uploads/user.jpg" alt="Author">
+                        <div>
+                            <p class="font-medium text-gray-900">Marie Martin</p>
+                            <p class="text-sm text-gray-500">16 février 2025</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4">
+                        <button class="p-2 rounded-full hover:bg-gray-100 transition-colors duration-300">
+                            <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+                            </svg>
+                        </button>
+                        <button class="p-2 rounded-full hover:bg-gray-100 transition-colors duration-300">
+                            <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
+                            </svg>
+                        </button>
+                        <div class="p-2 rounded-full hover:bg-gray-100 transition-colors duration-300">
+                            <svg class="heart w-6 h-6 text-gray-400 hover:text-red-500 transition-colors duration-300"
+                                fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                            </svg>
+                            <p class="favoris text-sm text-gray-500 mt-2 hidden">Vous devez avoir un compte pour ajouter aux favoris.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="max-w-4xl mx-auto mb-12 rounded-2xl overflow-hidden shadow-2xl opacity-0" id="articleImage">
+                <div class="blur-load">
+                    <img src="https://clio-prepas.clionautes.org/wp-content/uploads/prepa/2019/04/colonisation-1000x640.jpg" alt="Article Image" class="w-full h-[500px] object-cover">
+                </div>
+            </div>
+
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-white rounded-2xl shadow-xl p-8 mb-12 opacity-0" id="articleContent">
+                    <p class="text-lg text-gray-700 leading-relaxed mb-6">
+                        Introduction<br>
+                        La guerre a toujours été une partie intégrante de l'histoire humaine. Depuis l'Antiquité jusqu'à nos jours, les conflits ont redessiné les frontières, détruit des empires et changé le cours de l'humanité. Dans cet article, nous explorerons certaines des guerres les plus marquantes et leur impact sur le monde.
+                        <br><br>
+                        1. L'Antiquité : Guerres de Conquête<br><br>
+                        La Guerre de Troie (XIIe ou XIIIe siècle av. J.-C.) : Légendaire conflit entre les Grecs et les Troyens, popularisé par l'Iliade d'Homère.<br><br>
+                        Les Guerres Puniques (264-146 av. J.-C.) : Conflits opposant Rome à Carthage, qui ont conduit à la domination romaine sur la Méditerranée.<br><br>
+                        Les Guerres d'Alexandre le Grand (336-323 av. J.-C.) : Expansion fulgurante de l'empire macédonien à travers l'Asie et l'Afrique.<br><br>
+                        2. Le Moyen Âge : Guerres de Religion et de Succession<br><br>
+                        Les Croisades (1096-1291) : Expéditions militaires menées par les chrétiens d'Europe pour reprendre la Terre Sainte aux musulmans.<br><br>
+                        La Guerre de Cent Ans (1337-1453) : Conflit entre la France et l'Angleterre pour le trône de France.<br><br>
+                        Les Guerres Ottomanes (XIVe-XVIIe siècle) : Expansion de l'Empire ottoman et sièges de villes emblématiques comme Constantinople en 1453.<br><br>
+                        3. L'Époque Moderne : Guerres Révolutionnaires et Coloniales<br><br>
+                        La Guerre d'Indépendance des États-Unis (1775-1783) : Révolte des colonies américaines contre la Grande-Bretagne.<br><br>
+                        Les Guerres Napoléoniennes (1803-1815) : Campagnes militaires menées par Napoléon Bonaparte à travers l'Europe.<br><br>
+                        La Guerre de Sécession (1861-1865) : Conflit aux États-Unis entre le Nord abolitionniste et le Sud esclavagiste.<br><br>
+                        4. Le XXe Siècle : Guerres Mondiales et Conflits Idéologiques<br><br>
+                        La Première Guerre mondiale (1914-1918) : Guerre totale impliquant de nombreuses nations, marquée par la guerre des tranchées et le Traité de Versailles.<br><br>
+                        La Seconde Guerre mondiale (1939-1945) : Conflit le plus dévastateur de l'histoire, opposant les Alliés et l'Axe.<br><br>
+                        La Guerre Froide (1947-1991) : Conflit idéologique entre les États-Unis et l'URSS, marqué par des guerres par procuration comme en Corée et au Vietnam.<br><br>
+                        5. Conflits Contemporains et Leurs Conséquences<br><br>
+                        Les Guerres du Golfe (1990-1991, 2003-2011) : Intervention internationale au Moyen-Orient.<br><br>
+                        Les Conflits en Afrique et au Moyen-Orient (XXIe siècle) : Guerre civile en Syrie, tensions en Ukraine, et lutte contre le terrorisme.<br><br>
+                        Conclusion<br>
+                        Les guerres ont façonné l'histoire de l'humanité, influençant la politique, l'économie et la culture. Comprendre ces conflits permet d'analyser les dynamiques du pouvoir et d'éviter les erreurs du passé.<br>
+                    </p>
+                </div>
+                <br>
+                
+
+                <div class="mt-8 text-center">
+                    <h3 class="text-2xl font-bold mb-4">Commentaires Précédents</h3>
+                    <div id="commentsContainer">
+                        <!-- Example Comments -->
+                        <div class="comment mb-4 p-4 bg-gray-100 rounded-lg">
+                            <div class="flex items-center">
+                                <img class="h-12 w-12 rounded-full object-cover border-2 border-blue-500 mr-3" src="/api/placeholder/48/48" alt="Commenter">
+                                <span class="text-lg font-semibold">Jean Dupont</span>
+                                <span class="ml-auto text-yellow-500">★★★★☆</span>
+                            </div>
+                            <p class="mt-2 text-gray-700">Excellent article ! Les conseils sont très pratiques.</p>
+                            <p class="mt-1 text-gray-500 text-sm">15 février 2025</p>
+                        </div>
+                    </div>
+                    <button id="loadMore" class="text-blue-600 hover:underline mb-4 mt-4 mr-10">Voir Plus</button>
+                    <button id="loadLess" class="text-blue-600 hover:underline mb-4 mt-4" style="display: none;">Voir Moins</button>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-xl p-8 opacity-0" id="commentSection">
+                    <h3 class="text-2xl font-bold mb-8">Commentaires et Évaluations</h3>
+                    <form id="commentForm" class="space-y-4">
+                        <div class="mb-8">
+                            <div class="flex gap-4 mb-6">
+                                <div class="stars flex space-x-1">
+                                    <span class="star text-3xl cursor-pointer transition-colors duration-300" data-value="1">★</span>
+                                    <span class="star text-3xl cursor-pointer transition-colors duration-300" data-value="2">★</span>
+                                    <span class="star text-3xl cursor-pointer transition-colors duration-300" data-value="3">★</span>
+                                    <span class="star text-3xl cursor-pointer transition-colors duration-300" data-value="4">★</span>
+                                    <span class="star text-3xl cursor-pointer transition-colors duration-300" data-value="5">★</span>
+                                </div>
+                                <input type="hidden" id="rating">
+                            </div>
+                            <textarea 
+                                class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 resize-none"
+                                rows="4"
+                                placeholder="Partagez votre avis..."
+                            ></textarea>
+                            <button type="submit" class="bg-blue-600 text-white px-8 py-3 rounded-full hover:bg-blue-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-blue-300/50">Publier</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-gray-800 text-white mt-8 py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2025 AutoLoc. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        window.addEventListener('load', () => {
+            gsap.to('#articleHeader', {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                ease: 'power4.out'
+            });
+
+            gsap.to('#articleImage', {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                delay: 0.2,
+                ease: 'power4.out'
+            });
+
+            gsap.to('#articleContent', {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                delay: 0.4,
+                ease: 'power4.out'
+            });
+
+            gsap.to('#commentSection', {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                delay: 0.6,
+                ease: 'power4.out'
+            });
+        });
+
+        // Progress bar
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.querySelector('.progress-bar').style.transform = `scaleX(${scrolled / 100})`;
+        });
+
+
+// Star rating system
+const stars = document.querySelectorAll('.star');
+let rating = 0;
+
+stars.forEach((star, index) => {
+    star.style.color = '#d1d5db';
+
+    star.addEventListener('mouseover', () => {
+        highlightStars(index);
+    });
+
+    star.addEventListener('mouseout', () => {
+        highlightStars(rating - 1);
+    });
+
+    star.addEventListener('click', () => {
+        rating = index + 1;
+        highlightStars(index);
+        document.getElementById('rating').value = rating;
+    });
+});
+
+function highlightStars(index) {
+    stars.forEach((star, i) => {
+        star.style.color = i <= index ? '#fbbf24' : '#d1d5db';
+        star.style.transform = i <= index ? 'scale(1.2)' : 'scale(1)';
+    });
+}
+
+// Comment form validation
+document.getElementById('commentForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const ratingInput = document.getElementById('rating');
+    const contentInput = document.querySelector('textarea');
+    
+    if (!ratingInput.value) {
+        alert('Veuillez sélectionner une note');
+        return false;
+    }
+    
+    if (!contentInput.value.trim()) {
+        alert('Veuillez ajouter un commentaire');
+        return false;
+    }
+
+    // Simulate comment submission
+    const commentsContainer = document.getElementById('commentsContainer');
+    const newComment = createCommentElement(contentInput.value, ratingInput.value);
+    commentsContainer.insertBefore(newComment, commentsContainer.firstChild);
+    
+    // Reset form
+    contentInput.value = '';
+    ratingInput.value = '';
+    rating = 0;
+    highlightStars(-1);
+});
+
+// Helper function to create comment element
+function createCommentElement(content, rating) {
+    const comment = document.createElement('div');
+    comment.className = 'comment mb-4 p-4 bg-gray-100 rounded-lg';
+    comment.innerHTML = `
+        <div class="flex items-center">
+            <img class="h-12 w-12 rounded-full object-cover border-2 border-blue-500 mr-3" 
+                 src="/api/placeholder/48/48" alt="Commenter">
+            <span class="text-lg font-semibold">Utilisateur</span>
+            <span class="ml-auto text-yellow-500">${'★'.repeat(rating)}${'☆'.repeat(5-rating)}</span>
+        </div>
+        <p class="mt-2 text-gray-700">${content}</p>
+        <p class="mt-1 text-gray-500 text-sm">À l'instant</p>
+    `;
+    return comment;
+}
+
+// Comment loading system
+document.addEventListener('DOMContentLoaded', () => {
+    const comments = document.querySelectorAll('#commentsContainer .comment');
+    const loadMore = document.getElementById('loadMore');
+    const loadLess = document.getElementById('loadLess');
+    let visibleCount = 5;
+
+    function updateComments() {
+        comments.forEach((comment, index) => {
+            comment.style.display = index < visibleCount ? 'block' : 'none';
+        });
+
+        loadMore.style.display = visibleCount < comments.length ? 'inline-block' : 'none';
+        loadLess.style.display = visibleCount > 10 ? 'inline-block' : 'none';
+    }
+
+    loadMore.addEventListener('click', () => {
+        visibleCount += 10;
+        updateComments();
+    });
+
+    loadLess.addEventListener('click', () => {
+        visibleCount = Math.max(10, visibleCount - 10);
+        updateComments();
+    });
+
+    updateComments();
+});
+
+// Favorite button tooltip
+const favoris = document.querySelector('.favoris');
+const heart = document.querySelector('.heart');
+
+heart.addEventListener('mouseover', () => {
+    favoris.classList.remove('hidden');
+});
+
+heart.addEventListener('mouseout', () => {
+    favoris.classList.add('hidden');
+});
+
+// Image loading effect
+const blurDivs = document.querySelectorAll('.blur-load');
+blurDivs.forEach(div => {
+    const img = div.querySelector('img');
+    
+    function loaded() {
+        div.classList.add('loaded');
+    }
+
+    if (img.complete) {
+        loaded();
+    } else {
+        img.addEventListener('load', loaded);
+    }
+});
+</script>
+</body>
+</html>

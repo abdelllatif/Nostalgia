@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nostalogia - Profil Acheteur</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:wght@400;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-roboto">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Profile Header -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <div class="flex items-center space-x-4">
+                <div class="w-20 h-20 bg-gray-300 rounded-full flex items-center justify-center">
+                    <span class="text-2xl text-gray-600">AH</span>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold font-inria">Abdellatif Hissoune</h1>
+                    <p class="text-gray-600">Collectionneur passionné • Paris, France</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Wallet Card -->
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-xl font-bold mb-4 font-inria">Portefeuille</h2>
+                <div class="space-y-2">
+                    <p class="text-gray-600">Solde disponible</p>
+                    <p class="text-2xl font-bold text-blue-600">€2,500.00</p>
+                    <p class="text-sm text-gray-500">Dernière transaction: 12 Fév 2024</p>
+                    <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg w-full hover:bg-blue-700">
+                        Recharger
+                    </button>
+                </div>
+            </div>
+
+            <!-- History Card -->
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-xl font-bold mb-4 font-inria">Historique</h2>
+                <div class="text-center">
+                    <p class="text-4xl font-bold text-blue-600">47</p>
+                    <p class="text-gray-600">Achats réalisés</p>
+                </div>
+                <div class="mt-4">
+                    <canvas id="purchaseChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Favorites Card -->
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-xl font-bold mb-4 font-inria">Favoris</h2>
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-2">
+                        <img src="/api/placeholder/60/60" alt="Item" class="w-15 h-15 rounded"/>
+                        <div>
+                            <p class="font-semibold">Manuscrit ancien</p>
+                            <p class="text-sm text-gray-600">Prix actuel: €1,200</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <img src="/api/placeholder/60/60" alt="Item" class="w-15 h-15 rounded"/>
+                        <div>
+                            <p class="font-semibold">Pièce de monnaie</p>
+                            <p class="text-sm text-gray-600">Prix actuel: €800</p>
+                        </div>
+                    </div>
+                </div>
+                <button class="mt-4 text-blue-600 hover:text-blue-700 text-sm w-full text-center">
+                    Voir tous les favoris
+                </button>
+            </div>
+
+            <!-- Comments Card -->
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-xl font-bold mb-4 font-inria">Mes commentaires</h2>
+                <div class="space-y-4">
+                    <div class="border-b pb-2">
+                        <div class="flex items-center space-x-2">
+                            <div class="flex text-yellow-400">
+                                ★★★★★
+                            </div>
+                            <p class="text-sm text-gray-600">Il y a 2 jours</p>
+                        </div>
+                        <p class="text-sm mt-1">Excellent état, livraison rapide!</p>
+                    </div>
+                    <div class="border-b pb-2">
+                        <div class="flex items-center space-x-2">
+                            <div class="flex text-yellow-400">
+                                ★★★★☆
+                            </div>
+                            <p class="text-sm text-gray-600">Il y a 1 semaine</p>
+                        </div>
+                        <p class="text-sm mt-1">Très satisfait de mon achat.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Active Auctions -->
+        <div class="mt-6 bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-xl font-bold mb-4 font-inria">Enchères en cours</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full">
+                    <thead>
+                        <tr class="bg-gray-50">
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Produit
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Prix actuel
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Votre enchère
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Temps restant
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Statut
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <img src="/api/placeholder/40/40" alt="Product" class="w-10 h-10 rounded"/>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">
+                                            Manuscrit du XVIIIe siècle
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">€3,500</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-blue-600 font-semibold">€3,200</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">2h 15m</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                    Dépassé
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <img src="/api/placeholder/40/40" alt="Product" class="w-10 h-10 rounded"/>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900">
+                                            Tableau Art Déco
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">€1,800</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-blue-600 font-semibold">€1,800</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">5h 30m</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                    En tête
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize purchase history chart
+        const ctx = document.getElementById('purchaseChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun'],
+                datasets: [{
+                    label: 'Achats',
+                    data: [5, 8, 12, 7, 9, 6],
+                    borderColor: '#2563EB',
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 5
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

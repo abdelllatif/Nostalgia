@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nostalogia - Espace Acheteur</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <span class="text-2xl font-bold text-blue-600">Nostalogia</span>
+                    </div>
+                    <div class="hidden md:ml-6 md:flex md:space-x-8">
+                        <a href="#" class="border-b-2 border-blue-500 text-gray-900 inline-flex items-center px-1 pt-1 text-sm font-medium">
+                            Tableau de bord
+                        </a>
+                        <a href="#" class="text-gray-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 text-sm font-medium">
+                            Catalogue
+                        </a>
+                        <a href="#" class="text-gray-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 text-sm font-medium">
+                            Mes Enchères
+                        </a>
+                        <a href="#" class="text-gray-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 text-sm font-medium">
+                            Favoris
+                        </a>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <button id="notifBtn" class="p-2 rounded-full text-gray-600 hover:text-gray-700 focus:outline-none">
+                        <span class="relative inline-block">
+                            <i class="fas fa-bell text-xl"></i>
+                            <span class="absolute top-0 right-0 block h-4 w-4 rounded-full bg-red-500 text-white text-xs text-center">
+                                2
+                            </span>
+                        </span>
+                    </button>
+                    <div class="ml-4 flex items-center">
+                        <img class="h-8 w-8 rounded-full" src="/api/placeholder/32/32" alt="User avatar">
+                        <span class="ml-2 text-gray-700">Jean Dupont</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Notifications Popup -->
+    <div id="notifPopup" class="hidden absolute right-4 mt-2 w-80 bg-white rounded-lg shadow-xl z-50">
+        <div class="p-4 border-b">
+            <h3 class="font-semibold">Notifications</h3>
+        </div>
+        <div class="p-2">
+            <div class="p-2 hover:bg-gray-50 rounded">
+                <p class="text-sm">Nouvelle enchère sur "Manuscrit XVIII siècle"</p>
+                <p class="text-xs text-gray-500">Il y a 5 minutes</p>
+            </div>
+            <div class="p-2 hover:bg-gray-50 rounded">
+                <p class="text-sm">Vous avez remporté l'enchère "Tableau Renaissance"</p>
+                <p class="text-xs text-gray-500">Il y a 1 heure</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <!-- Wallet Status -->
+        <div class="bg-white rounded-lg shadow p-6 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="text-center">
+                    <h3 class="text-lg text-gray-500">Solde Disponible</h3>
+                    <p class="text-3xl font-bold text-gray-900">5,000 €</p>
+                </div>
+                <div class="text-center">
+                    <h3 class="text-lg text-gray-500">Enchères Actives</h3>
+                    <p class="text-3xl font-bold text-gray-900">3</p>
+                </div>
+                <div class="text-center">
+                    <h3 class="text-lg text-gray-500">Enchères Remportées</h3>
+                    <p class="text-3xl font-bold text-gray-900">12</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Active Auctions -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <div class="bg-white rounded-lg shadow">
+                <div class="p-4 border-b">
+                    <h2 class="text-lg font-semibold">Mes Enchères Actives</h2>
+                </div>
+                <div class="p-4">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between p-4 bg-gray-50 rounded">
+                            <div class="flex items-center space-x-4">
+                                <img src="/api/placeholder/64/64" alt="Item" class="w-16 h-16 rounded">
+                                <div>
+                                    <h3 class="font-medium">Manuscrit XVIII siècle</h3>
+                                    <p class="text-sm text-gray-500">Enchère actuelle: 1,200 €</p>
+                                </div>
+                            </div>
+                            <button class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                                Enchérir
+                            </button>
+                        </div>
+                        <!-- More auction items... -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Auction History Chart -->
+            <div class="bg-white rounded-lg shadow">
+                <div class="p-4 border-b">
+                    <h2 class="text-lg font-semibold">Historique des Enchères</h2>
+                </div>
+                <div class="p-4">
+                    <canvas id="auctionHistoryChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Watchlist -->
+        <div class="bg-white rounded-lg shadow mb-6">
+            <div class="p-4 border-b">
+                <h2 class="text-lg font-semibold">Liste de Surveillance</h2>
+            </div>
+            <div class="p-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="border rounded p-4">
+                        <img src="/api/placeholder/200/150" alt="Item" class="w-full h-40 object-cover rounded mb-2">
+                        <h3 class="font-medium">Pièce de Monnaie Antique</h3>
+                        <p class="text-sm text-gray-500">Prix actuel: 850 €</p>
+                        <p class="text-xs text-gray-500">Termine dans: 2j 5h</p>
+                        <button class="mt-2 w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                            Voir détails
+                        </button>
+                    </div>
+                    <!-- More watchlist items... -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Notifications Popup
+        const notifBtn = document.getElementById('notifBtn');
+        const notifPopup = document.getElementById('notifPopup');
+        
+        notifBtn.addEventListener('click', () => {
+            notifPopup.classList.toggle('hidden');
+        });
+
+        // Close popup when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!notifBtn.contains(e.target) && !notifPopup.contains(e.target)) {
+                notifPopup.classList.add('hidden');
+            }
+        });
+
+        // Auction History Chart
+        const ctx = document.getElementById('auctionHistoryChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun'],
+                datasets: [{
+                    label: 'Montant des enchères (€)',
+                    data: [500, 800, 1200, 900, 1500, 2000],
+                    borderColor: '#2563EB',
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
