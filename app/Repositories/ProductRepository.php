@@ -42,7 +42,7 @@ class ProductRepository implements ProductRepositoryInterface
                 'products.*',
                 'users.name as user_name',
                 'categories.name as category_name',
-                DB::raw('STRING_AGG(DISTINCT product_images.image_path, \',\') as images'), 
+                DB::raw('STRING_AGG(DISTINCT product_images.image_path, \',\') as images'),
                 DB::raw('STRING_AGG(DISTINCT tags.name, \',\') as tags'),
                 DB::raw('COUNT(products.id) OVER() as products_counter')
             )
@@ -54,7 +54,7 @@ class ProductRepository implements ProductRepositoryInterface
             $product->tags = explode(',', $product->tags);
         }
 
-        return $products;
+        return $products;jj
     }
 
 
