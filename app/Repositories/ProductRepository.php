@@ -35,7 +35,7 @@ class ProductRepository implements ProductRepositoryInterface
             ->join('categories', 'categories.id', '=', 'products.category_id')
             ->leftJoin('taggable', function ($join) {
                 $join->on('products.id', '=', 'taggable.taggable_id')
-                     ->where('taggable.taggable_type', '=', 'App\Models\Product');
+                    ->where('taggable.taggable_type', '=', 'App\Models\Product');
             })
             ->leftJoin('tags', 'tags.id', '=', 'taggable.tag_id')
             ->select(
@@ -54,7 +54,7 @@ class ProductRepository implements ProductRepositoryInterface
             $product->tags = explode(',', $product->tags);
         }
 
-        return $products;jj
+        return $products;
     }
 
 

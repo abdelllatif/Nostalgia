@@ -36,7 +36,7 @@ class ProductController extends Controller
             'user_id' => 'required|exists:users,id',
             'images' => 'nullable|array',
             'images.*' => 'nullable|string',
-            'tags' => 'nullable|array', // Validate tags as an array
+            'tags' => 'array', // Validate tags as an array
         'tags.*' => 'exists:tags,id', // Each image should be a valid string (URL or base64)
         ]);
 
@@ -58,7 +58,7 @@ class ProductController extends Controller
                 ]);
             }
             if ($request->has('tags')) {
-                $product->tags()->attach($request->tags); // Attach tags by their IDs
+                $product->tags()->sync($request->tags);
             }
 
         return response()->json([

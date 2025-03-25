@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Product;
+use App\Models\Article;
 
 class Tag extends Model
 {
@@ -12,9 +13,14 @@ class Tag extends Model
 
     protected $fillable = ['name'];
 
-    public function taggables()
+    public function products()
     {
-        return $this->morphedByMany(Product::class, 'taggable')
-            ->union($this->morphedByMany(Post::class, 'taggable'));
+        return $this->morphedByMany(Product::class, 'taggable');
     }
+
+    public function posts()
+{
+    return $this->morphedByMany(Article::class, 'taggable');
+}
+
 }
