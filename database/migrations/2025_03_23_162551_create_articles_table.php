@@ -15,6 +15,8 @@ return new class extends Migration
         $table->id();
         $table->string('title');
         $table->text('content');
+        $table->string('image');
+        $table->enum('status', ['posted', 'waiting', 'suspended'])->default('waiting');
         $table->foreignId('category_id')->constrained('categories'); // category reference without cascade
         $table->foreignId('user_id')->constrained()->onDelete('cascade'); // author reference
         $table->timestamps();

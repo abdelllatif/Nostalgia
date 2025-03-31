@@ -10,32 +10,28 @@ class Article extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title',
-        'content',
-        'user_id',
+        'title', 'content', 'image', 'status', 'category_id', 'user_id'
     ];
 
-    /**
-     * Get the category that is associated with the post.
-     */
-    public function category()
+    protected $appends = ['image_url'];
+
+    public function getImageUrlAttribute()
     {
-        return $this->morphTo();
+        return $this->image ? asset('storage/' . $this->image) : null;
     }
 
-    /**
-     * Get all the tags associated with the post.
-     */
-    public function tags()
-    {
-        return $this->morphToMany(Tag::class, 'taggable');
-    }
-
-    /**
-     * Get the user that created the post.
-     */
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Categorie::class);
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'taggables');
     }
 }

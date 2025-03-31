@@ -7,6 +7,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\ArticleController;
+
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
@@ -24,3 +26,11 @@ Route::apiResource('categories', CategorieController::class);
 Route::apiResource('tags', TagController::class);
 Route::get('myProducts/{id}', [ProductController::class, 'GetUserproduct']);
 
+Route::get('/articles', [ArticleController::class, 'index']);
+Route::post('/articles', [ArticleController::class, 'store']);
+Route::get('/articles/{id}', [ArticleController::class, 'show']);
+Route::put('/articles/{id}', [ArticleController::class, 'update']);
+Route::delete('/articles/{id}', [ArticleController::class, 'destroy']);
+
+Route::get('/my-articles', [ArticleController::class, 'myArticles']);
+Route::get('/user-articles/{userId}', [ArticleController::class, 'userArticles']);

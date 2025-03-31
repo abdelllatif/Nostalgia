@@ -33,11 +33,11 @@ class ProductRepository implements ProductRepositoryInterface
             ->join('products', 'users.id', '=', 'products.user_id')
             ->join('product_images', 'products.id', '=', 'product_images.product_id')
             ->join('categories', 'categories.id', '=', 'products.category_id')
-            ->leftJoin('taggable', function ($join) {
-                $join->on('products.id', '=', 'taggable.taggable_id')
-                    ->where('taggable.taggable_type', '=', 'App\Models\Product');
+            ->leftJoin('taggables', function ($join) {
+                $join->on('products.id', '=', 'taggables.taggable_id')
+                    ->where('taggables.taggable_type', '=', 'App\Models\Product');
             })
-            ->leftJoin('tags', 'tags.id', '=', 'taggable.tag_id')
+            ->leftJoin('tags', 'tags.id', '=', 'taggables.tag_id')
             ->select(
                 'products.*',
                 'users.name as user_name',
