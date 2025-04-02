@@ -5,6 +5,8 @@ use App\Services\ProductService;
 use Illuminate\Http\Request;
 use  App\Models\Product;
 use App\Models\ProductImage;
+use DateTime;
+
 class ProductController extends Controller
 {
     protected $productService;
@@ -21,7 +23,27 @@ class ProductController extends Controller
 
     public function show($id)
     {
-        return response()->json($this->productService->getProductById($id));
+        $product = $this->productService->getProductById($id);
+    if(!$product){
+        return response()->json([
+            'message' => 'Produit non trouvé'],
+            404
+        );
+    }
+    $product['time_remaining'] = $this->getTimeRemaining($product->auction_end_date);
+    return response()->json($product);
+
+    }
+    public function getTimeRemaining($endtime)
+    {
+        $now = new DateTime();
+        $endTime = new DateTime($endtime);
+        if ($now >= $endTime) {
+            return 'Terminé';
+        }
+        $interval = $now->diff($endTime);
+
+        return $interval->format('%a jours, %h heures, %i minutes, %s secondes');
     }
 
     public function store(Request $request)
@@ -36,11 +58,9 @@ class ProductController extends Controller
             'user_id' => 'required|exists:users,id',
             'images' => 'nullable|array',
             'images.*' => 'nullable|string',
-            'tags' => 'array', // Validate tags as an array
-        'tags.*' => 'exists:tags,id', // Each image should be a valid string (URL or base64)
+            'tags' => 'array',
+        'tags.*' => 'exists:tags,id',
         ]);
-
-        // Create Product
         $product = Product::create([
             'title' => $request->title,
             'description' => $request->description,
@@ -50,7 +70,6 @@ class ProductController extends Controller
             'category_id' => $request->category_id,
             'user_id' => $request->user_id,
         ]);
-
             foreach ($request->images as $image) {
                 ProductImage::create([
                     'product_id' => $product->id,
@@ -77,7 +96,6 @@ class ProductController extends Controller
             'starting_price' => 'sometimes|numeric',
             'auction_end_date' => 'sometimes|date',
             'category_id' => 'sometimes|exists:categories,id',
-            'user_id' => 'sometimes|exists:users,id',
             'image' => 'sometimes|string'
         ]);
 
@@ -90,10 +108,20 @@ class ProductController extends Controller
         return response()->json(['message' => 'Product deleted successfully']);
     }
 
-    public function GetUserproduct($userId){
-
+    public function GetUserproduct($userId)
+    {
         $products = $this->productService->getUserProducts($userId);
-            return response()->json($products);
+        if ($products->isEmpty()) {
+            return response()->json(['message' => 'Aucun produit trouvé'], 404);
+        }
+        $products = $products->map(function ($product) {
+            $product->time_remaining = $this->getTimeRemaining($product->auction_end_date);
+            return $product;
+        });
 
+        return response()->json($products);
     }
+
+
+
 }

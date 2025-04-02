@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Http\Requests\articleReauest;
 use App\Models\Article;
 use App\Services\ArticleService;
 use Illuminate\Http\Request;
@@ -54,7 +55,7 @@ class ArticleController extends Controller
         return response()->json($article);
     }
 
-    public function update(Request $request, $id)
+    public function update(articleReauest $request, $id)
     {
         $article = $this->articleService->findArticleById($id);
 
@@ -62,15 +63,7 @@ class ArticleController extends Controller
             return response()->json(['error' => 'Article not found'], 404);
         }
 
-        $data = $request->validate([
-            'title' => 'sometimes|string|max:255',
-            'content' => 'sometimes|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'status' => 'sometimes|in:posted,waiting,suspended',
-            'category_id' => 'sometimes|exists:categories,id',
-            'tags' => 'array',
-            'tags.*' => 'exists:tags,id'
-        ]);
+        $data = $request->validated();
 
         if ($request->hasFile('image')) {
             Storage::delete('public/' . $article->image);
