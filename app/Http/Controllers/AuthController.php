@@ -10,19 +10,32 @@ public function __construct(AuthService $authService)
 $this->authService=$authService;
 }
 
-
 public function register(Request $request)
 {
-    $request->validate([
-        'name' => 'required|min:3|string',
+    $validated = $request->validate([
+        'name' => 'required|string',
         'email' => 'required|email|unique:users',
-        'password' => 'required|confirmed|min:8|string|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@\'&])[a-zA-Z0-9$@\'&]+$/'
+        'password' => 'required|confirmed|min:8|string|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@\'&])[a-zA-Z0-9$@\'&]+$/',
+        'first_name' => 'required|string|max:40',
+        'phone_number' => 'nullable|string|max:15',
+        'identity_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
     ]);
-    $result = $this->authService->register($request->all());
-    if (!$result) {
-    return response()->json(['error' => 'utilisateur pas registrer'], 400);
+
+    // Hash the password before sending it to the service
+    $validated['password'] = Hash::make($validated['password']);
+
+    if ($request->hasFile('identity_image')) {
+        $path = $request->file('identity_image')->store('identity_images', 'public');
+        $validated['identity_image'] = $path;
     }
-    return response()->json($result, 201);
+
+    $response = $this->authService->register($validated);
+
+    if (!$response) {
+        return response()->json(['error' => 'utilisateur pas enregistré'], 400);
+    }
+
+    return response()->json($response, 201);
 }
 
 

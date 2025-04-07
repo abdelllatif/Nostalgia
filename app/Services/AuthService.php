@@ -13,15 +13,17 @@ class AuthService{
     $this->authrepository=$authrepository;
     }
 
-    public function register(array $data){
-    $newUser=$this->authrepository->register($data);
-    $userTocken=JWTAuth::fromUser($newUser);
-    return response()->json([
-        'succes'=>true,
-        '$user'=>$newUser,
-        'tocken'=>$userTocken
-    ]);
+    public function register(array $data)
+    {
+        $newUser = $this->authrepository->register($data);
+        $userToken = JWTAuth::fromUser($newUser);
+        return [
+            'success' => true,
+            'user' => $newUser,
+            'token' => $userToken
+        ];
     }
+
 
     public function login(array $authData){
         $token = $this->authrepository->login($authData);
