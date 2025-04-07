@@ -35,73 +35,37 @@ class AdminRepository implements AdminRepositoryInterface
             }
 
             return $query->orderByDesc('created_at')->paginate($perPage);
-        }
+       }
 
-    public function approveUser($id)
-    {
-        $user = User::find($id);
-        if ($user) {
-            $user->status = 'approved';
-            $user->save();
-            return $user;
-        }
-        return null;
-    }
+       public function approveUser(int $id)
+       {
+           return DB::table('users')->where('id', $id)->update(['status' => 'approved']);
+       }
 
-    public function suspendUser($id)
-    {
-        $user = User::find($id);
-        if ($user) {
-            $user->status = 'suspended';
-            $user->save();
-            return $user;
-        }
-        return null;
-    }
+       public function suspendUser(int $id)
+       {
+           return DB::table('users')->where('id', $id)->update(['status' => 'suspended']);
+       }
 
-    public function approveProduct($id)
-    {
-        $product = Product::find($id);
-        if ($product) {
-            $product->status = 'approved';
-            $product->save();
-            return $product;
-        }
-        return null;
-    }
+       public function approveProduct(int $id)
+       {
+           return DB::table('products')->where('id', $id)->update(['status' => 'approved']);
+       }
 
-    public function suspendProduct($id)
-    {
-        $product = Product::find($id);
-        if ($product) {
-            $product->status = 'suspended';
-            $product->save();
-            return $product;
-        }
-        return null;
-    }
+       public function suspendProduct(int $id)
+       {
+           return DB::table('products')->where('id', $id)->update(['status' => 'suspended']);
+       }
 
-    public function approveArticle($id)
-    {
-        $article = Article::find($id);
-        if ($article) {
-            $article->status = 'approved';
-            $article->save();
-            return $article;
-        }
-        return null;
-    }
+       public function approveArticle(int $id)
+       {
+           return DB::table('articles')->where('id', $id)->update(['status' => 'approved']);
+       }
 
-    public function suspendArticle($id)
-    {
-        $article = Article::find($id);
-        if ($article) {
-            $article->status = 'suspended';
-            $article->save();
-            return $article;
-        }
-        return null;
-    }
+       public function suspendArticle(int $id)
+       {
+           return DB::table('articles')->where('id', $id)->update(['status' => 'suspended']);
+       }
 
     public function getStatistics()
     {
