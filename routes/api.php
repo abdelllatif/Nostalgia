@@ -37,3 +37,20 @@ Route::get('/my-articles', [ArticleController::class, 'myArticles']);
 Route::get('/user-articles/{userId}', [ArticleController::class, 'userArticles']);
 
 Route::get('/Allusers',[AdminController::class,'users']);
+
+
+
+
+
+Route::prefix('admin')->group(function () {
+    Route::post('/users/{id}/approve', [AdminController::class, 'approveUser']);
+    Route::post('/users/{id}/suspend', [AdminController::class, 'suspendUser']);
+
+    Route::post('/products/{id}/approve', [AdminController::class, 'approveProduct']);
+    Route::post('/products/{id}/suspend', [AdminController::class, 'suspendProduct']);
+
+    Route::post('/articles/{id}/approve', [AdminController::class, 'approveArticle']);
+    Route::post('/articles/{id}/suspend', [AdminController::class, 'suspendArticle']);
+
+    Route::get('/statistics', [AdminController::class, 'getStatistics']);
+});

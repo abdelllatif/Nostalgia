@@ -22,43 +22,66 @@ class AdminService extends UserService
         }
 
 
+        public function approveUser(int $id): array
+        {
+            $result = $this->adminRepository->approveUser($id);
+            return [
+                'success' => $result,
+                'message' => $result ? 'User approved successfully' : 'User not found or already approved'
+            ];
+        }
 
-    public function approveUser($id)
-    {
-        return $this->adminRepository->approveUser($id);
-    }
+        public function suspendUser(int $id): array
+        {
+            $result = $this->adminRepository->suspendUser($id);
+            return [
+                'success' => $result,
+                'message' => $result ? 'User suspended successfully' : 'User not found or already suspended'
+            ];
+        }
 
-    public function suspendUser($id)
-    {
-        return $this->adminRepository->suspendUser($id);
-    }
+        public function approveProduct(int $id): array
+        {
+            $result = $this->adminRepository->approveProduct($id);
+            return [
+                'success' => $result,
+                'message' => $result ? 'Product approved successfully' : 'Product not found or already approved'
+            ];
+        }
 
-    // Product Management
-    public function approveProduct($id)
-    {
-        return $this->adminRepository->approveProduct($id);
-    }
+        public function suspendProduct(int $id): array
+        {
+            $result = $this->adminRepository->suspendProduct($id);
+            return [
+                'success' => $result,
+                'message' => $result ? 'Product suspended successfully' : 'Product not found or already suspended'
+            ];
+        }
 
-    public function suspendProduct($id)
-    {
-        return $this->adminRepository->suspendProduct($id);
-    }
+        public function approveArticle(int $id): array
+        {
+            $result = $this->adminRepository->approveArticle($id);
+            return [
+                'success' => $result,
+                'message' => $result ? 'Article approved successfully' : 'Article not found or already approved'
+            ];
+        }
 
-    // Article Management
-    public function approveArticle($id)
-    {
-        return $this->adminRepository->approveArticle($id);
-    }
+        public function suspendArticle(int $id): array
+        {
+            $result = $this->adminRepository->suspendArticle($id);
+            return [
+                'success' => $result,
+                'message' => $result ? 'Article suspended successfully' : 'Article not found or already suspended'
+            ];
+        }
 
-    public function suspendArticle($id)
-    {
-        return $this->adminRepository->suspendArticle($id);
-    }
-
-    // Get statistics
-    public function getStatistics()
-    {
-        return $this->adminRepository->getStatistics();
-    }
+        public function getStatistics(): array
+        {
+            return [
+                'success' => true,
+                'data' => $this->adminRepository->getStatistics()
+            ];
+        }
 }
 
