@@ -35,13 +35,19 @@ class UserController extends Controller
             'name' => 'required|string',
             'email' => 'required|email|unique:users',
             'password' => 'required|string|min:6',
+            'first_name' => 'required|string|max:40',
+            'phone_number' => 'nullable|string|max:15',
+            'identity_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-
         $validated['password'] = bcrypt($validated['password']);
-
+        if ($request->hasFile('identity_image')) {
+            $path = $request->file('identity_image')->store('identity_images', 'public');
+            $validated['identity_image'] = $path;
+        }
         $user = $this->userService->createUser($validated);
-        return response()->json($user, 201);
+        return response()->json($user);
     }
+
 
     public function update(Request $request, $id)
     {
