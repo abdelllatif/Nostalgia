@@ -34,8 +34,6 @@ class ArticleController extends Controller
             'tags' => 'array',
             'tags.*' => 'exists:tags,id'
         ]);
-
-        // رفع الصورة
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('articles', 'public');
         }

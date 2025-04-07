@@ -43,6 +43,9 @@ class ProductService
     {
         return $this->productRepository->GetUserproduct($userId);
     }
+public function search($name){
+    return $this->productRepository->search($name);
 
+}
 }
 

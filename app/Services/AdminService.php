@@ -15,7 +15,14 @@ class AdminService extends UserService
         $this->adminRepository = $adminRepository;
     }
 
-    // User Management
+        public function fetchUsers(array $params)
+        {
+            $perPage = $params['per_page'] ?? 15;
+            return $this->adminRepository->fetchUsers($params, $perPage);
+        }
+
+
+
     public function approveUser($id)
     {
         return $this->adminRepository->approveUser($id);

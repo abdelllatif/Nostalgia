@@ -9,12 +9,12 @@ class ProductRepository implements ProductRepositoryInterface
 {
     public function getAll()
     {
-        return Product::with('category', 'user', 'images')->get();
+        return Product::with(['category', 'user', 'images', 'tags:id,name'])->get();
     }
 
     public function findById($id)
     {
-        return Product::with('category', 'user', 'images')->findOrFail($id);
+        return Product::with('category', 'user', 'images', 'tags:id,name')->findOrFail($id);
     }
 
     public function create(array $data)

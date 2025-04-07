@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 use App\Services\AdminService;
-
+use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 class AdminController extends UserController
@@ -13,6 +13,18 @@ class AdminController extends UserController
         parent::__construct($userService);
         $this->adminService = $adminService;
     }
+
+    public function users(Request $request)
+    {
+        $users = $this->userService->fetchUsers($request->all());
+
+        return response()->json([
+            'success' => true,
+            'users' => $users
+        ]);
+    }
+
+
     public function approveUser($id)
     {
         return response()->json($this->adminService->approveUser($id));

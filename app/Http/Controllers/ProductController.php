@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use  App\Models\Product;
 use App\Models\ProductImage;
 use DateTime;
+use GrahamCampbell\ResultType\Success;
 
 class ProductController extends Controller
 {
@@ -122,6 +123,20 @@ class ProductController extends Controller
         return response()->json($products);
     }
 
+
+    public function search($name){
+        $products = $this->productService->search($name);
+        if(!$products){
+        return response()->json([
+            'Success'=>false,
+            'message'=>'no product found'
+        ],404);
+        return response()->json([
+            'Success'=>true,
+            'products'=>$products
+        ],200);
+        }
+    }
 
 
 }

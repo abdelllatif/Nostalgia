@@ -2,6 +2,7 @@
 namespace App\Repositories\Interfaces;
 interface AdminRepositoryInterface
 {
+    public function fetchUsers(array $params);
     public function approveUser($id);
     public function suspendUser($id);
     public function approveProduct($id);

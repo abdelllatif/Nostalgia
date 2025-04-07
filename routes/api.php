@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -34,3 +35,5 @@ Route::delete('/articles/{id}', [ArticleController::class, 'destroy']);
 
 Route::get('/my-articles', [ArticleController::class, 'myArticles']);
 Route::get('/user-articles/{userId}', [ArticleController::class, 'userArticles']);
+
+Route::get('/Allusers',[AdminController::class,'users']);

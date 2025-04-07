@@ -1,13 +1,42 @@
 <?php
 namespace App\Repositories;
+use Illuminate\Support\Facades\DB;
 
 use App\Models\Admin;
-use App\Models\User;          // Importing User model
-use App\Models\Product;       // Importing Product model
-use App\Models\Article;       // Importing Article model
+use App\Models\User;
+use App\Models\Product;
+use App\Models\Article;
 use App\Repositories\Interfaces\AdminRepositoryInterface;
 class AdminRepository implements AdminRepositoryInterface
 {
+        public function fetchUsers(array $filters, int $perPage = 15)
+        {
+            $query = DB::table('users');
+
+            if (!empty($filters['role'])) {
+                $query->where('role', $filters['role']);
+            }
+
+            if (!empty($filters['status'])) {
+                $query->where('status', $filters['status']);
+            }
+
+            if (!empty($filters['is_verified'])) {
+                $query->where('is_verified', $filters['is_verified']);
+            }
+
+            if (!empty($filters['search'])) {
+                $search = $filters['search'];
+                $query->where(function ($q) use ($search) {
+                    $q->where('first_name', 'like', "%{$search}%")
+                    ->orWhere('last_name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
+                });
+            }
+
+            return $query->orderByDesc('created_at')->paginate($perPage);
+        }
+
     public function approveUser($id)
     {
         $user = User::find($id);
