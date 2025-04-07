@@ -17,7 +17,12 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->enum('status', ['active', 'suspended', 'inactive'])->default('active');
+            $table->string('first_name', 40);
+            $table->string('phone_number', 15)->nullable();
+            $table->enum('role', ['user', 'admin'])->default('user');
+            $table->boolean('is_verifier')->default(false);
+            $table->enum('status', ['avtive', 'suspended','waiting_to_approved','acount_removed'])->default('waiting_to_approved');
+            $table->string('identity_image')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

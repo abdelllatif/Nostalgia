@@ -45,7 +45,10 @@ class UserController extends Controller
             $validated['identity_image'] = $path;
         }
         $user = $this->userService->createUser($validated);
-        return response()->json($user);
+        return response()->json([
+            'sucsess'=>true,
+            'users'=>$user
+            ],200);
     }
 
 
