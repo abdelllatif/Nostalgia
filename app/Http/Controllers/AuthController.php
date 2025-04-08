@@ -11,6 +11,19 @@ public function __construct(AuthService $authService)
 $this->authService=$authService;
 }
 
+public function register_show(){
+    return view('register');
+}
+
+public function login_show(){
+    return view('login');
+}
+public function terms_views(){
+    return view('terms');
+}
+public function Attends_views(){
+    return view('user_Attends');
+}
 public function register(Request $request)
 {
     $validated = $request->validate([
@@ -19,7 +32,7 @@ public function register(Request $request)
         'password' => 'required|confirmed|min:8|string',
         'first_name' => 'required|string|max:40',
         'phone_number' => 'nullable|string|max:15',
-        'identity_image' => 'required',
+        'identity_image' => 'required|image|mimes:jpeg,png',
     ]);
     $validated['password'] = Hash::make($validated['password']);
 

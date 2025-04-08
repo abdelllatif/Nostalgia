@@ -7,6 +7,39 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-50 dark:bg-gray-900">
+    <nav class="bg-white shadow-md px-6 py-4 flex items-center justify-between">
+
+        <!-- Logo -->
+        <div class="flex items-center space-x-2">
+          <img src="https://img.icons8.com/ios-filled/50/000000/retro-tv.png" alt="Logo Nostalgia" class="w-8 h-8">
+          <span class="text-xl font-bold text-gray-800">Nostalgia</span>
+        </div>
+
+        <!-- Menu -->
+        <ul class="hidden md:flex space-x-6 text-gray-700 font-medium">
+          <li><a href="#" class="hover:text-blue-600">Accueil</a></li>
+          <li><a href="#" class="hover:text-blue-600">Enchères</a></li>
+          <li><a href="#" class="hover:text-blue-600">Collections</a></li>
+          <li><a href="#" class="hover:text-blue-600">À propos</a></li>
+          <li><a href="#" class="hover:text-blue-600">Contact</a></li>
+        </ul>
+
+        <!-- Boutons Connexion / Inscription -->
+        <div class="hidden md:flex space-x-4">
+          <button class="px-4 py-2 border rounded-full text-sm hover:bg-gray-100">Connexion</button>
+          <button class="px-4 py-2 bg-blue-600 text-white rounded-full text-sm hover:bg-blue-700">Inscription</button>
+        </div>
+
+        <!-- Menu burger mobile -->
+        <div class="md:hidden">
+          <button>
+            <svg class="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+          </button>
+        </div>
+      </nav>
 
     <!-- Hero Section -->
     <section class="relative bg-gray-50 dark:bg-gray-900 overflow-hidden">
@@ -26,7 +59,7 @@
                     Découvrez et préservez des pièces culturelles rares et uniques. Une plateforme d'enchères interactive dédiée au patrimoine culturel.
                 </p>
                 <div class="mt-10 max-w-sm mx-auto sm:max-w-none sm:flex sm:justify-center">
-                    <div class="space-y-4 sm:space-y-0 sm:space-x-4">
+                    <div class="flex space-x-4">
                         <a href="/catalogue" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 dark:hover:bg-gray-500 md:py-4 md:text-lg md:px-10">
                             Explorer le Catalogue
                         </a>
@@ -56,8 +89,8 @@
                 <div class="rounded-lg shadow-lg overflow-hidden bg-gray-50 dark:bg-gray-900 transition-transform duration-300 hover:scale-105">
                     <div class="h-64 w-full overflow-hidden">
                         <img src="https://plus.unsplash.com/premium_photo-1743096946788-b8d8304542d1?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwzfHx8ZW58MHx8fHx8"
-                             alt="Tableau historique"
-                             class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500">
+                            alt="Tableau historique"
+                            class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500">
                     </div>
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white">Tableau Historique du XVIIIe siècle</h3>
