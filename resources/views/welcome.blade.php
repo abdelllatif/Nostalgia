@@ -11,7 +11,7 @@
     <!-- Hero Section -->
     <section class="relative bg-gray-50 dark:bg-gray-900 overflow-hidden">
         <div class="absolute inset-0">
-            <div class="absolute inset-0 bg-gradient-to-br from-amber-600/30 to-amber-900/30 dark:from-amber-900/60 dark:to-amber-950/60"></div>
+            <div class="absolute inset-0 bg-gradient-to-br from-gray-600/30 to-gray-900/30 dark:from-gray-900/60 dark:to-gray-950/60"></div>
             <img src="https://images.unsplash.com/photo-1461360228754-6e81c478b882?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2674&q=80"
                  alt="Nostalogia Hero Background"
                  class="w-full h-full object-cover mix-blend-overlay dark:mix-blend-soft-light">
@@ -20,14 +20,14 @@
             <div class="text-center max-w-3xl mx-auto">
                 <h1 class="text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-5xl md:text-6xl">
                     <span class="block">Nostalogia</span>
-                    <span class="block text-amber-600 dark:text-amber-500">Enchères de Patrimoine Culturel</span>
+                    <span class="block text-gray-600 dark:text-gray-500">Enchères de Patrimoine Culturel</span>
                 </h1>
                 <p class="mt-6 text-xl text-gray-700 dark:text-gray-300 max-w-2xl mx-auto">
                     Découvrez et préservez des pièces culturelles rares et uniques. Une plateforme d'enchères interactive dédiée au patrimoine culturel.
                 </p>
                 <div class="mt-10 max-w-sm mx-auto sm:max-w-none sm:flex sm:justify-center">
                     <div class="space-y-4 sm:space-y-0 sm:space-x-4">
-                        <a href="/catalogue" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-amber-600 hover:bg-amber-700 dark:hover:bg-amber-500 md:py-4 md:text-lg md:px-10">
+                        <a href="/catalogue" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 dark:hover:bg-gray-500 md:py-4 md:text-lg md:px-10">
                             Explorer le Catalogue
                         </a>
                         <a href="/apropos" class="w-full flex items-center justify-center px-8 py-3 border border-gray-300 dark:border-gray-700 text-base font-medium rounded-md text-gray-900 dark:text-white bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 md:py-4 md:text-lg md:px-10">
@@ -55,14 +55,14 @@
                 <!-- Featured Item 1 -->
                 <div class="rounded-lg shadow-lg overflow-hidden bg-gray-50 dark:bg-gray-900 transition-transform duration-300 hover:scale-105">
                     <div class="h-64 w-full overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1577083552797-4521b31a4890?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80"
+                        <img src="https://plus.unsplash.com/premium_photo-1743096946788-b8d8304542d1?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwzfHx8ZW58MHx8fHx8"
                              alt="Tableau historique"
                              class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500">
                     </div>
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white">Tableau Historique du XVIIIe siècle</h3>
                         <div class="flex items-center mt-2">
-                            <span class="text-amber-600 dark:text-amber-500 font-semibold">Prix de départ: 5,000€</span>
+                            <span class="text-gray-600 dark:text-gray-500 font-semibold">Prix de départ: 5,000€</span>
                             <span class="ml-auto text-gray-500 dark:text-gray-400 text-sm">12 enchères</span>
                         </div>
                         <div class="mt-4 border-t border-gray-200 dark:border-gray-700 pt-4">
@@ -71,7 +71,7 @@
                                 <span class="text-gray-900 dark:text-white font-medium">23 Avril, 20:00</span>
                             </div>
                         </div>
-                        <a href="/produit/1" class="mt-4 w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-amber-600 hover:bg-amber-700 dark:hover:bg-amber-500">
+                        <a href="/produit/1" class="mt-4 w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 dark:hover:bg-gray-500">
                             Voir les détails
                         </a>
                     </div>
@@ -80,14 +80,14 @@
                 <!-- Featured Item 2 -->
                 <div class="rounded-lg shadow-lg overflow-hidden bg-gray-50 dark:bg-gray-900 transition-transform duration-300 hover:scale-105">
                     <div class="h-64 w-full overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1599753894977-424beaa9c966?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80"
+                        <img src="https://images.unsplash.com/photo-1741805190625-7386d2180e57?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw1M3x8fGVufDB8fHx8fA%3D%3D"
                              alt="Manuscrit ancien"
                              class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500">
                     </div>
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white">Manuscrit Médiéval Enluminé</h3>
                         <div class="flex items-center mt-2">
-                            <span class="text-amber-600 dark:text-amber-500 font-semibold">Prix de départ: 8,200€</span>
+                            <span class="text-gray-600 dark:text-gray-500 font-semibold">Prix de départ: 8,200€</span>
                             <span class="ml-auto text-gray-500 dark:text-gray-400 text-sm">19 enchères</span>
                         </div>
                         <div class="mt-4 border-t border-gray-200 dark:border-gray-700 pt-4">
@@ -96,7 +96,7 @@
                                 <span class="text-gray-900 dark:text-white font-medium">15 Avril, 18:30</span>
                             </div>
                         </div>
-                        <a href="/produit/2" class="mt-4 w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-amber-600 hover:bg-amber-700 dark:hover:bg-amber-500">
+                        <a href="/produit/2" class="mt-4 w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 dark:hover:bg-gray-500">
                             Voir les détails
                         </a>
                     </div>
@@ -105,14 +105,14 @@
                 <!-- Featured Item 3 -->
                 <div class="rounded-lg shadow-lg overflow-hidden bg-gray-50 dark:bg-gray-900 transition-transform duration-300 hover:scale-105">
                     <div class="h-64 w-full overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1623666291765-281347812411?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80"
+                        <img src="https://images.unsplash.com/photo-1701960126065-7a3f6cd98168?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fHZhbiUyMGdvZ2h8ZW58MHx8MHx8fDA%3D"
                              alt="Collection de pièces anciennes"
                              class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500">
                     </div>
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white">Collection de Pièces Romaines</h3>
                         <div class="flex items-center mt-2">
-                            <span class="text-amber-600 dark:text-amber-500 font-semibold">Prix de départ: 3,750€</span>
+                            <span class="text-gray-600 dark:text-gray-500 font-semibold">Prix de départ: 3,750€</span>
                             <span class="ml-auto text-gray-500 dark:text-gray-400 text-sm">24 enchères</span>
                         </div>
                         <div class="mt-4 border-t border-gray-200 dark:border-gray-700 pt-4">
@@ -121,7 +121,7 @@
                                 <span class="text-gray-900 dark:text-white font-medium">18 Avril, 14:00</span>
                             </div>
                         </div>
-                        <a href="/produit/3" class="mt-4 w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-amber-600 hover:bg-amber-700 dark:hover:bg-amber-500">
+                        <a href="/produit/3" class="mt-4 w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 dark:hover:bg-gray-500">
                             Voir les détails
                         </a>
                     </div>
@@ -129,7 +129,7 @@
             </div>
 
             <div class="mt-12 text-center">
-                <a href="/catalogue" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-amber-600 hover:bg-amber-700 dark:hover:bg-amber-500">
+                <a href="/catalogue" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-gray-600 hover:bg-gray-700 dark:hover:bg-gray-500">
                     Voir toutes les enchères
                     <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -140,7 +140,7 @@
     </section>
 
     <!-- About Section -->
-    <section class="py-16 bg-amber-50 dark:bg-gray-900">
+    <section class="py-16 bg-gray-50 dark:bg-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="lg:grid lg:grid-cols-2 lg:gap-8 items-center">
                 <div>
@@ -160,7 +160,7 @@
                     </div>
                     <div class="mt-8 flex">
                         <div class="inline-flex rounded-md shadow">
-                            <a href="/apropos" class="inline-flex items-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-amber-600 hover:bg-amber-700 dark:hover:bg-amber-500">
+                            <a href="/apropos" class="inline-flex items-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 dark:hover:bg-gray-500">
                                 En savoir plus
                             </a>
                         </div>
@@ -199,7 +199,7 @@
                     </div>
                     <div class="flex-1 bg-gray-50 dark:bg-gray-900 p-6 flex flex-col justify-between">
                         <div class="flex-1">
-                            <p class="text-sm font-medium text-amber-600 dark:text-amber-500">Art</p>
+                            <p class="text-sm font-medium text-gray-600 dark:text-gray-500">Art</p>
                             <a href="/blog/art-renaissance" class="block mt-2">
                                 <p class="text-xl font-semibold text-gray-900 dark:text-white">L'influence de la Renaissance sur l'art moderne</p>
                                 <p class="mt-3 text-base text-gray-500 dark:text-gray-400">Comment les techniques et thèmes de la Renaissance continuent d'influencer l'art contemporain.</p>
@@ -231,7 +231,7 @@
                     </div>
                     <div class="flex-1 bg-gray-50 dark:bg-gray-900 p-6 flex flex-col justify-between">
                         <div class="flex-1">
-                            <p class="text-sm font-medium text-amber-600 dark:text-amber-500">Archéologie</p>
+                            <p class="text-sm font-medium text-gray-600 dark:text-gray-500">Archéologie</p>
                             <a href="/blog/decouvertes-archeologiques" class="block mt-2">
                                 <p class="text-xl font-semibold text-gray-900 dark:text-white">Les découvertes archéologiques qui ont changé notre compréhension de l'histoire</p>
                                 <p class="mt-3 text-base text-gray-500 dark:text-gray-400">Un regard sur les découvertes qui ont révolutionné notre perception du passé.</p>
@@ -263,7 +263,7 @@
                     </div>
                     <div class="flex-1 bg-gray-50 dark:bg-gray-900 p-6 flex flex-col justify-between">
                         <div class="flex-1">
-                            <p class="text-sm font-medium text-amber-600 dark:text-amber-500">Conservation</p>
+                            <p class="text-sm font-medium text-gray-600 dark:text-gray-500">Conservation</p>
                             <a href="/blog/techniques-conservation" class="block mt-2">
                                 <p class="text-xl font-semibold text-gray-900 dark:text-white">Techniques modernes de conservation des œuvres d'art</p>
                                 <p class="mt-3 text-base text-gray-500 dark:text-gray-400">Comment la science aide à préserver notre patrimoine culturel pour les générations futures.</p>
@@ -288,7 +288,7 @@
             </div>
 
             <div class="mt-12 text-center">
-                <a href="/blog" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-amber-600 hover:bg-amber-700 dark:hover:bg-amber-500">
+                <a href="/blog" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-gray-600 hover:bg-gray-700 dark:hover:bg-gray-500">
                     Explorer le blog
                     <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -299,23 +299,23 @@
     </section>
 
     <!-- Call to Action -->
-    <section class="py-12 bg-amber-600 dark:bg-amber-800">
+    <section class="py-12 bg-gray-600 dark:bg-gray-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center">
-                <h2 class="text-3xl font-extrabold text-white sm:text-4xl">
+                <h2 class="text-3xl font-extrabold text-black sm:text-4xl">
                     Prêt à rejoindre l'aventure Nostalogia?
                 </h2>
-                <p class="mt-4 text-xl text-amber-100 max-w-2xl mx-auto">
+                <p class="mt-4 text-xl text-gray-100 max-w-2xl mx-auto">
                     Créez un compte dès maintenant pour commencer à enchérir ou vendre des pièces culturelles uniques.
                 </p>
                 <div class="mt-8 flex justify-center">
                     <div class="inline-flex rounded-md shadow">
-                        <a href="/register" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-amber-600 bg-white hover:bg-amber-50">
+                        <a href="/register" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-gray-600 bg-white hover:bg-gray-50">
                             S'inscrire
                         </a>
                     </div>
                     <div class="ml-3 inline-flex">
-                        <a href="/login" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-amber-800 dark:bg-amber-900 hover:bg-amber-700 dark:hover:bg-amber-700">
+                        <a href="/login" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-gray-800 dark:bg-gray-900 hover:bg-gray-700 dark:hover:bg-gray-700">
                             Se connecter
                         </a>
                     </div>
