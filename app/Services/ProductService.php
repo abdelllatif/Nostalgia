@@ -17,7 +17,7 @@ class ProductService
     public function getAllProducts($filterby)
     {
         return $this->productRepository->getAll($filterby);
-    }
+    }ujjj
 
     public function getProductById($id)
     {
