@@ -28,6 +28,10 @@ class ProductService
     {
         return $this->productRepository->create($data);
     }
+    public function updateStatus($id, $status)
+    {
+        return $this->productRepository->update($id, $status);
+    }
 
     public function updateProduct($id, array $data)
     {

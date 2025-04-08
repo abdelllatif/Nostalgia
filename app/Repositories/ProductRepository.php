@@ -58,6 +58,12 @@ class ProductRepository implements ProductRepositoryInterface
     }
 
 
+    public function updateStatus($id, $status)
+{
+    return Product::where('id', $id)->update(['status' => $status]);
+}
+
+
     public function delete($id)
     {
         $product = Product::findOrFail($id);

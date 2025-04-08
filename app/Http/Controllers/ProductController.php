@@ -20,7 +20,11 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $filterBy=$request->filterby??"created_at";
-        return response()->json($this->productService->getAllProducts($filterBy));
+        $products=$this->productService->getAllProducts($filterBy);
+        foreach($products as $product){
+            $product->time_remaining = $this->getTimeRemaining($product);
+        }
+        return response()->json($products);
     }
 
     public function show($id)
@@ -36,15 +40,19 @@ class ProductController extends Controller
     return response()->json($product);
 
     }
-    public function getTimeRemaining($endtime)
+    public function getTimeRemaining($product)
     {
         $now = new DateTime();
-        $endTime = new DateTime($endtime);
+        $endTime = new DateTime($product->auction_end_date);
+
         if ($now >= $endTime) {
+            if ($product->status !== 'termine') {
+                $this->productService->updateStatus($product->id, 'termine');
+            }
             return 'Terminé';
         }
-        $interval = $now->diff($endTime);
 
+        $interval = $now->diff($endTime);
         return $interval->format('%a jours, %h heures, %i minutes, %s secondes');
     }
 
