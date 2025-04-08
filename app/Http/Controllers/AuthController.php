@@ -44,10 +44,10 @@ public function register(Request $request)
     $response = $this->authService->register($validated);
 
     if (!$response) {
-        return response()->json(['error' => 'utilisateur pas enregistré'], 400);
+        return redirect()->route('regiiister')->with('error', 'Inscription échouée. Veuillez réessayer.');
     }
 
-    return response()->json($response, 201);
+    return redirect()->route('user_Attends')->with('success', 'Inscription réussie. matenent vous devez attendez lz reponse de l\'admin !');
 }
 
 
@@ -59,7 +59,7 @@ public function login(Request $request){
     $response = $this->authService->login($request->only('email', 'password'));
 
     if (!$response) {
-        return response()->json(['error' => 'not a user yet'], 401);
+        return redirect()->route('login')->with('error', 'login failled. Veuillez reessayer.');;
     }
 
     return response()->json($response);

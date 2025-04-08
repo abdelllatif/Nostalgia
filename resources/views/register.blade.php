@@ -29,8 +29,13 @@
                 <p class="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
                     Rejoignez Nostalogia pour participer aux enchères de patrimoine culturel
                 </p>
+                <h4>@if(session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                @endif</h4>
             </div>
-            <form class="mt-8 space-y-6" action="/register" method="POST" enctype="multipart/form-data">
+            <form class="mt-8 space-y-6" action="{{ route('register') }}"     method="POST" enctype="multipart/form-data">
                 @csrf
 
                 <!-- Name -->

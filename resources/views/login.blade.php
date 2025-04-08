@@ -23,9 +23,6 @@
     <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900">
         <div class="absolute inset-0 z-0">
             <div class="absolute inset-0 bg-gradient-to-br from-gray-600/10 to-gray-900/30 dark:from-gray-900/60 dark:to-gray-950/60"></div>
-            <img src="https://images.unsplash.com/photo-1461360228754-6e81c478b882?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2674&q=80"
-                 alt="Background"
-                 class="w-full h-full object-cover mix-blend-overlay dark:mix-blend-soft-light">
         </div>
 
         <div class="max-w-md w-full space-y-8 bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg relative z-10">
@@ -37,6 +34,11 @@
                     Accédez à votre espace Nostalogia
                 </p>
             </div>
+            <h4 class="">@if(session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif</h4>
             <form class="mt-8 space-y-6" action="/login" method="POST">
                 @csrf
 

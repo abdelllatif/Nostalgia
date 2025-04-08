@@ -8,9 +8,9 @@ Route::get('/', function () {
 Route::get('/about', function () {
     return view('about');
 });
-route::get('/register',[AuthController::class,'register_show']);
-route::get('/login',[AuthController::class,'login_show']);
-route::post('/register',[AuthController::class,'register']);
+route::get('/register_show',[AuthController::class,'register_show']);
+route::get('/login',[AuthController::class,'login_show'])->name('login');
+route::post('/register',[AuthController::class,'register'])->name('register');
 route::post('/login',[AuthController::class,'login']);
 route::get('/terms',[AuthController::class,'terms_views']);
 route::get('/En_Attend',[AuthController::class,'Attends_views']);
