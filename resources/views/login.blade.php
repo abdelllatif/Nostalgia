@@ -6,20 +6,41 @@
     <title>Connexion - Nostalogia</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-50 dark:bg-gray-900">
-    <!-- Header Banner with Logo -->
-    <div class="bg-gray-700 dark:bg-gray-800 py-4">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center">
-                <a href="/" class="text-white text-2xl font-bold">Nostalogia</a>
-                <nav class="space-x-4">
-                    <a href="/register" class="text-gray-300 hover:text-white">S'inscrire</a>
-                </nav>
-            </div>
-        </div>
-    </div>
+<body class="bg-gray-400 dark:bg-gray-900">
+    <nav class="bg-white shadow-md px-6 py-4 flex items-center justify-between">
 
-    <!-- Main Content with Background -->
+        <!-- Logo -->
+        <div class="flex items-center space-x-2">
+          <img src="https://img.icons8.com/ios-filled/50/000000/retro-tv.png" alt="Logo Nostalgia" class="w-8 h-8">
+          <span class="text-xl font-bold text-gray-800">Nostalgia</span>
+        </div>
+
+        <!-- Menu -->
+        <ul class="hidden md:flex space-x-6 text-gray-700 font-medium">
+          <li><a href="\" class="hover:text-blue-600">Accueil</a></li>
+          <li><a href="catalogue" class="hover:text-blue-600">catalogue</a></li>
+          <li><a href="blog" class="hover:text-blue-600">blog</a></li>
+          <li><a href="about" class="hover:text-blue-600">À propos</a></li>
+          <li><a href="#" class="hover:text-blue-600">Contact</a></li>
+        </ul>
+        <div class="hidden md:flex space-x-4">
+          <button class="px-4 py-2 border rounded-full text-sm hover:bg-gray-100">Connexion</button>
+          <button class="px-4 py-2 bg-blue-600 text-white rounded-full text-sm hover:bg-blue-700">Inscription</button>
+        </div>
+
+        <!--  burger mobile -->
+        <div class="md:hidden">
+          <button>
+            <svg class="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+          </button>
+        </div>
+      </nav>
+<!--********************************************************-->
+
+
     <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900">
         <div class="absolute inset-0 z-0">
             <div class="absolute inset-0 bg-gradient-to-br from-gray-600/10 to-gray-900/30 dark:from-gray-900/60 dark:to-gray-950/60"></div>
@@ -34,15 +55,14 @@
                     Accédez à votre espace Nostalogia
                 </p>
             </div>
-            <h4 class="">@if(session('error'))
-                <div class="alert alert-danger">
-                    {{ session('error') }}
-                </div>
-            @endif</h4>
+            @if(session('error'))
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-xl text-base shadow-md" role="alert">
+                <strong class="font-semibold">Error:</strong> {{ session('error') }}
+            </div>
+            @endif
+
             <form class="mt-8 space-y-6" action="/login" method="POST">
                 @csrf
-
-                <!-- Email -->
                 <div>
                     <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                         Adresse email
@@ -53,8 +73,6 @@
                                focus:outline-none focus:ring-gray-500 focus:border-gray-500 dark:bg-gray-700 dark:text-white sm:text-sm">
                     </div>
                 </div>
-
-                <!-- Password -->
                 <div>
                     <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                         Mot de passe
@@ -65,8 +83,6 @@
                                focus:outline-none focus:ring-gray-500 focus:border-gray-500 dark:bg-gray-700 dark:text-white sm:text-sm">
                     </div>
                 </div>
-
-                <!-- Remember Me -->
                 <div class="flex items-center justify-between">
                     <div class="flex items-center">
                         <input id="remember-me" name="remember-me" type="checkbox"
@@ -75,15 +91,12 @@
                             Se souvenir de moi
                         </label>
                     </div>
-
                     <div class="text-sm">
                         <a href="#" class="font-medium text-gray-600 dark:text-gray-400 hover:underline">
                             Mot de passe oublié?
                         </a>
                     </div>
                 </div>
-
-                <!-- Submit Button -->
                 <div>
                     <button type="submit"
                             class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 dark:hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
@@ -91,7 +104,6 @@
                     </button>
                 </div>
             </form>
-
             <div class="text-center mt-4">
                 <p class="text-sm text-gray-600 dark:text-gray-400">
                     Vous n'avez pas de compte? <a href="/register" class="font-medium text-gray-600 dark:text-gray-400 hover:underline">S'inscrire</a>
@@ -99,8 +111,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Footer -->
     <footer class="bg-gray-900 text-white py-6">
         <div class="max-w-7xl mx-auto text-center px-4 sm:px-6 lg:px-8">
             <p>&copy; 2025 Nostalogia. Tous droits réservés.</p>

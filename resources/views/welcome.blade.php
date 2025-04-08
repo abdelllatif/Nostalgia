@@ -17,17 +17,17 @@
 
         <!-- Menu -->
         <ul class="hidden md:flex space-x-6 text-gray-700 font-medium">
-          <li><a href="#" class="hover:text-blue-600">Accueil</a></li>
-          <li><a href="#" class="hover:text-blue-600">Enchères</a></li>
-          <li><a href="#" class="hover:text-blue-600">Collections</a></li>
-          <li><a href="#" class="hover:text-blue-600">À propos</a></li>
+          <li><a href="\" class="hover:text-blue-600">Accueil</a></li>
+          <li><a href="catalogue" class="hover:text-blue-600">catalogue</a></li>
+          <li><a href="blog" class="hover:text-blue-600">blog</a></li>
+          <li><a href="about" class="hover:text-blue-600">about</a></li>
           <li><a href="#" class="hover:text-blue-600">Contact</a></li>
         </ul>
 
         <!-- Boutons Connexion / Inscription -->
         <div class="hidden md:flex space-x-4">
-          <button class="px-4 py-2 border rounded-full text-sm hover:bg-gray-100">Connexion</button>
-          <button class="px-4 py-2 bg-blue-600 text-white rounded-full text-sm hover:bg-blue-700">Inscription</button>
+          <a href="login" class="px-4 py-2 border rounded-full text-sm hover:bg-gray-100">Connexion</a>
+          <a href="register" class="px-4 py-2 bg-blue-600 text-white rounded-full text-sm hover:bg-blue-700">Inscription</a>
         </div>
 
         <!-- Menu burger mobile -->
