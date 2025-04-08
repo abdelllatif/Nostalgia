@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\DB;
 
 class ProductRepository implements ProductRepositoryInterface
 {
-    public function getAll()
+    public function getAll($filterby)
     {
-        return Product::with(['category', 'user', 'images', 'tags:id,name'])->get();
+        return Product::with(['category', 'user', 'images', 'tags:id,name'])->orderBy($filterby,'asc')->get();
     }
 
     public function findById($id)

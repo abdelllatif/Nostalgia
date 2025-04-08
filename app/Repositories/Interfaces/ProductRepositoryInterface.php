@@ -5,7 +5,7 @@ use App\Models\Product;
 
 interface ProductRepositoryInterface
 {
-    public function getAll();
+    public function getAll($filterby);
     public function findById($id);
     public function create(array $data);
     public function GetUserproduct($userId);

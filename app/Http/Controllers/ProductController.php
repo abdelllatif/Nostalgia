@@ -17,9 +17,10 @@ class ProductController extends Controller
         $this->productService = $productService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json($this->productService->getAllProducts());
+        $filterBy=$request->filterby??"created_at";
+        return response()->json($this->productService->getAllProducts($filterBy));
     }
 
     public function show($id)

@@ -13,9 +13,9 @@ class ArticleRepository implements ArticleRepositoryInterface
         $this->model = $article;
     }
 
-    public function getAll()
+    public function getAll($filterby)
     {
-        return $this->model->with(['user', 'category', 'tags'])->get();
+        return $this->model->with(['user', 'category', 'tags'])->orderBy($filterby,'asc')->get();
     }
 
     public function findById($id)

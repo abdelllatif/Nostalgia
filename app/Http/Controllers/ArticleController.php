@@ -16,9 +16,11 @@ class ArticleController extends Controller
         $this->articleService = $articleService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $articles = $this->articleService->getAllArticles();
+        $filtreBy=$request->sortBy??"published_at";
+
+              $articles = $this->articleService->getAllArticles($filtreBy);
         return response()->json($articles);
     }
 

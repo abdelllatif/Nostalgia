@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Repositories\Interfaces\ArticleRepositoryInterface;
 
-class ArticleService 
+class ArticleService
 {
     protected $articleRepository;
 
@@ -13,9 +13,9 @@ class ArticleService
         $this->articleRepository = $articleRepository;
     }
 
-    public function getAllArticles()
+    public function getAllArticles($filterby)
     {
-        return $this->articleRepository->getAll();
+        return $this->articleRepository->getAll($filterby);
     }
 
     public function findArticleById($id)

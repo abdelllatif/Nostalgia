@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use App\Services\AuthService;
 class AuthController  {
 protected $authService;
@@ -15,13 +16,11 @@ public function register(Request $request)
     $validated = $request->validate([
         'name' => 'required|string',
         'email' => 'required|email|unique:users',
-        'password' => 'required|confirmed|min:8|string|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@\'&])[a-zA-Z0-9$@\'&]+$/',
+        'password' => 'required|confirmed|min:8|string',
         'first_name' => 'required|string|max:40',
         'phone_number' => 'nullable|string|max:15',
-        'identity_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        'identity_image' => 'required',
     ]);
-
-    // Hash the password before sending it to the service
     $validated['password'] = Hash::make($validated['password']);
 
     if ($request->hasFile('identity_image')) {
