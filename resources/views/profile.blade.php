@@ -66,7 +66,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row items-center md:items-start space-y-4 md:space-y-0 md:space-x-8">
                 <div class="relative w-32 h-32">
-                    <img src="/api/placeholder/128/128" alt="Photo de profil" class="rounded-full w-full h-full object-cover border-4 border-white">
+                    <img src="{{asset('storage/anonymes_users/anonyme_user.jpg')}}" alt="Photo de profil" class="rounded-full w-full h-full object-cover border-4 border-white">
                     <button class="absolute bottom-0 right-0 bg-gray-600 text-white p-2 rounded-full hover:bg-gray-700">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
@@ -80,7 +80,6 @@
                     <p class="text-gray-500 dark:text-gray-400">Membre depuis {{ \Carbon\Carbon::parse($user->created_at)->translatedFormat('F Y') }}</p>
                     <div class="mt-4 flex flex-wrap justify-center md:justify-start gap-2">
                         <span class="px-3 py-1 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full text-sm">Collectionneur</span>
-                        <span class="px-3 py-1 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full text-sm">Vendeur Vérifié</span>
                     </div>
                 </div>
                 <div class="flex flex-col space-y-2">
