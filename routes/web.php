@@ -8,6 +8,10 @@ Route::get('/', function () {
 Route::get('/about', function () {
     return view('about');
 });
+
+Route::get('/profile', function () {
+    return view('profile');
+});
 route::get('/register',[AuthController::class,'register_show']);
 route::get('/login',[AuthController::class,'login_show'])->name('login');
 Route::post('/register', [AuthController::class, 'register'])->name('register.post');
