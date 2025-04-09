@@ -12,16 +12,24 @@ class JWTMiddleware extends BaseMiddleware
     public function handle($request, Closure $next)
     {
         try {
-            $user = JWTAuth::parseToken()->authenticate();
-        } catch (Exception $e) {
-            if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException) {
-                return response()->json(['status' => 'Token is Invalid'], 401);
-            } elseif ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {
-                return response()->json(['status' => 'Token is Expired'], 401);
+            // First check if token is in cookie
+            if ($token = $request->cookie('jwt_token')) {
+                JWTAuth::setToken($token);
+                $user = JWTAuth::authenticate();
+                if (!$user) {
+                    throw new \Tymon\JWTAuth\Exceptions\TokenInvalidException;
+                }
             } else {
-                return response()->json(['status' => 'Authorization Token not found'], 401);
+                // No token found in cookie
+                throw new \Tymon\JWTAuth\Exceptions\JWTException('Token not found');
             }
+        } catch (Exception $e) {
+            // For web routes, redirect to login page instead of returning JSON
+            return redirect()->route('login')->with('error', 'Please log in to access this page.');
         }
+
+        // Add user to request for convenient access in controllers and views
+        $request->merge(['auth_user' => JWTAuth::user()]);
 
         return $next($request);
     }

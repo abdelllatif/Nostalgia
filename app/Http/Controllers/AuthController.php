@@ -60,13 +60,16 @@ public function login(Request $request)
         'password' => 'required|string',
     ]);
 
-    $token = $this->authService->login($request->only('email', 'password'));
+    $response = $this->authService->login($request->only('email', 'password'));
 
-    if (!$token) {
+    if (!$response) {
         return redirect()->route('login')->with('error', 'Login failed. Please try again.');
     }
-
-    return redirect('/profile')->with('success', 'Login successful.');
+    $token = $response['token'];
+    $cookie = cookie('jwt_token', $token, 60, null, null, false, true);
+    return redirect('/profile')
+        ->withCookie($cookie)
+        ->with('success', 'Login successful.');
 }
 
 public function logout(){

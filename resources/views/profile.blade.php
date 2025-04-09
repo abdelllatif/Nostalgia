@@ -58,7 +58,7 @@
 
     @if (@session('success'))
     <div>
-    <p class="bg-green-300 text-green-800 border-[5px] border-green-800">{{session('success')}}</p>
+    <p class="bg-green-300 text-green-800 border-[20px] text-center text-2xl py-8 border-green-800">{{session('success')}}</p>
     </div>
     @endif
     <!-- Profile Header Section -->
@@ -75,9 +75,9 @@
                     </button>
                 </div>
                 <div class="flex-1 text-center md:text-left">
-                    <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Jean Dupont</h1>
-                    <p class="text-gray-600 dark:text-gray-300">jean.dupont@example.com</p>
-                    <p class="text-gray-500 dark:text-gray-400">Membre depuis Février 2023</p>
+                    <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{$user->first_name." ".$user->name}}</h1>
+                    <p class="text-gray-600 dark:text-gray-300">{{$user->email}}</p>
+                    <p class="text-gray-500 dark:text-gray-400">Membre depuis {{ \Carbon\Carbon::parse($user->created_at)->translatedFormat('F Y') }}</p>
                     <div class="mt-4 flex flex-wrap justify-center md:justify-start gap-2">
                         <span class="px-3 py-1 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full text-sm">Collectionneur</span>
                         <span class="px-3 py-1 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full text-sm">Vendeur Vérifié</span>
