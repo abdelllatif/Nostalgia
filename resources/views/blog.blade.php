@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catalogue - Enchères de Patrimoine Culturel</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="http://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50 dark:bg-gray-900">
     <nav class="bg-white shadow-md px-6 py-4 flex items-center justify-between">
@@ -59,6 +60,131 @@
             </div>
         </div>
     </section>
+
+    <section class="bg-white max-w-7xl">
+   <!-- Trigger Button for Popup -->
+<div class="flex justify-center my-4">
+    <button id="openCreateModal" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline mr-1" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+      </svg>
+      Créer un produit
+    </button>
+  </div>
+
+  <!-- Popup Modal -->
+  <div id="createProductModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between border-b px-4 py-3">
+        <h3 class="text-lg font-semibold text-gray-900">Ajouter un nouvel article</h3>
+        <button id="closeModal" class="text-gray-400 hover:text-gray-500">
+          <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="px-4 py-4 max-h-[70vh] overflow-y-auto">
+        <form id="createProductForm">
+          <!-- Title -->
+          <div class="mb-3">
+            <label for="title" class="block text-sm font-medium text-gray-700">Titre</label>
+            <input type="text" id="title" name="title" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+          </div>
+
+          <!-- Description (concise) -->
+          <div class="mb-3">
+            <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+            <textarea id="description" name="description" rows="2" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"></textarea>
+          </div>
+
+          <!-- Historical Context (concise) -->
+          <div class="mb-3">
+            <label for="historical_context" class="block text-sm font-medium text-gray-700">Contexte Historique</label>
+            <textarea id="historical_context" name="historical_context" rows="2" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"></textarea>
+          </div>
+
+          <!-- Two columns for price and date -->
+          <div class="grid grid-cols-2 gap-3 mb-3">
+            <div>
+              <label for="starting_price" class="block text-sm font-medium text-gray-700">Prix de départ (€)</label>
+              <input type="number" id="starting_price" name="starting_price" min="0" step="0.01" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+            </div>
+
+            <div>
+              <label for="auction_end_date" class="block text-sm font-medium text-gray-700">Date de fin</label>
+              <input type="date" id="auction_end_date" name="auction_end_date" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+            </div>
+          </div>
+
+          <!-- Category -->
+          <div class="mb-3">
+            <label for="category_id" class="block text-sm font-medium text-gray-700">Catégorie</label>
+            <select id="category_id" name="category_id" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+              <option value="">Sélectionner</option>
+              <option value="1">Tableaux</option>
+              <option value="2">Sculptures</option>
+              <option value="3">Manuscrits</option>
+              <option value="4">Monnaies</option>
+              <option value="5">Mobilier</option>
+              <option value="6">Bijoux</option>
+              <option value="7">Cartes</option>
+              <option value="8">Horlogerie</option>
+            </select>
+          </div>
+
+          <!-- Hidden user_id field -->
+          <input type="hidden" name="user_id" value="1">
+
+          <!-- Images Upload -->
+          <div class="mb-3">
+            <label class="block text-sm font-medium text-gray-700">Images</label>
+            <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+              <div class="space-y-1 text-center">
+                <svg class="mx-auto h-6 w-6 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                  <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <div class="flex text-xs text-gray-600 justify-center">
+                  <label for="images" class="cursor-pointer bg-white font-medium text-blue-600 hover:text-blue-500">
+                    <span>Télécharger</span>
+                    <input id="images" name="images[]" type="file" class="sr-only" multiple accept="image/*">
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tags Selection (simplified) -->
+          <div class="mb-3">
+            <label for="tags" class="block text-sm font-medium text-gray-700">Tags</label>
+            <select id="tags" name="tags[]" multiple class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" size="3">
+              <option value="1">Antique</option>
+              <option value="2">Renaissance</option>
+              <option value="3">Baroque</option>
+              <option value="4">Empire</option>
+              <option value="5">Art Déco</option>
+            </select>
+            <p class="mt-1 text-xs text-gray-500">Ctrl+clic pour sélections multiples</p>
+          </div>
+        </form>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="bg-gray-50 px-4 py-3 sm:px-6 flex justify-end rounded-b-lg">
+        <button type="button" id="cancelButton" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 mr-2">
+          Annuler
+        </button>
+        <button type="button" id="submitButton" class="bg-blue-600 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-blue-700">
+          Créer
+        </button>
+      </div>
+    </div>
+  </div>
+    </section>
+
+
 
     <!-- Filter Section -->
     <section class="bg-white dark:bg-gray-800 shadow-md py-6">
@@ -359,10 +485,6 @@
                     </a>
                 </nav>
             </div>
-        </div>
-        <div class="flex justify-center align-center z-50 h-92 w-80 bg-red-500">
-         <h3>histoire de vinome</h3>
-         
         </div>
     </section>
 

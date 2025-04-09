@@ -14,6 +14,9 @@ Route::get('/about', function () {
 Route::get('/blog', function () {
     return view('blog');
 });
+Route::get('/product/Details', function () {
+    return view('product_details');
+});
 route::middleware(['jwt.web'])->group(function(){
     Route::get('/profile',[profileController::class,'show'])->name('profile');
 });
