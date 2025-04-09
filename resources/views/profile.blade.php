@@ -114,19 +114,15 @@
                     <div class="space-y-4">
                         <div>
                             <p class="text-sm text-gray-500 dark:text-gray-400">Nom complet</p>
-                            <p class="text-gray-900 dark:text-white">{{$user->name}}</p>
+                            <p class="text-gray-900 dark:text-white">{{$user->first_name." ".$user->name}}</p>
                         </div>
                         <div>
                             <p class="text-sm text-gray-500 dark:text-gray-400">Email</p>
-                            <p class="text-gray-900 dark:text-white">jean.dupont@example.com</p>
+                            <p class="text-gray-900 dark:text-white">{{$user->email}}</p>
                         </div>
                         <div>
                             <p class="text-sm text-gray-500 dark:text-gray-400">Téléphone</p>
-                            <p class="text-gray-900 dark:text-white">+33 6 12 34 56 78</p>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-500 dark:text-gray-400">Statut</p>
-                            <p class="text-green-600 dark:text-green-400 font-medium">Approuvé</p>
+                            <p class="text-gray-900 dark:text-white">{{$user->phone_number}}</p>
                         </div>
                     </div>
                 </div>

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\profileController;
 use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
@@ -12,7 +13,7 @@ Route::get('/about', function () {
 });
 
 route::middleware(['jwt.web'])->group(function(){
-    Route::get('/profile',[UserController::class,'show'])->name('profile');
+    Route::get('/profile',[profileController::class,'show'])->name('profile');
 });
 route::get('/register',[AuthController::class,'register_show']);
 route::get('/login',[AuthController::class,'login_show'])->name('login');

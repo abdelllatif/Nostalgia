@@ -21,11 +21,7 @@ class UserController extends Controller
         return response()->json($this->userService->getAllUsers());
     }
 
-    public function show()
-    {
-        $user = Auth::user();
-        return view('profile',compact('user'));
-    }
+
 
     public function store(Request $request)
     {
