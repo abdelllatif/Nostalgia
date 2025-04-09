@@ -5,9 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catalogue - Enchères de Patrimoine Culturel</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <script src="http://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-50 dark:bg-gray-900">
+<body class="bg-gray-50">
     <nav class="bg-white shadow-md px-6 py-4 flex items-center justify-between">
         <!-- Logo -->
         <div class="flex items-center space-x-2">
@@ -42,7 +41,7 @@
     </nav>
 
     <!-- Header Section -->
-    <section class="relative bg-gray-50 dark:bg-gray-900 py-12">
+    <section class="relative bg-gray-50 py-12">
         <div class="absolute inset-0 h-64">
             <div class="absolute inset-0 bg-gradient-to-br from-gray-600/30 to-gray-900/30 dark:from-gray-900/60 dark:to-gray-950/60"></div>
             <img src="https://images.unsplash.com/photo-1495107334309-fcf20504a5ab?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2674&q=80"
@@ -241,7 +240,7 @@
     </section>
 
     <!-- Catalogue Items -->
-    <section class="py-12 bg-gray-50 dark:bg-gray-900">
+    <section class="py-12 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Grid Display -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
@@ -533,7 +532,8 @@
                         </a>
                     </div>
                     <div class="ml-3 inline-flex">
-                        <a href="/expertise" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-gray-800 dark:bg-gray-900 hover:bg-gray-700 dark:hover:bg-gray-700">
+                        <a href="/expertise" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-gray-800
+                 hover:bg-gray-700 dark:hover:bg-gray-700">
                             Demander une expertise
                         </a>
                     </div>
