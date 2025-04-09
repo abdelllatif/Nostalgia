@@ -53,6 +53,14 @@
         </div>
     </nav>
 
+
+
+
+    @if (@session('success'))
+    <div>
+    <p class="bg-green-300 text-green-800 border-[5px] border-green-800">{{session('success')}}</p>
+    </div>
+    @endif
     <!-- Profile Header Section -->
     <section class="bg-gray-100 dark:bg-gray-800 py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -107,7 +115,7 @@
                     <div class="space-y-4">
                         <div>
                             <p class="text-sm text-gray-500 dark:text-gray-400">Nom complet</p>
-                            <p class="text-gray-900 dark:text-white">Jean Dupont</p>
+                            <p class="text-gray-900 dark:text-white">{{$user->name}}</p>
                         </div>
                         <div>
                             <p class="text-sm text-gray-500 dark:text-gray-400">Email</p>

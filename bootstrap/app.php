@@ -12,10 +12,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        [
-        'auth.jwt' => JWTAuthenticate::class,
-        ];
+        $middleware->alias([
+            'jwt.web' => \App\Http\Middleware\JWTMiddleware::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
     })->create();

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Services\AuthService;
+use Illuminate\Support\Facades\Auth;
+
 class AuthController  {
 protected $authService;
 public function __construct(AuthService $authService)
@@ -51,18 +53,20 @@ public function register(Request $request)
 }
 
 
-public function login(Request $request){
+public function login(Request $request)
+{
     $request->validate([
         'email' => 'required|string|email',
         'password' => 'required|string',
     ]);
-    $response = $this->authService->login($request->only('email', 'password'));
 
-    if (!$response) {
-        return redirect()->route('login')->with('error', 'login failled. Veuillez reessayer.');;
+    $token = $this->authService->login($request->only('email', 'password'));
+
+    if (!$token) {
+        return redirect()->route('login')->with('error', 'Login failed. Please try again.');
     }
 
-    return response()->json($response);
+    return redirect('/profile')->with('success', 'Login successful.');
 }
 
 public function logout(){

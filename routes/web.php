@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -9,8 +11,8 @@ Route::get('/about', function () {
     return view('about');
 });
 
-Route::get('/profile', function () {
-    return view('profile');
+route::middleware(['jwt.web'])->group(function(){
+    Route::get('/profile',[UserController::class,'show'])->name('profile');
 });
 route::get('/register',[AuthController::class,'register_show']);
 route::get('/login',[AuthController::class,'login_show'])->name('login');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -20,13 +21,10 @@ class UserController extends Controller
         return response()->json($this->userService->getAllUsers());
     }
 
-    public function show($id)
+    public function show()
     {
-        $user = $this->userService->findUserById($id);
-        if (!$user) {
-            return response()->json(['message' => 'User not found'], 404);
-        }
-        return response()->json($user);
+        $user = Auth::user();
+        return view('profile',compact('user'));
     }
 
     public function store(Request $request)
