@@ -17,6 +17,9 @@ Route::get('/blog', function () {
 Route::get('/product/Details', function () {
     return view('product_details');
 });
+Route::get('/Dashebored/categories', function () {
+    return view('Dashebored_categories');
+});
 route::middleware(['jwt.web'])->group(function(){
     Route::get('/profile',[profileController::class,'show'])->name('profile');
 });
