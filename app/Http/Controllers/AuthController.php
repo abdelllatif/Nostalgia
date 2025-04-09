@@ -44,10 +44,10 @@ public function register(Request $request)
     $response = $this->authService->register($validated);
 
     if (!$response) {
-        return redirect()->route('regiiister')->with('error', 'Inscription échouée. Veuillez réessayer.');
+        return redirect()->route('register.post')->with('error', 'Inscription échouée. Veuillez réessayer.');
     }
 
-    return redirect()->route('user_Attends')->with('success', 'Inscription réussie. matenent vous devez attendez lz reponse de l\'admin !');
+    return redirect()->route('En_Attend')->with('success', 'Inscription réussie. matenent vous devez attendez lz reponse de l\'admin !');
 }
 
 

@@ -29,13 +29,17 @@
                 <p class="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
                     Rejoignez Nostalogia pour participer aux enchères de patrimoine culturel
                 </p>
-                <h4>@if(session('error'))
-                    <div class="alert alert-danger">
-                        {{ session('error') }}
-                    </div>
-                @endif</h4>
+                @if ($errors->any())
+                <div class="alert alert-danger rounded-xl bg-red-300 text-center text-red-800 border-red-800">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             </div>
-            <form class="mt-8 space-y-6" action="{{ route('register') }}"     method="POST" enctype="multipart/form-data">
+            <form class="mt-8 space-y-6" action="{{ route('register.post') }}"     method="POST" enctype="multipart/form-data">
                 @csrf
 
                 <!-- Name -->
