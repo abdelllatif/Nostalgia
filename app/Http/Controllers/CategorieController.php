@@ -16,7 +16,9 @@ class CategorieController extends Controller
 
     public function index()
     {
-        return response()->json($this->categorieService->getAllCategories());
+      //  return response()->json($this->categorieService->getAllCategories());
+      return view('Dashebored_categories');
+
     }
 
     public function show($id)
@@ -32,17 +34,29 @@ class CategorieController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|unique:categories',
+            'categoryImage' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
-
+        if ($request->hasFile('categoryImage')) {
+            $path = $request->file('categoryImage')->store('categories_image', 'public');
+            $validated['image'] = $path;
+        }
         $categorie = $this->categorieService->createCategorie($validated);
-        return response()->json($categorie, 201);
+        if(!$categorie){
+            return redirect()->route('categories.show')->with('error','categorie not registred');
+        }
+        return redirect()->route('categories.show')->with('succsess','categorie  registred successfally');
     }
 
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
             'name' => 'sometimes|string|unique:categories,name,' . $id,
+            'categoryImage' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
+        if ($request->hasFile('categoryImage')) {
+            $path = $request->file('categoryImage')->store('categories_image', 'public');
+            $validated['image'] = $path;
+        }
 
         $categorie = $this->categorieService->updateCategorie($id, $validated);
         if (!$categorie) {

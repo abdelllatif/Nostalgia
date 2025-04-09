@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\profileController;
 use App\Http\Controllers\UserController;
 
@@ -17,9 +18,9 @@ Route::get('/blog', function () {
 Route::get('/product/Details', function () {
     return view('product_details');
 });
-Route::get('/Dashebored/categories', function () {
-    return view('Dashebored_categories');
-});
+Route::get('/Dashebored/categories',[CategorieController::class,'index'])->name('categories.show');
+Route::POST('/Dashebored/categories',[CategorieController::class,'store'])->name('categories.store');
+
 route::middleware(['jwt.web'])->group(function(){
     Route::get('/profile',[profileController::class,'show'])->name('profile');
 });
