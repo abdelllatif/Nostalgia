@@ -274,7 +274,6 @@
                         </a>
                     </div>
                 </div>
-
                 <!-- Item 7 -->
                 <div class="rounded-lg shadow-lg overflow-hidden bg-white dark:bg-gray-800 transition-transform duration-300 hover:scale-105">
                     <div class="h-64 w-full overflow-hidden">
@@ -361,7 +360,14 @@
                 </nav>
             </div>
         </div>
+        <div class="flex justify-center align-center z-50 h-92 w-80 bg-red-500">
+         <h3>histoire de vinome</h3>
+         
+        </div>
     </section>
+
+
+
 
     <!-- Newsletter Section -->
     <section class="py-12 bg-gray-100 dark:bg-gray-800">
