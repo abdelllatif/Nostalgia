@@ -9,8 +9,7 @@ class Categorie extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name'];
-
+    protected $fillable = ['name', 'image'];
     /**
      * Get all the products associated with the category.
      */

@@ -19,7 +19,7 @@ Route::get('/product/Details', function () {
     return view('product_details');
 });
 Route::get('/Dashebored/categories',[CategorieController::class,'index'])->name('categories.show');
-Route::POST('/Dashebored/categories',[CategorieController::class,'store'])->name('categories.store');
+Route::post('/Dashebored/categories',[CategorieController::class,'store'])->name('categories.store');
 
 route::middleware(['jwt.web'])->group(function(){
     Route::get('/profile',[profileController::class,'show'])->name('profile');

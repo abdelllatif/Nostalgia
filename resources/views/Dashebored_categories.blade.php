@@ -172,16 +172,18 @@
                         </div>
                     </div>
                     @if (session('error'))
-                    <div class="alert alert-danger">
-                        {{ session('error') }}
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                        <strong class="font-bold">Erreur!</strong>
+                        <span class="block sm:inline">{{ session('error') }}</span>
                     </div>
-                @endif
+                    @endif
 
-                @if (session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
+                    @if (session('success'))
+                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                        <strong class="font-bold">Succès!</strong>
+                        <span class="block sm:inline">{{ session('success') }}</span>
                     </div>
-                @endif
+                    @endif
                     <!-- Categories Actions -->
                     <div class="bg-white dark:bg-gray-800 shadow overflow-hidden sm:rounded-lg mb-8">
                         <div class="px-4 py-5 sm:px-6 flex justify-between items-center">
@@ -244,19 +246,13 @@
                                 <thead class="bg-gray-50 dark:bg-gray-700">
                                     <tr>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                            ID
+                                            {{" "}}
                                         </th>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                            Nom
-                                        </th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                            Slug
+                                            categorie
                                         </th>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                             Produits
-                                        </th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                            Statut
                                         </th>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                             Date de création
@@ -267,82 +263,36 @@
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                                    @foreach ($categories as $categorie)
+
                                     <tr>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                                            1
+                                            {{ $loop->iteration }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center">
-                                                <div class="h-10 w-10 flex-shrink-0 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                                    </svg>
-                                                </div>
+                                                <div class="h-10 w-10 flex-shrink-0  rounded-full flex items-center justify-center">
+                                                    <img src="{{ asset('storage/' . $categorie->image) }}" class="h-6 w-6 text-gray-600 dark:text-gray-300">                                                </div>
                                                 <div class="ml-4">
                                                     <div class="text-sm font-medium text-gray-900 dark:text-white">
-                                                        Peintures
+                                                        {{$categorie->name}}
                                                     </div>
                                                 </div>
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                                            peintures
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                                             42
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100">
-                                                Actif
-                                            </span>
-                                        </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                                            20/03/2023
+                                            {{ $categorie->created_at}}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <a href="#" class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300">Modifier</a>
+                                            <a href=" {{ $categorie->id}}" class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300">Modifier</a>
                                             <span class="text-gray-500 dark:text-gray-400 px-2">|</span>
-                                            <a href="#" class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300">Supprimer</a>
-                                        </td>
+                                            <a href="{{ route('categories.destroy', ['id' => $categorie->id]) }}" class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300">Supprimer</a>                                        </td>
                                     </tr>
-                                    <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                                        5
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            <div class="h-10 w-10 flex-shrink-0 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
-                                                </svg>
-                                            </div>
-                                            <div class="ml-4">
-                                                <div class="text-sm font-medium text-gray-900 dark:text-white">
-                                                    Art Déco
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                                        art-deco
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                                        37
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100">
-                                            En attente
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                                        28/05/2023
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <a href="#" class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300">Modifier</a>
-                                        <span class="text-gray-500 dark:text-gray-400 px-2">|</span>
-                                        <a href="#" class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300">Supprimer</a>
-                                    </td>
-                                    </tr>
+                                    @endforeach
+
                                     </tbody>
                                     </table>
                                     </div>
@@ -425,7 +375,7 @@
                                                                     @csrf
                                                                     <div class="mb-4">
                                                                         <label for="categoryName" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nom de la catégorie</label>
-                                                                        <input type="text" name="categoryName" id="categoryName" class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full py-2 shadow-sm sm:text-sm border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white" placeholder="Ex:ancien Art">
+                                                                        <input type="text" name="name" id="categoryName" class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full py-2 shadow-sm sm:text-sm border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white" placeholder="Ex:ancien Art">
                                                                     </div>
                                                                     <div class="mb-4">
                                                                         <label for="categoryImage" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Image</label>
