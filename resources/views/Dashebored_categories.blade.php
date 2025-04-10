@@ -286,7 +286,7 @@
                                             {{ $categorie->created_at}}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <button onclick="openEditForm({{ $categorie->id}})" class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300" data-id="{{ $categorie->id}}" data-name="{{ $categorie->name}}" data-img="{{ $categorie->image}}">Modifier</button>
+                                            <button onclick="openEditForm(this)" class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300" data-id="{{ $categorie->id}}" data-name="{{ $categorie->name}}" data-img="{{ asset('storage/' . $categorie->image) }}">"Modifier</button>
                                             <span class="text-gray-500 dark:text-gray-400 px-2">|</span>
                                             {{--<form action="{{ route('categorie.destroy', ['id' => $categorie->id]) }}"  method="POST">
                                                 @csrf
@@ -505,13 +505,17 @@
                                         }
                                     }
 
-                                    function openEditForm($data){
-                                    $modalEdit=document.getElementById('EditcategoryFormModal');
-                                    $modalEdit.classList.remove('hidden');
-                                    $name=document.getElementById('EditcategoryName');
-                                    $img=document.getElementById('EditcategoryImage');
-                                    $name=
+                                    function openEditForm(data){
+                                    modalEdit=document.getElementById('EditcategoryFormModal');
+                                    modalEdit.classList.remove('hidden');
+                                   let name =data.getAttribute('data-name');
+                                    let image=data.getAttribute('data-img');
+                                    document.getElementById('EditcategoryName').value=name;
+                                    const imagePreview = document.getElementById('imagePreview');
+                                    if (categoryImage) {
+                                        imagePreview.src = image;
                                     }
+                                   }
                                     </script>
 
                                     </body>
