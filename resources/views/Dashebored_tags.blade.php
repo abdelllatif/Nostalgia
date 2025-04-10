@@ -319,4 +319,228 @@
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                                 </svg>
                                             </div>
-                                            <div class="mt
+                                        <!-- Complétion du formulaire d'édition -->
+                                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                                            <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white" id="modal-title">
+                                                Modifier le tag
+                                            </h3>
+                                            <div class="mt-4">
+                                                <form id="editTagForm" method="POST" action="">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <input type="hidden" id="editTagId" name="id" value="">
+                                                    <div>
+                                                        <label for="editTagName" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nom du tag</label>
+                                                        <input type="text" name="name" id="editTagName" class="mt-1 block w-full py-2 px-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm" required>
+                                                    </div>
+                                                    <div class="mt-4">
+                                                        <label for="editTagStatus" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Statut</label>
+                                                        <select id="editTagStatus" name="status" class="mt-1 block w-full py-2 px-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm">
+                                                            <option value="active">Actif</option>
+                                                            <option value="inactive">Inactif</option>
+                                                        </select>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="bg-gray-50 dark:bg-gray-700 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                                        <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm" id="saveTagButton">
+                                            Enregistrer
+                                        </button>
+                                        <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 dark:border-gray-600 shadow-sm px-4 py-2 bg-white dark:bg-gray-800 text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" id="cancelEditButton">
+                                            Annuler
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Create Tag Form Modal -->
+                        <div class="fixed z-10 inset-0 overflow-y-auto hidden" id="createTagFormModal">
+                            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                                <!-- Background overlay -->
+                                <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                                    <div class="absolute inset-0 bg-gray-500 dark:bg-gray-900 opacity-75"></div>
+                                </div>
+                                <!-- Modal panel -->
+                                <div class="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                                    <div class="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                                        <div class="sm:flex sm:items-start">
+                                            <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 dark:bg-green-900 sm:mx-0 sm:h-10 sm:w-10">
+                                                <svg class="h-6 w-6 text-green-600 dark:text-green-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                                </svg>
+                                            </div>
+                                            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                                                <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white" id="modal-title">
+                                                    Créer un nouveau tag
+                                                </h3>
+                                                <div class="mt-4">
+                                                    <form id="createTagForm" method="POST" action="{{ route('tags.store') }}">
+                                                        @csrf
+                                                        <div>
+                                                            <label for="createTagName" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nom du tag</label>
+                                                            <input type="text" name="name" id="createTagName" class="mt-1 block w-full py-2 px-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm" required>
+                                                        </div>
+                                                        <div class="mt-4">
+                                                            <label for="createTagStatus" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Statut</label>
+                                                            <select id="createTagStatus" name="status" class="mt-1 block w-full py-2 px-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm">
+                                                                <option value="active">Actif</option>
+                                                                <option value="inactive">Inactif</option>
+                                                            </select>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="bg-gray-50 dark:bg-gray-700 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                                        <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm" id="createTagButton">
+                                            Créer
+                                        </button>
+                                        <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 dark:border-gray-600 shadow-sm px-4 py-2 bg-white dark:bg-gray-800 text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" id="cancelCreateButton">
+                                            Annuler
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pagination -->
+                        <div class="bg-white dark:bg-gray-800 px-4 py-3 border-t border-gray-200 dark:border-gray-700 sm:px-6">
+                            <div class="flex-1 flex justify-between sm:hidden">
+                                <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    Précédent
+                                </a>
+                                <a href="#" class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    Suivant
+                                </a>
+                            </div>
+                            <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                                <div>
+                                    <p class="text-sm text-gray-700 dark:text-gray-300">
+                                        Affichage de <span class="font-medium">1</span> à <span class="font-medium">10</span> sur <span class="font-medium">42</span> résultats
+                                    </p>
+                                </div>
+                                <div>
+                                    <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                                        <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700">
+                                            <span class="sr-only">Précédent</span>
+                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                            </svg>
+                                        </a>
+                                        <a href="#" aria-current="page" class="z-10 bg-blue-50 dark:bg-blue-900 border-blue-500 dark:border-blue-500 text-blue-600 dark:text-blue-200 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                                            1
+                                        </a>
+                                        <a href="#" class="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                                            2
+                                        </a>
+                                        <a href="#" class="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                                            3
+                                        </a>
+                                        <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm font-medium text-gray-700 dark:text-gray-300">
+                                            ...
+                                        </span>
+                                        <a href="#" class="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                                            5
+                                        </a>
+                                        <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700">
+                                            <span class="sr-only">Suivant</span>
+                                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                                            </svg>
+                                        </a>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- JavaScript pour les modals et les formulaires -->
+    <script>
+        // Variables pour les modals
+        const editTagFormModal = document.getElementById('editTagFormModal');
+        const createTagFormModal = document.getElementById('createTagFormModal');
+
+        // Variables pour les formulaires d'édition
+        const editTagForm = document.getElementById('editTagForm');
+        const editTagId = document.getElementById('editTagId');
+        const editTagName = document.getElementById('editTagName');
+        const saveTagButton = document.getElementById('saveTagButton');
+        const cancelEditButton = document.getElementById('cancelEditButton');
+
+        // Variables pour les formulaires de création
+        const newTagButton = document.querySelector('button[class*="bg-blue-600"]');
+        const createTagForm = document.getElementById('createTagForm');
+        const createTagButton = document.getElementById('createTagButton');
+        const cancelCreateButton = document.getElementById('cancelCreateButton');
+
+        // Fonction pour ouvrir le formulaire d'édition de tag
+        function openEditTagForm(element) {
+            const tagId = element.getAttribute('data-id');
+            const tagName = element.getAttribute('data-name');
+
+            // Mettre à jour l'URL du formulaire
+            editTagForm.action = `/admin/tags/${tagId}`;
+
+            // Définir les valeurs dans le formulaire
+            editTagId.value = tagId;
+            editTagName.value = tagName;
+
+            // Afficher la modal
+            editTagFormModal.classList.remove('hidden');
+        }
+
+        // Gestionnaire d'événement pour le bouton Annuler (édition)
+        cancelEditButton.addEventListener('click', function() {
+            editTagFormModal.classList.add('hidden');
+        });
+
+        // Gestionnaire d'événement pour le bouton Enregistrer
+        saveTagButton.addEventListener('click', function() {
+            editTagForm.submit();
+        });
+
+        // Gestionnaire d'événement pour le bouton Nouveau tag
+        newTagButton.addEventListener('click', function() {
+            createTagFormModal.classList.remove('hidden');
+        });
+
+        // Gestionnaire d'événement pour le bouton Annuler (création)
+        cancelCreateButton.addEventListener('click', function() {
+            createTagFormModal.classList.add('hidden');
+        });
+
+        // Gestionnaire d'événement pour le bouton Créer
+        createTagButton.addEventListener('click', function() {
+            createTagForm.submit();
+        });
+
+        // Gestion de la fermeture des modals en cliquant à l'extérieur
+        window.addEventListener('click', function(event) {
+            if (event.target === editTagFormModal) {
+                editTagFormModal.classList.add('hidden');
+            }
+            if (event.target === createTagFormModal) {
+                createTagFormModal.classList.add('hidden');
+            }
+        });
+
+        // Gestion du menu mobile
+        const mobileMenuButton = document.querySelector('.md\\:hidden button');
+        const sidebar = document.querySelector('aside');
+
+        mobileMenuButton.addEventListener('click', function() {
+            sidebar.classList.toggle('hidden');
+            sidebar.classList.toggle('fixed');
+            sidebar.classList.toggle('inset-0');
+            sidebar.classList.toggle('z-40');
+        });
+    </script>
