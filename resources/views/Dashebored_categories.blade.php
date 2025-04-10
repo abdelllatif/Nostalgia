@@ -324,7 +324,7 @@
                                     <!-- Form starts here -->
                                     <form action="{{ route('categorie.edit',['id'=>$categorie->id] )}}" method="POST" enctype="multipart/form-data">
                                         @csrf
-                                        @method('update')
+                                        @method('PUT')
                                         <div class="mb-4">
                                             <label for="categoryName" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nom de la catégorie</label>
                                             <input type="text" name="name" id="EditcategoryName" class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full py-2 shadow-sm sm:text-sm border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white" placeholder="Ex:ancien Art">
