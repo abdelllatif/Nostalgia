@@ -36,6 +36,7 @@ class CategorieRepository implements CategorieRepositoryInterface
     {
         $categorie = Categorie::find($id);
         if ($categorie) {
+            $categorie->products()->delete();
             $categorie->delete();
             return true;
         }

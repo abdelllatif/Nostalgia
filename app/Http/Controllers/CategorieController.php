@@ -76,6 +76,6 @@ public function store(Request $request)
         if (!$deleted) {
             return response()->json(['message' => 'Categorie not found'], 404);
         }
-        return response()->json(['message' => 'Categorie deleted successfully']);
+        return redirect()->route('categories.show')->with('success', 'Categorie deleted successfully');
     }
 }
