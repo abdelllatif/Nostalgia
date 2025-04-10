@@ -16,7 +16,8 @@ class TagController extends Controller
 
     public function index()
     {
-        return response()->json($this->tagService->getAllTags());
+       $tags= $this->tagService->getAllTags();
+        return view('Dashebored_tags',compact('tags'));
     }
 
     public function show($id)

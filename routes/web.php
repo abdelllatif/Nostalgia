@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\profileController;
+use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
@@ -18,6 +19,7 @@ Route::get('/blog', function () {
 Route::get('/product/Details', function () {
     return view('product_details');
 });
+Route::get('/Dashebored/tags',[TagController::class,'index'] )->name('tags.show');
 Route::get('/Dashebored/categories',[CategorieController::class,'index'])->name('categories.show');
 Route::post('/Dashebored/categories',[CategorieController::class,'store'])->name('categories.store');
 Route::delete('/Dashebored/categorie/{id}', [CategorieController::class, 'destroy'])->name('categorie.destroy');
