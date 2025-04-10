@@ -322,12 +322,12 @@
                                 </h3>
                                 <div class="mt-4">
                                     <!-- Form starts here -->
-                                    <form action="{{ route('categories.edit') }}" method="POST" enctype="multipart/form-data">
+                                    <form action="{{ route('categorie.edit',['id'=>$categorie->id] )}}" method="POST" enctype="multipart/form-data">
                                         @csrf
                                         @method('update')
                                         <div class="mb-4">
                                             <label for="categoryName" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nom de la catégorie</label>
-                                            <input type="text" name="name" id="categoryName" class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full py-2 shadow-sm sm:text-sm border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white" placeholder="Ex:ancien Art">
+                                            <input type="text" name="name" id="EditcategoryName" class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full py-2 shadow-sm sm:text-sm border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white" placeholder="Ex:ancien Art">
                                         </div>
                                         <div class="mb-4">
                                             <label for="categoryImage" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Image</label>
@@ -335,7 +335,7 @@
                                                 <span class="inline-block h-12 w-12 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-700">
                                                     <img id="imagePreview" class="h-full w-full object-cover" alt="Preview" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" />
                                                 </span>
-                                                <input type="file" name="categoryImage" id="categoryImage" accept="image/*" class="hidden" onchange="previewImage(event)">
+                                                <input type="file" name="categoryImage" id="EditcategoryImage" accept="image/*" class="hidden" onchange="previewImage(event)">
                                                 <button type="button" onclick="document.getElementById('categoryImage').click()" class="ml-5 bg-white dark:bg-gray-700 py-2 px-3 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                                                     Changer
                                                 </button>
@@ -508,6 +508,9 @@
                                     function openEditForm($data){
                                     $modalEdit=document.getElementById('EditcategoryFormModal');
                                     $modalEdit.classList.remove('hidden');
+                                    $name=document.getElementById('EditcategoryName');
+                                    $img=document.getElementById('EditcategoryImage');
+                                    $name=
                                     }
                                     </script>
 
