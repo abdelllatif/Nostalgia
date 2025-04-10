@@ -9,8 +9,7 @@ class CategorieRepository implements CategorieRepositoryInterface
 {
     public function getAllCategories()
     {
-        return Categorie::all();
-    }
+        return Categorie::paginate(5);  }
 
     public function findCategorieById($id)
     {

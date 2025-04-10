@@ -64,10 +64,11 @@ public function store(Request $request)
 
         $categorie = $this->categorieService->updateCategorie($id, $validated);
         if (!$categorie) {
-            return response()->json(['message' => 'Categorie not found'], 404);
+            return redirect()->route('categories.show')->with('error', 'Categorie not updated');
+
         }
 
-        return response()->json($categorie);
+        return redirect()->route('categories.show')->with('success', 'Categorie modifier successfully');
     }
 
     public function destroy($id)

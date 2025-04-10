@@ -359,55 +359,8 @@
                                             </div>
                                         </div>
                                     <!-- Pagination -->
-                                    <div class="bg-white dark:bg-gray-800 px-4 py-3 flex items-center justify-between border-t border-gray-200 dark:border-gray-700 sm:px-6">
-                                    <div class="flex-1 flex justify-between sm:hidden">
-                                        <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700">
-                                            Précédent
-                                        </a>
-                                        <a href="#" class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700">
-                                            Suivant
-                                        </a>
-                                    </div>
-                                    <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-                                        <div>
-                                            <p class="text-sm text-gray-700 dark:text-gray-300">
-                                                Affichage de <span class="font-medium">1</span> à <span class="font-medium">5</span> sur <span class="font-medium">28</span> résultats
-                                            </p>
-                                        </div>
-                                        <div>
-                                            <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-                                                <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700">
-                                                    <span class="sr-only">Précédent</span>
-                                                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                                        <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
-                                                    </svg>
-                                                </a>
-                                                <a href="#" aria-current="page" class="z-10 bg-blue-50 dark:bg-blue-900 border-blue-500 dark:border-blue-500 text-blue-600 dark:text-blue-200 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
-                                                    1
-                                                </a>
-                                                <a href="#" class="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
-                                                    2
-                                                </a>
-                                                <a href="#" class="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
-                                                    3
-                                                </a>
-                                                <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm font-medium text-gray-700 dark:text-gray-400">
-                                                    ...
-                                                </span>
-                                                <a href="#" class="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
-                                                    6
-                                                </a>
-                                                <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700">
-                                                    <span class="sr-only">Suivant</span>
-                                                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                                        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-                                                    </svg>
-                                                </a>
-                                            </nav>
-                                        </div>
-                                    </div>
-                                    </div>
-                                    </div>
+                                    {{ $categories->links() }}
+
 
                                     <!-- Create Category Form Modal -->
                                     <div class="fixed z-10 inset-0 overflow-y-auto hidden" id="categoryFormModal">
@@ -493,17 +446,7 @@
                                         });
                                     }
                                     });
-                                        function previewImage(event) {
-                                        const input = event.target;
-                                        const reader = new FileReader();
-                                        reader.onload = function () {
-                                            const preview = document.getElementById('imagePreview');
-                                            preview.src = reader.result;
-                                        };
-                                        if (input.files && input.files[0]) {
-                                            reader.readAsDataURL(input.files[0]);
-                                        }
-                                    }
+
 
                                     function openEditForm(data){
                                     modalEdit=document.getElementById('EditcategoryFormModal');
@@ -516,6 +459,18 @@
                                         imagePreview.src = image;
                                     }
                                    }
+
+                                   function previewImage(event) {
+                                        const input = event.target;
+                                        const reader = new FileReader();
+                                        reader.onload = function () {
+                                            const preview = document.getElementById('imagePreview');
+                                            preview.src = reader.result;
+                                        };
+                                        if (input.files && input.files[0]) {
+                                            reader.readAsDataURL(input.files[0]);
+                                        }
+                                    }
                                     </script>
 
                                     </body>

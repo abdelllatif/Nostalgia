@@ -21,7 +21,7 @@ Route::get('/product/Details', function () {
 Route::get('/Dashebored/categories',[CategorieController::class,'index'])->name('categories.show');
 Route::post('/Dashebored/categories',[CategorieController::class,'store'])->name('categories.store');
 Route::delete('/Dashebored/categorie/{id}', [CategorieController::class, 'destroy'])->name('categorie.destroy');
-Route::put('/Dashebored/categories/{id}', [CategorieController::class, 'update'])->name('categorie.update');
+Route::put('/Dashebored/categories/{id}', [CategorieController::class, 'update'])->name('categorie.edit');
 
 route::middleware(['jwt.web'])->group(function(){
     Route::get('/profile',[profileController::class,'show'])->name('profile');
