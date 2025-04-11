@@ -151,11 +151,11 @@
                         <div class="mb-4">
                             <div class="flex justify-between text-sm">
                                 <span class="text-gray-600 dark:text-gray-400">Fin de l'enchère:</span>
-                                <span class="text-gray-900 dark:text-white font-medium"  >15 Avril 2025, 18:30</span>
+                                <span class="text-gray-900 dark:text-white font-medium"  >{{$product->auction_end_date}}</span>
                             </div>
                             <div class="flex justify-between text-sm mt-1">
                                 <span class="text-gray-600 dark:text-gray-400">Temps restant:</span>
-                                <span class="text-red-600 dark:text-red-400 font-medium"  id="auction-timer" data-end-date="2025-04-15T18:30:00"></span>
+                                <span class="text-red-600 dark:text-red-400 font-medium"  id="auction-timer" data-end-date="{{$product->auction_end_date}}"></span>
                             </div>
                         </div>
 
@@ -181,35 +181,13 @@
                             </svg>
                             Ajouter aux favoris
                         </button>
-                        <button class="flex items-center text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">
-                            <svg class="h-5 w-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
-                            </svg>
-                            Partager
-                        </button>
-                        <button class="flex items-center text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">
-                            <svg class="h-5 w-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            Poser une question
-                        </button>
                     </div>
 
                     <!-- Description -->
                     <div class="mt-8">
                         <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Description</h2>
                         <div class="prose dark:prose-invert max-w-none text-gray-700 dark:text-gray-300">
-                            <p>Ce manuscrit médiéval enluminé exceptionnel date d'environ 1380 et provient du nord de la France. Il comprend 142 pages de parchemin avec des enluminures à la feuille d'or et à la tempera.</p>
-                            <p class="mt-3">Caractéristiques principales:</p>
-                            <ul class="list-disc pl-5 mt-2 space-y-1">
-                                <li>Dimensions: 28 x 19 cm</li>
-                                <li>14 illustrations en pleine page</li>
-                                <li>Reliure en cuir du XVIe siècle avec fermoirs en laiton</li>
-                                <li>Texte en latin médiéval</li>
-                                <li>État de conservation: très bon, malgré quelques traces d'usage légères</li>
-                            </ul>
-                            <p class="mt-3">Le manuscrit contient un recueil de prières et de psaumes, avec des illustrations représentant des scènes bibliques. Il s'agit d'un exemple remarquablement préservé de l'art médiéval de l'enluminure.</p>
-                            <p class="mt-3">Des analyses scientifiques ont confirmé l'authenticité des pigments et du parchemin utilisés, correspondant parfaitement à ceux employés dans les ateliers du nord de la France à la fin du XIVe siècle.</p>
+                        
                         </div>
                     </div>
 
@@ -569,36 +547,40 @@
                                     </div>
                                 </footer>
                                 <script>
-                                document.addEventListener('DOMContentLoaded', () => {
-                                    const el = document.querySelector('#auction-timer');
+                              document.addEventListener('DOMContentLoaded', function () {
+    const timerElement = document.getElementById('auction-timer');
+    const endDateStr = timerElement.dataset.endDate;
 
-                                    if (!el) return;
+    // Parse the end date (ensure it's in ISO 8601 format: YYYY-MM-DDTHH:mm:ss)
+    const endDate = new Date(endDateStr);
 
-                                    const end = new Date(el.dataset.end);
+    // Validate if the endDate is valid
+    if (isNaN(endDate)) {
+        timerElement.textContent = "Erreur: date de fin invalide.";
+        return;
+    }
 
-                                    const update = () => {
-                                        const now = new Date();
-                                        let diff = Math.floor((end - now) / 1000);
+    function updateChrono() {
+        const now = new Date();
+        const diff = endDate - now;
 
-                                        if (diff <= 0) {
-                                            el.textContent = "L'enchère est terminée";
-                                            clearInterval(timer);
-                                            return;
-                                        }
+        if (diff <= 0) {
+            timerElement.textContent = "L'enchère est terminée.";
+            return;
+        }
 
-                                        const d = Math.floor(diff / 86400);
-                                        diff %= 86400;
-                                        const h = Math.floor(diff / 3600);
-                                        diff %= 3600;
-                                        const m = Math.floor(diff / 60);
-                                        const s = diff % 60;
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+        const seconds = Math.floor((diff / 1000) % 60);
 
-                                        el.textContent = `${d}j ${h}h:${m}m:${s}s`;
-                                    };
+        timerElement.textContent =
+            `${days}j ${hours}h ${minutes}m ${seconds}s`;
+    }
 
-                                    update();
-                                    const timer = setInterval(update, 1000);
-                                });
+    updateChrono(); // Initial call
+    setInterval(updateChrono, 1000); // Update every second
+});
                                     </script>
 
 </body>
