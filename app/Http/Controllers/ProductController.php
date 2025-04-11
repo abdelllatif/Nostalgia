@@ -93,10 +93,10 @@ class ProductController extends Controller
                $tags= $product->tags()->sync($request->tags);
             }
             if(!$product||!$images||!$tags){
-            return redirect()->route('product.index')->with('error','product  have issus in added');
+            return redirect()->route('catalogue.show')->with('error','product  have issus in added');
             }
 
-        return redirect()->route('product.index')->with('success','product  added successfully');
+        return redirect()->route('catalogue.show')->with('success','product  added successfully');
     }
 
 

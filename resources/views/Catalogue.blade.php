@@ -61,16 +61,12 @@
     </section>
 
     <section class="bg-white w-full">
-<!--ici jai crer un  -->
 <div class="flex items-center bg-white p-4 rounded-xl shadow-sm space-x-4 w-full max-w-2xl mx-auto">
-    <!-- Profile Image -->
     <img
       src="https://images.unsplash.com/photo-1495107334309-fcf20504a5ab?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2674&q=80"
       class="w-10 h-10 rounded-full object-cover"
       alt="Profile"
     >
-
-    <!-- Post affichage -->
     <input
       id="openCreateModal"
       type="text"
@@ -78,12 +74,19 @@
       class="flex-1 bg-gray-200 hover:bg-gray-300 transition px-4 py-2 rounded-full focus:outline-none cursor-pointer text-sm text-gray-700"
       readonly>
     </div>
+    @if(session('success'))
+    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded mb-4">
+        {{ session('success') }}
+    </div>
+@endif
 
-
-<!-- Popup Modal -->
+@if(session('error'))
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded mb-4">
+        {{ session('error') }}
+    </div>
+@endif
 <div id="createProductModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 p-4">
     <div class="bg-white rounded-lg shadow-xl max-w-md w-full relative max-h-[500px] overflow-hidden">
-      <!-- Modal Header -->
       <div class="flex items-center justify-between border-b px-4 py-3 sticky top-0 bg-white z-10">
         <h3 class="text-lg font-semibold text-gray-900">Ajouter un nouvel article</h3>
         <button id="closeModalBtn" class="text-gray-400 hover:text-gray-500 focus:outline-none" aria-label="Fermer">
@@ -92,29 +95,20 @@
           </svg>
         </button>
       </div>
-
-      <!-- Modal Body with scrollable content -->
       <div class="px-4 py-4 overflow-y-auto" style="max-height: calc(500px - 120px);">
         <form id="createProductForm" action="{{route('product.store')}}" method="POST">
-          <!-- Title -->
           <div class="mb-3">
             <label for="title" class="block text-sm font-medium text-gray-700">Titre</label>
             <input type="text" id="title" name="title" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
           </div>
-
-          <!-- Description -->
           <div class="mb-3">
             <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
             <textarea id="description" name="description" rows="2" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"></textarea>
           </div>
-
-          <!-- Historical Context -->
           <div class="mb-3">
             <label for="historical_context" class="block text-sm font-medium text-gray-700">Contexte Historique</label>
             <textarea id="historical_context" name="historical_context" rows="2" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"></textarea>
           </div>
-
-          <!-- Two columns for price and date -->
           <div class="grid grid-cols-2 gap-3 mb-3">
             <div>
               <label for="starting_price" class="block text-sm font-medium text-gray-700">Prix de départ (€)</label>
@@ -125,8 +119,6 @@
               <input type="date" id="auction_end_date" name="auction_end_date" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
             </div>
           </div>
-
-          <!-- Category -->
           <div class="mb-3">
             <label for="category_id" class="block text-sm font-medium text-gray-700">Catégorie</label>
             <select id="category_id" name="category_id" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
@@ -135,8 +127,6 @@
               @endforeach
             </select>
           </div>
-
-          <!-- Images Upload -->
           <div class="mb-3">
             <label class="block text-sm font-medium text-gray-700">Images</label>
             <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
