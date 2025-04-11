@@ -10,7 +10,7 @@ class TagRepository implements TagRepositoryInterface
     public function getAllTags()
     {
         $tags = Tag::withCount(['products', 'posts'])->paginate(8);
-        return ;
+        return $tags ;
     }
 
     public function findTagById($id)

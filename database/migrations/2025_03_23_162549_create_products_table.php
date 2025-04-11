@@ -19,8 +19,8 @@ return new class extends Migration
             $table->decimal('starting_price', 10, 2);
             $table->timestamp('auction_end_date');
             $table->enum('status', ['active', 'sold', 'expired'])->default('active');
-            $table->foreignId('category_id')->constrained('categories'); // category reference without cascade
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // seller reference
+            $table->foreignId('category_id')->constrained('categories');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade'); 
             $table->timestamps();
         });
     }

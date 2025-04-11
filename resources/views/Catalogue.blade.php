@@ -130,15 +130,9 @@
           <div class="mb-3">
             <label for="category_id" class="block text-sm font-medium text-gray-700">Catégorie</label>
             <select id="category_id" name="category_id" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-              <option value="">Sélectionner</option>
-              <option value="1">Tableaux</option>
-              <option value="2">Sculptures</option>
-              <option value="3">Manuscrits</option>
-              <option value="4">Monnaies</option>
-              <option value="5">Mobilier</option>
-              <option value="6">Bijoux</option>
-              <option value="7">Cartes</option>
-              <option value="8">Horlogerie</option>
+              @foreach ($categories as $categorie)
+                <option value="{{$categorie->id}}"><img src="{{asset('storage/'.$categorie->image)}}" alt="categorie image"> {{$categorie->name}}</option>
+              @endforeach
             </select>
           </div>
 
@@ -164,15 +158,12 @@
           <div class="mb-3">
             <label for="tags" class="block text-sm font-medium text-gray-700">Tags</label>
             <select id="tags" name="tags[]" multiple class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-              <option value="1">Antique</option>
-              <option value="2">Renaissance</option>
-              <option value="3">Baroque</option>
-              <option value="4">Empire</option>
-              <option value="5">Art Déco</option>
+             @foreach ( $tags as $tag)
+                <option value="{{$tag->id}}">{{$tag->name}}</option>
+             @endforeach
             </select>
             <p class="mt-1 text-xs text-gray-500">Ctrl+clic pour sélections multiples</p>
           </div>
-        </form>
       </div>
 
       <!-- Modal Footer -->
@@ -180,9 +171,11 @@
         <button type="button" id="cancelButton" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 mr-2">
           Annuler
         </button>
-        <button type="button" id="submitButton" class="bg-blue-600 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-blue-700">
+        <button type="submit" id="submitButton" class="bg-blue-600 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-blue-700">
           Créer
         </button>
+    </form>
+
       </div>
     </div>
   </div>
@@ -196,12 +189,9 @@
                     <label for="category" class="text-gray-700 font-medium">Catégorie:</label>
                     <select id="category" class="form-select rounded-md border-gray-300 shadow-sm">
                         <option value="">Toutes les catégories</option>
-                        <option value="tableaux">Tableaux</option>
-                        <option value="sculptures">Sculptures</option>
-                        <option value="manuscrits">Manuscrits</option>
-                        <option value="monnaies">Monnaies et Médailles</option>
-                        <option value="mobilier">Mobilier Ancien</option>
-                        <option value="bijoux">Bijoux Historiques</option>
+                        @foreach ($categories as $categorie)
+                <option value="{{$categorie->id}}"><img src="{{asset('storage/'.$categorie->image)}}" alt="categorie image"> {{$categorie->name}}</option>
+              @endforeach
                     </select>
                 </div>
 
@@ -247,29 +237,32 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Grid Display -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                <!-- Example Item -->
-                <div class="rounded-lg shadow-lg overflow-hidden bg-white transition-transform duration-300 hover:scale-105">
-                    <div class="h-64 w-full overflow-hidden">
-                        <img src="https://plus.unsplash.com/premium_photo-1743096946788-b8d8304542d1?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwzfHx" alt="Tableau historique" class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500">
-                    </div>
-                    <div class="p-6">
-                        <span class="inline-block bg-gray-100 rounded-full px-3 py-1 text-xs font-semibold text-gray-700 mb-2">Tableaux</span>
-                        <h3 class="text-xl font-bold text-gray-900">Tableau Historique du XVIIIe siècle</h3>
-                        <div class="flex items-center mt-2">
-                            <span class="text-gray-600 font-semibold">Prix actuel: 5,250€</span>
-                            <span class="ml-auto text-gray-500 text-sm">12 enchères</span>
-                        </div>
-                        <div class="mt-4 border-t border-gray-200 pt-4">
-                            <div class="flex justify-between text-sm">
-                                <span class="text-gray-500">Fin de l'enchère:</span>
-                                <span class="text-gray-900 font-medium">23 Avril, 20:00</span>
+                @foreach ($products as $product )
+        <!-- Example Item -->
+                        <div class="rounded-lg shadow-lg overflow-hidden bg-white transition-transform duration-300 hover:scale-105">
+                            <div class="h-64 w-full overflow-hidden">
+                                <img src="https://plus.unsplash.com/premium_photo-1743096946788-b8d8304542d1?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwzfHx" alt="Tableau historique" class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500">
+                            </div>
+                            <div class="p-6">
+                                <span class="inline-block bg-green-300 rounded-full px-3 py-1 text-xs font-semibold text-gray-700 mb-2">{{$product->category->name}}</span>
+                                <h3 class="text-xl font-bold text-gray-900">{{$product->title}}</h3>
+                                <div class="flex items-center mt-2">
+                                    <span class="text-gray-600 font-semibold">Prix actuel: {{$product->starting_price}}€</span>
+                                    <span class="ml-auto text-gray-500 text-sm">12 enchères</span>
+                                </div>
+                                <div class="mt-4 border-t border-gray-200 pt-4">
+                                    <div class="flex justify-between text-sm">
+                                        <span class="text-gray-500">Fin de l'enchère:</span>
+                                        <span class="countdown text-gray-900 font-medium" data-end="{{ $product->auction_end_date }}"></span>
+                                    </div>
+                                </div>
+                                <a href="/produit/1" class="mt-4 w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700">
+                                    Voir les détails
+                                </a>
                             </div>
                         </div>
-                        <a href="/produit/1" class="mt-4 w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700">
-                            Voir les détails
-                        </a>
-                    </div>
-                </div>
+                @endforeach
+
                 <!-- Repeat similar cards -->
             </div>
         </div>
@@ -333,5 +326,38 @@
         </div>
     </footer>
     <script src="{{ asset('storage/js/blog.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const countdowns = document.querySelectorAll('.countdown');
+
+            countdowns.forEach(el => {
+                const end = new Date(el.dataset.end);
+
+                const update = () => {
+                    const now = new Date();
+                    let diff = Math.floor((end - now) / 1000);
+
+                    if (diff <= 0) {
+                        el.textContent = "Auction ended";
+                        clearInterval(timer);
+                        return;
+                    }
+
+                    const d = Math.floor(diff / 86400);
+                    diff %= 86400;
+                    const h = Math.floor(diff / 3600);
+                    diff %= 3600;
+                    const m = Math.floor(diff / 60);
+                    const s = diff % 60;
+
+                    el.textContent = `${d}d ${h}h:${m}m:${s}s`;
+                };
+
+                update();
+                const timer = setInterval(update, 1000);
+            });
+        });
+        </script>
+
 </body>
 </html>

@@ -17,6 +17,10 @@ class TagController extends Controller
     public function index()
     {
        $tags= $this->tagService->getAllTags();
+       foreach ($tags as $tag) {
+        $tag->total_count = $tag->products_count + $tag->posts_count;
+    }
+
         return view('Dashebored_tags',compact('tags'));
     }
 

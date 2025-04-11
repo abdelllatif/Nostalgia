@@ -1,30 +1,38 @@
 <?php
 namespace App\Http\Controllers;
-
+use  App\Http\Controllers\TagController;
+use  App\Http\Controllers\CategorieController;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
 use  App\Models\Product;
 use App\Models\ProductImage;
+use App\Services\CategorieService;
+use App\Services\TagService;
 use DateTime;
 use GrahamCampbell\ResultType\Success;
 
 class ProductController extends Controller
 {
     protected $productService;
-
-    public function __construct(ProductService $productService)
+    protected $tagService;
+    protected $categoryService;
+    public function __construct(ProductService $productService, TagService $tagService, CategorieService $categoryService)
     {
         $this->productService = $productService;
+        $this->tagService = $tagService;
+        $this->categoryService = $categoryService;
     }
 
     public function index(Request $request)
     {
-        $filterBy=$request->filterby??"created_at";
-        $products=$this->productService->getAllProducts($filterBy);
-        foreach($products as $product){
+        $filterBy = $request->filterby ?? 'created_at';
+        $products = $this->productService->getAllProducts($filterBy);
+        foreach ($products as $product) {
             $product->time_remaining = $this->getTimeRemaining($product);
         }
-        return response()->json($products);
+        $tags = $this->tagService->getAllTags();
+        $categories = $this->categoryService->getAllCategories();
+        return view('Catalogue', compact('products', 'tags', 'categories'));
     }
 
     public function show($id)
@@ -71,6 +79,7 @@ class ProductController extends Controller
             'tags' => 'array',
         'tags.*' => 'exists:tags,id',
         ]);
+        dd($request);
         $product = Product::create([
             'title' => $request->title,
             'description' => $request->description,

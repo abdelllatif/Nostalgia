@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategorieController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\profileController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
@@ -13,9 +14,7 @@ Route::get('/', function () {
 Route::get('/about', function () {
     return view('about');
 });
-Route::get('/blog', function () {
-    return view('blog');
-});
+Route::get('/catalogue',[ProductController::class,'index'])->name('catalogue.show');
 Route::get('/product/Details', function () {
     return view('product_details');
 });
