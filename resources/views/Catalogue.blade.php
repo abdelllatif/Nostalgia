@@ -256,7 +256,7 @@
                                         <span class="countdown text-gray-900 font-medium" data-end="{{ $product->auction_end_date }}"></span>
                                     </div>
                                 </div>
-                                <a href="/produit/1" class="mt-4 w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700">
+                                <a href="{{route('product.details',['id'=>$product->id])}}" class="mt-4 w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700">
                                     Voir les détails
                                 </a>
                             </div>
