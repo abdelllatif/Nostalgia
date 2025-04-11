@@ -33,4 +33,4 @@ Route::post('/register', [AuthController::class, 'register'])->name('register.po
 route::post('/login',[AuthController::class,'login']);
 route::get('/terms',[AuthController::class,'terms_views']);
 route::get('/En_Attend',[AuthController::class,'Attends_views'])->name('En_Attend');
-route::get('/product/details/{id}',[ProductController::class,'index'])->name('product.details');
+route::get('/product/details/{id}',[ProductController::class,'show'])->name('product.details');

@@ -39,14 +39,9 @@ class ProductController extends Controller
     {
         $product = $this->productService->getProductById($id);
     if(!$product){
-        return response()->json([
-            'message' => 'Produit non trouvé'],
-            404
-        );
+        return 404;
     }
-    $product['time_remaining'] = $this->getTimeRemaining($product->auction_end_date);
-    return response()->json($product);
-
+    return   view('product_details',compact('product'));
     }
     public function getTimeRemaining($product)
     {
@@ -79,7 +74,6 @@ class ProductController extends Controller
             'tags' => 'array',
         'tags.*' => 'exists:tags,id',
         ]);
-        dd($request);
         $product = Product::create([
             'title' => $request->title,
             'description' => $request->description,
