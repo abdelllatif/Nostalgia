@@ -96,7 +96,8 @@
         </button>
       </div>
       <div class="px-4 py-4 overflow-y-auto" style="max-height: calc(500px - 120px);">
-        <form id="createProductForm" action="{{route('product.store')}}" method="POST">
+        <form id="createProductForm" action="{{route('catalogue.store')}}" method="POST">
+            @csrf
           <div class="mb-3">
             <label for="title" class="block text-sm font-medium text-gray-700">Titre</label>
             <input type="text" id="title" name="title" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
@@ -143,8 +144,6 @@
               </div>
             </div>
           </div>
-
-          <!-- Tags Selection -->
           <div class="mb-3">
             <label for="tags" class="block text-sm font-medium text-gray-700">Tags</label>
             <select id="tags" name="tags[]" multiple class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
