@@ -74,10 +74,11 @@
 <div class="flex items-center bg-white p-4 rounded-xl shadow-sm space-x-4 w-full max-w-2xl mx-auto">
 @auth
     <img
-      src="https://images.unsplash.com/photo-1495107334309-fcf20504a5ab?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2674&q=80"
-      class="w-10 h-10 rounded-full object-cover"
+    src="{{ asset('storage/' . (Auth::user()->image ?? 'anonymes_users/anonyme_user.jpg')) }}"
+    class="w-10 h-10 rounded-full object-cover"
       alt="Profile"
     >
+
     <input
       id="openCreateModal"
       type="text"
@@ -240,7 +241,8 @@
         <!-- Example Item -->
                         <div class="rounded-lg shadow-lg overflow-hidden bg-white transition-transform duration-300 hover:scale-105">
                             <div class="h-64 w-full overflow-hidden">
-                                <img src="https://plus.unsplash.com/premium_photo-1743096946788-b8d8304542d1?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwzfHx" alt="Tableau historique" class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500">
+                                <img src="{{ $product->images->isNotEmpty() ? asset('storage/' . $product->images->first()->image_path) : 'https://plus.unsplash.com/premium_photo-1743096946788-b8d8304542d1?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwzfHx' }}"
+                                alt="Tableau historique" class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500">
                             </div>
                             <div class="p-6">
                                 <span class="inline-block bg-green-300 rounded-full px-3 py-1 text-xs font-semibold text-gray-700 mb-2">{{$product->category->name}}</span>

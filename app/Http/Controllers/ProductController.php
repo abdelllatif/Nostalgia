@@ -28,9 +28,6 @@ class ProductController extends Controller
     {
         $filterBy = $request->filterby ?? 'created_at';
         $products = $this->productService->getAllProducts($filterBy);
-        foreach ($products as $product) {
-            $product->time_remaining = $this->getTimeRemaining($product);
-        }
         $tags = $this->tagService->getAllTags();
         $categories = $this->categoryService->getAllCategories();
         return view('Catalogue', compact('products', 'tags', 'categories'));

@@ -33,7 +33,7 @@
         <div class="md:hidden">
           <button>
             <svg class="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M4 6h16M4 12h16M4 18h16"/>
             </svg>
           </button>
@@ -134,24 +134,24 @@
             <div>
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
                     <span class="inline-block bg-gray-100 dark:bg-gray-700 rounded-full px-3 py-1 text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2">Manuscrits</span>
-                    <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Manuscrit Médiéval Enluminé</h1>
-                    <p class="text-gray-500 dark:text-gray-400">Circa 1380, Nord de la France</p>
+                    <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{$product->title}}</h1>
+                    <p class="text-gray-500 dark:text-gray-400">{{$product->created_at}}</p>
 
                     <!-- État de l'enchère -->
                     <div class="mt-6 bg-gray-50 dark:bg-gray-900 p-4 rounded-lg">
                         <div class="flex justify-between mb-2">
                             <span class="text-gray-700 dark:text-gray-300">Prix actuel:</span>
-                            <span class="text-2xl font-bold text-gray-900 dark:text-white">8,900 €</span>
+                            <span class="text-2xl font-bold text-gray-900 dark:text-white">{{$product->starting_price}} €</span>
                         </div>
                         <div class="flex justify-between text-sm text-gray-600 dark:text-gray-400 mb-4">
-                            <span>Prix de départ: 8,200 €</span>
+                            <span>Prix de départ: {{$product->starting_price}} €</span>
                             <span>19 enchères</span>
                         </div>
 
                         <div class="mb-4">
                             <div class="flex justify-between text-sm">
                                 <span class="text-gray-600 dark:text-gray-400">Fin de l'enchère:</span>
-                                <span class="text-gray-900 dark:text-white font-medium">15 Avril 2025, 18:30</span>
+                                <span class="text-gray-900 dark:text-white font-medium"  id="auction-timer" data-end-date="{{ $product->auction_end_date }}"></span>
                             </div>
                             <div class="flex justify-between text-sm mt-1">
                                 <span class="text-gray-600 dark:text-gray-400">Temps restant:</span>
@@ -568,5 +568,35 @@
                                         </div>
                                     </div>
                                 </footer>
+
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function () {
+                                        const timerElement = document.getElementById('auction-timer');
+                                        const endDateStr = timerElement.dataset.endDate;
+                                        const endDate = new Date(endDateStr);
+
+                                        function updateChrono() {
+                                            const now = new Date();
+                                            const diff = endDate - now;
+
+                                            if (diff <= 0) {
+                                                timerElement.textContent = "L'enchère est terminée.";
+                                                return;
+                                            }
+
+                                            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                                            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+                                            const minutes = Math.floor((diff / (1000 * 60)) % 60);
+                                            const seconds = Math.floor((diff / 1000) % 60);
+
+                                            timerElement.textContent =
+                                                `${days}j ${hours}h ${minutes}m ${seconds}s`;
+                                        }
+
+                                        updateChrono(); // initial call
+                                        setInterval(updateChrono, 1000); // update every second
+                                    });
+                                    </script>
+
 </body>
 </html>
