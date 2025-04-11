@@ -151,11 +151,11 @@
                         <div class="mb-4">
                             <div class="flex justify-between text-sm">
                                 <span class="text-gray-600 dark:text-gray-400">Fin de l'enchère:</span>
-                                <span class="text-gray-900 dark:text-white font-medium"  id="auction-timer" data-end-date="{{ $product->auction_end_date }}"></span>
+                                <span class="text-gray-900 dark:text-white font-medium"  >15 Avril 2025, 18:30</span>
                             </div>
                             <div class="flex justify-between text-sm mt-1">
                                 <span class="text-gray-600 dark:text-gray-400">Temps restant:</span>
-                                <span class="text-red-600 dark:text-red-400 font-medium">6 jours, 8 heures, 12 minutes</span>
+                                <span class="text-red-600 dark:text-red-400 font-medium"  id="auction-timer" data-end-date="2025-04-15T18:30:00"></span>
                             </div>
                         </div>
 
@@ -568,34 +568,37 @@
                                         </div>
                                     </div>
                                 </footer>
-
                                 <script>
-                                    document.addEventListener('DOMContentLoaded', function () {
-                                        const timerElement = document.getElementById('auction-timer');
-                                        const endDateStr = timerElement.dataset.endDate;
-                                        const endDate = new Date(endDateStr);
+                                document.addEventListener('DOMContentLoaded', () => {
+                                    const el = document.querySelector('#auction-timer');
 
-                                        function updateChrono() {
-                                            const now = new Date();
-                                            const diff = endDate - now;
+                                    if (!el) return;
 
-                                            if (diff <= 0) {
-                                                timerElement.textContent = "L'enchère est terminée.";
-                                                return;
-                                            }
+                                    const end = new Date(el.dataset.end);
 
-                                            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                                            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-                                            const minutes = Math.floor((diff / (1000 * 60)) % 60);
-                                            const seconds = Math.floor((diff / 1000) % 60);
+                                    const update = () => {
+                                        const now = new Date();
+                                        let diff = Math.floor((end - now) / 1000);
 
-                                            timerElement.textContent =
-                                                `${days}j ${hours}h ${minutes}m ${seconds}s`;
+                                        if (diff <= 0) {
+                                            el.textContent = "L'enchère est terminée";
+                                            clearInterval(timer);
+                                            return;
                                         }
 
-                                        updateChrono(); // initial call
-                                        setInterval(updateChrono, 1000); // update every second
-                                    });
+                                        const d = Math.floor(diff / 86400);
+                                        diff %= 86400;
+                                        const h = Math.floor(diff / 3600);
+                                        diff %= 3600;
+                                        const m = Math.floor(diff / 60);
+                                        const s = diff % 60;
+
+                                        el.textContent = `${d}j ${h}h:${m}m:${s}s`;
+                                    };
+
+                                    update();
+                                    const timer = setInterval(update, 1000);
+                                });
                                     </script>
 
 </body>
