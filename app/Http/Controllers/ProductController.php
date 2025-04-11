@@ -8,7 +8,7 @@ use  App\Models\Product;
 use App\Models\ProductImage;
 use App\Services\CategorieService;
 use App\Services\TagService;
-use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Auth;
 use DateTime;
 use GrahamCampbell\ResultType\Success;
 
@@ -74,8 +74,8 @@ class ProductController extends Controller
                 'tags' => 'nullable|array',
                 'tags.*' => 'exists:tags,id',
             ]);
-            $user = JWTAuth::parseToken()->authenticate();
-            $product = Product::create([
+            $user = Auth::user();
+                        $product = Product::create([
                 'title' => $request->title,
                 'description' => $request->description,
                 'historical_context' => $request->historical_context,
