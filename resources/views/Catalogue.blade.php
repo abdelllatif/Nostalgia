@@ -59,7 +59,17 @@
             </div>
         </div>
     </section>
+    @if(session('success'))
+    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded mb-4">
+        {{ session('success') }}
+    </div>
+@endif
 
+@if(session('error'))
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded mb-4">
+        {{ session('error') }}
+    </div>
+@endif
     <section class="bg-white w-full">
 <div class="flex items-center bg-white p-4 rounded-xl shadow-sm space-x-4 w-full max-w-2xl mx-auto">
     <img
@@ -74,17 +84,7 @@
       class="flex-1 bg-gray-200 hover:bg-gray-300 transition px-4 py-2 rounded-full focus:outline-none cursor-pointer text-sm text-gray-700"
       readonly>
     </div>
-    @if(session('success'))
-    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded mb-4">
-        {{ session('success') }}
-    </div>
-@endif
 
-@if(session('error'))
-    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded mb-4">
-        {{ session('error') }}
-    </div>
-@endif
 <div id="createProductModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 p-4">
     <div class="bg-white rounded-lg shadow-xl max-w-md w-full relative max-h-[500px] overflow-hidden">
       <div class="flex items-center justify-between border-b px-4 py-3 sticky top-0 bg-white z-10">
