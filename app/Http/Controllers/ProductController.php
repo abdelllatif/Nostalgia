@@ -93,10 +93,7 @@ class ProductController extends Controller
                 $product->tags()->sync($request->tags);
             }
 
-        return response()->json([
-            'message' => 'Product created successfully!',
-            'product' => $product
-        ]);
+        return redirect()->route('product.index')->with('success','product  added successfully');
     }
 
 

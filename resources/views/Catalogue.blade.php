@@ -95,7 +95,7 @@
 
       <!-- Modal Body with scrollable content -->
       <div class="px-4 py-4 overflow-y-auto" style="max-height: calc(500px - 120px);">
-        <form id="createProductForm">
+        <form id="createProductForm" action="{{route('product.store')}}" method="POST">
           <!-- Title -->
           <div class="mb-3">
             <label for="title" class="block text-sm font-medium text-gray-700">Titre</label>

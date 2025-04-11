@@ -34,3 +34,4 @@ route::post('/login',[AuthController::class,'login']);
 route::get('/terms',[AuthController::class,'terms_views']);
 route::get('/En_Attend',[AuthController::class,'Attends_views'])->name('En_Attend');
 route::get('/product/details/{id}',[ProductController::class,'show'])->name('product.details');
+route::post('/products',[ProductController::class,'store'])->name('product.store');
