@@ -84,13 +84,16 @@ class ProductController extends Controller
             'user_id' => $request->user_id,
         ]);
             foreach ($request->images as $image) {
-                ProductImage::create([
+              $images=  ProductImage::create([
                     'product_id' => $product->id,
                     'image_path' => $image,
                 ]);
             }
             if ($request->has('tags')) {
-                $product->tags()->sync($request->tags);
+               $tags= $product->tags()->sync($request->tags);
+            }
+            if(!$product||!$images||!$tags){
+            return redirect()->route('product.index')->with('error','product  have issus in added');
             }
 
         return redirect()->route('product.index')->with('success','product  added successfully');
