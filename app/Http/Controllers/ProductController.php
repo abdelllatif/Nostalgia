@@ -8,6 +8,7 @@ use  App\Models\Product;
 use App\Models\ProductImage;
 use App\Services\CategorieService;
 use App\Services\TagService;
+use Tymon\JWTAuth\Facades\JWTAuth;
 use DateTime;
 use GrahamCampbell\ResultType\Success;
 
@@ -61,42 +62,47 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'historical_context' => 'required|string',
-            'starting_price' => 'required|numeric',
-            'auction_end_date' => 'required|date',
-            'category_id' => 'required|exists:categories,id',
-            'user_id' => 'required|exists:users,id',
-            'images' => 'nullable|array',
-            'images.*' => 'nullable|string',
-            'tags' => 'array',
-        'tags.*' => 'exists:tags,id',
-        ]);
-        $product = Product::create([
-            'title' => $request->title,
-            'description' => $request->description,
-            'historical_context' => $request->historical_context,
-            'starting_price' => $request->starting_price,
-            'auction_end_date' => $request->auction_end_date,
-            'category_id' => $request->category_id,
-            'user_id' => $request->user_id,
-        ]);
-            foreach ($request->images as $image) {
-              $images=  ProductImage::create([
-                    'product_id' => $product->id,
-                    'image_path' => $image,
-                ]);
+        try {
+            $validated = $request->validate([
+                'title' => 'required|string|max:255',
+                'description' => 'required|string',
+                'historical_context' => 'required|string',
+                'starting_price' => 'required|numeric',
+                'auction_end_date' => 'required|date',
+                'category_id' => 'required|exists:categories,id',
+                'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'tags' => 'nullable|array',
+                'tags.*' => 'exists:tags,id',
+            ]);
+            $user = JWTAuth::parseToken()->authenticate();
+            $product = Product::create([
+                'title' => $request->title,
+                'description' => $request->description,
+                'historical_context' => $request->historical_context,
+                'starting_price' => $request->starting_price,
+                'auction_end_date' => $request->auction_end_date,
+                'category_id' => $request->category_id,
+                'user_id' => $user->id,
+            ]);
+            if ($request->hasFile('images')) {
+                foreach ($request->file('images') as $image) {
+                    $path = $image->store('product_images', 'public');
+
+                    ProductImage::create([
+                        'product_id' => $product->id,
+                        'image_path' => $path,
+                    ]);
+                }
             }
             if ($request->has('tags')) {
-               $tags= $product->tags()->sync($request->tags);
-            }
-            if(!$product||!$images||!$tags){
-            return redirect()->route('catalogue.show')->with('error','product  have issus in added');
+                $product->tags()->sync($request->tags);
             }
 
-        return redirect()->route('catalogue.show')->with('success','product  added successfully');
+            return redirect()->route('catalogue.show')->with('success', 'Product added successfully');
+
+        } catch (\Exception $e) {
+            return redirect()->route('catalogue.show')->with('error', 'Error adding product: ' . $e->getMessage());
+        }
     }
 
 

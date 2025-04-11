@@ -14,18 +14,21 @@ Route::get('/', function () {
 Route::get('/about', function () {
     return view('about');
 });
-Route::get('/catalogue',[ProductController::class,'index'])->name('catalogue.show');
 Route::get('/product/Details', function () {
     return view('product_details');
 });
+
+
+route::middleware(['jwt.web'])->group(function(){
+    Route::get('/profile',[profileController::class,'show'])->name('profile');
+    route::post('/catalogue',[ProductController::class,'store'])->name('catalogue.store');
 Route::get('/Dashebored/tags',[TagController::class,'index'] )->name('tags.show');
 Route::get('/Dashebored/categories',[CategorieController::class,'index'])->name('categories.show');
 Route::post('/Dashebored/categories',[CategorieController::class,'store'])->name('categories.store');
 Route::delete('/Dashebored/categorie/{id}', [CategorieController::class, 'destroy'])->name('categorie.destroy');
 Route::put('/Dashebored/categories/{id}', [CategorieController::class, 'update'])->name('categorie.edit');
+Route::get('/catalogue',[ProductController::class,'index'])->name('catalogue.show');
 
-route::middleware(['jwt.web'])->group(function(){
-    Route::get('/profile',[profileController::class,'show'])->name('profile');
 });
 route::get('/register',[AuthController::class,'register_show']);
 route::get('/login',[AuthController::class,'login_show'])->name('login');
@@ -34,4 +37,3 @@ route::post('/login',[AuthController::class,'login']);
 route::get('/terms',[AuthController::class,'terms_views']);
 route::get('/En_Attend',[AuthController::class,'Attends_views'])->name('En_Attend');
 route::get('/product/details/{id}',[ProductController::class,'show'])->name('product.details');
-route::post('/catalogue',[ProductController::class,'store'])->name('catalogue.store');

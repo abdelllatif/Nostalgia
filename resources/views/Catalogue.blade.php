@@ -72,6 +72,7 @@
 @endif
     <section class="bg-white w-full">
 <div class="flex items-center bg-white p-4 rounded-xl shadow-sm space-x-4 w-full max-w-2xl mx-auto">
+@auth
     <img
       src="https://images.unsplash.com/photo-1495107334309-fcf20504a5ab?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2674&q=80"
       class="w-10 h-10 rounded-full object-cover"
@@ -83,6 +84,15 @@
       placeholder="Ajouter nouveu produit?"
       class="flex-1 bg-gray-200 hover:bg-gray-300 transition px-4 py-2 rounded-full focus:outline-none cursor-pointer text-sm text-gray-700"
       readonly>
+@endauth
+@guest
+    <div class="bg-blue-50 border border-blue-200 text-blue-800 p-4 rounded-xl shadow-sm my-4 flex items-center justify-between">
+        <span> Vous n'êtes pas connecté. Vous pouvez vous authentifier si vous le souhaitez.</span>
+        <a href="{{ route('login') }}" class="bg-blue-500 text-white px-2 w-32 py-2 rounded hover:bg-blue-600 transition">
+            Se connecter
+        </a>
+    </div>
+@endguest
     </div>
 
 <div id="createProductModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -96,7 +106,7 @@
         </button>
       </div>
       <div class="px-4 py-4 overflow-y-auto" style="max-height: calc(500px - 120px);">
-        <form id="createProductForm" action="{{route('catalogue.store')}}" method="POST">
+        <form id="createProductForm" action="{{route('catalogue.store')}}" method="POST"  enctype="multipart/form-data">
             @csrf
           <div class="mb-3">
             <label for="title" class="block text-sm font-medium text-gray-700">Titre</label>
