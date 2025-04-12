@@ -51,5 +51,10 @@ public function search($name){
     return $this->productRepository->search($name);
 
 }
+
+public function getSimilarProducts(int $categoryId)
+{
+    return $this->productRepository->getSimilarProductsByCategory($categoryId);
+}
 }
 

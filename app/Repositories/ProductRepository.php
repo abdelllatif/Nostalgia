@@ -69,4 +69,12 @@ class ProductRepository implements ProductRepositoryInterface
         $product = Product::findOrFail($id);
         $product->delete();
     }
+
+    public function getSimilarProductsByCategory( $categoryId,  $limit = 4)
+    {
+        return Product::where('category_id', $categoryId)
+            ->orderBy('created_at', 'desc')
+            ->take($limit)
+            ->get();
+    }
 }

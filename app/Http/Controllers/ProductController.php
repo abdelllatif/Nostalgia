@@ -36,6 +36,7 @@ class ProductController extends Controller
     public function show($id)
     {
         $product = $this->productService->getProductById($id);
+        $product->simmilar_product=$this->productService->getSimilarProducts($product->category_id);
     if(!$product){
         return 404;
     }

@@ -187,40 +187,10 @@
                     <div class="mt-8">
                         <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Description</h2>
                         <div class="prose dark:prose-invert max-w-none text-gray-700 dark:text-gray-300">
-                        
+                        {{$product->description}}
                         </div>
                     </div>
 
-                    <!-- Détails -->
-                    <div class="mt-8">
-                        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Détails</h2>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-700 dark:text-gray-300">
-                            <div>
-                                <span class="block text-sm text-gray-500 dark:text-gray-400">Époque</span>
-                                <span>Médiévale, fin XIVe siècle</span>
-                            </div>
-                            <div>
-                                <span class="block text-sm text-gray-500 dark:text-gray-400">Origine</span>
-                                <span>Nord de la France</span>
-                            </div>
-                            <div>
-                                <span class="block text-sm text-gray-500 dark:text-gray-400">Matériaux</span>
-                                <span>Parchemin, pigments naturels, feuille d'or</span>
-                            </div>
-                            <div>
-                                <span class="block text-sm text-gray-500 dark:text-gray-400">Dimensions</span>
-                                <span>28 x 19 cm</span>
-                            </div>
-                            <div>
-                                <span class="block text-sm text-gray-500 dark:text-gray-400">État</span>
-                                <span>Très bon état, restauration mineure</span>
-                            </div>
-                            <div>
-                                <span class="block text-sm text-gray-500 dark:text-gray-400">Référence</span>
-                                <span>MSC-1380-142</span>
-                            </div>
-                        </div>
-                    </div>
 
                     <!-- Vendeur -->
                     <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
@@ -229,24 +199,15 @@
                                 <img class="h-12 w-12 rounded-full" src="https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Vendeur">
                             </div>
                             <div class="ml-4">
-                                <h3 class="text-lg font-medium text-gray-900 dark:text-white">Galerie Patrimoine Ancien</h3>
+                                <h3 class="text-lg font-medium text-gray-900 dark:text-white">{{$product->user->name." ".$product->user->first_name}}</h3>
                                 <div class="flex items-center text-gray-500 dark:text-gray-400">
                                     <div class="flex">
-                                        <svg class="h-4 w-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                        @for ($i=0;$i<5;$i++)
+                                            <svg class="h-4 w-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
                                             <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
                                         </svg>
-                                        <svg class="h-4 w-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                        </svg>
-                                        <svg class="h-4 w-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                        </svg>
-                                        <svg class="h-4 w-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                        </svg>
-                                        <svg class="h-4 w-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                        </svg>
+                                        @endfor
+
                                     </div>
                                     <span class="ml-2">83 évaluations</span>
                                 </div>
@@ -362,97 +323,32 @@
                                     <div class="mt-12">
                                         <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Objets similaires</h2>
                                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                                            <!-- Objet similaire 1 -->
-                                            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-                                                <div class="relative h-48">
-                                                    <img src="https://images.unsplash.com/photo-1699113788531-9b59ab6f65b8?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YW5jaWVudCUyMGJvb2t8ZW58MHx8MHx8fDA%3D"
-                                                         alt="Livre d'heures XVe siècle"
-                                                         class="w-full h-full object-cover">
-                                                    <div class="absolute top-2 right-2 bg-blue-600 text-white px-2 py-1 text-xs rounded-full">
-                                                        Enchère
+                                            @foreach ( $product->simmilar_product as $simmillar)
+                                            {{dd($product->simmilar_productt->title)}}
+                                                <!-- Objet similaire 1 -->
+                                                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                                                        <div class="relative h-48">
+                                                            <img src="https://images.unsplash.com/photo-1516979187457-637abb4f9353?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fG9sZCUyMGJvb2t8ZW58MHx8MHx8fDA%3D"
+                                                                alt="Psautier médiéval"
+                                                                class="w-full h-full object-cover">
+                                                            <div class="absolute top-2 right-2 bg-blue-600 text-white px-2 py-1 text-xs rounded-full">
+                                                                Enchère
+                                                            </div>
+                                                        </div>
+                                                        <div class="p-4">
+                                                            <h3 class="text-lg font-medium text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400">{{ $product->simmilar_product->title}}</h3>
+                                                            <p class="text-sm text-gray-500 dark:text-gray-400">Allemagne</p>
+                                                            <div class="mt-2 flex justify-between items-center">
+                                                                <span class="text-lg font-bold text-gray-900 dark:text-white">7,500 €</span>
+                                                                <span class="text-sm text-gray-600 dark:text-gray-400">5 enchères</span>
+                                                            </div>
+                                                            <div class="mt-2 text-sm text-red-600 dark:text-red-400">
+                                                                <span class="font-medium">Fin: 4 jours</span>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="p-4">
-                                                    <h3 class="text-lg font-medium text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400">Livre d'heures, XVe siècle</h3>
-                                                    <p class="text-sm text-gray-500 dark:text-gray-400">France méridionale</p>
-                                                    <div class="mt-2 flex justify-between items-center">
-                                                        <span class="text-lg font-bold text-gray-900 dark:text-white">6,800 €</span>
-                                                        <span class="text-sm text-gray-600 dark:text-gray-400">12 enchères</span>
-                                                    </div>
-                                                    <div class="mt-2 text-sm text-red-600 dark:text-red-400">
-                                                        <span class="font-medium">Fin: 3 jours</span>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            @endforeach
 
-                                            <!-- Objet similaire 2 -->
-                                            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-                                                <div class="relative h-48">
-                                                    <img src="https://images.unsplash.com/photo-1648451302039-8d6a9664e5e7?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzZ8fGFuY2llbnQlMjBtYW51c2NyaXB0fGVufDB8fDB8fHww"
-                                                         alt="Manuscrit à miniatures"
-                                                         class="w-full h-full object-cover">
-                                                    <div class="absolute top-2 right-2 bg-green-600 text-white px-2 py-1 text-xs rounded-full">
-                                                        Achat immédiat
-                                                    </div>
-                                                </div>
-                                                <div class="p-4">
-                                                    <h3 class="text-lg font-medium text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400">Manuscrit à miniatures, 1420</h3>
-                                                    <p class="text-sm text-gray-500 dark:text-gray-400">Nord de l'Italie</p>
-                                                    <div class="mt-2 flex justify-between items-center">
-                                                        <span class="text-lg font-bold text-gray-900 dark:text-white">12,500 €</span>
-                                                        <span class="text-sm text-gray-600 dark:text-gray-400">Prix fixe</span>
-                                                    </div>
-                                                    <div class="mt-2 text-sm text-green-600 dark:text-green-400">
-                                                        <span class="font-medium">Disponible</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- Objet similaire 3 -->
-                                            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-                                                <div class="relative h-48">
-                                                    <img src="https://images.unsplash.com/photo-1490093158370-1a6be674437c?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fG9sZCUyMGJvb2t8ZW58MHx8MHx8fDA%3D"
-                                                         alt="Bible manuscrite"
-                                                         class="w-full h-full object-cover">
-                                                    <div class="absolute top-2 right-2 bg-blue-600 text-white px-2 py-1 text-xs rounded-full">
-                                                        Enchère
-                                                    </div>
-                                                </div>
-                                                <div class="p-4">
-                                                    <h3 class="text-lg font-medium text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400">Bible manuscrite, circa 1350</h3>
-                                                    <p class="text-sm text-gray-500 dark:text-gray-400">Angleterre</p>
-                                                    <div class="mt-2 flex justify-between items-center">
-                                                        <span class="text-lg font-bold text-gray-900 dark:text-white">9,300 €</span>
-                                                        <span class="text-sm text-gray-600 dark:text-gray-400">8 enchères</span>
-                                                    </div>
-                                                    <div class="mt-2 text-sm text-red-600 dark:text-red-400">
-                                                        <span class="font-medium">Fin: 1 jour</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- Objet similaire 4 -->
-                                            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-                                                <div class="relative h-48">
-                                                    <img src="https://images.unsplash.com/photo-1516979187457-637abb4f9353?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fG9sZCUyMGJvb2t8ZW58MHx8MHx8fDA%3D"
-                                                         alt="Psautier médiéval"
-                                                         class="w-full h-full object-cover">
-                                                    <div class="absolute top-2 right-2 bg-blue-600 text-white px-2 py-1 text-xs rounded-full">
-                                                        Enchère
-                                                    </div>
-                                                </div>
-                                                <div class="p-4">
-                                                    <h3 class="text-lg font-medium text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400">Psautier médiéval, 1390</h3>
-                                                    <p class="text-sm text-gray-500 dark:text-gray-400">Allemagne</p>
-                                                    <div class="mt-2 flex justify-between items-center">
-                                                        <span class="text-lg font-bold text-gray-900 dark:text-white">7,500 €</span>
-                                                        <span class="text-sm text-gray-600 dark:text-gray-400">5 enchères</span>
-                                                    </div>
-                                                    <div class="mt-2 text-sm text-red-600 dark:text-red-400">
-                                                        <span class="font-medium">Fin: 4 jours</span>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
 

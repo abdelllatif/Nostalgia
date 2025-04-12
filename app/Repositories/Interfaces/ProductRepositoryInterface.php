@@ -11,4 +11,5 @@ interface ProductRepositoryInterface
     public function GetUserproduct($userId);
     public function update($id, array $data);
     public function delete($id);
+    public function getSimilarProductsByCategory($categoryId);
 }
