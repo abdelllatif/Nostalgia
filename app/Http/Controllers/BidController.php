@@ -19,7 +19,7 @@ class BidController extends Controller
      */
     public function index()
     {
-        //
+
     }
 
     /**
@@ -42,9 +42,9 @@ class BidController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Bid $bid)
+    public function show($bidId)
     {
-        //
+        return $this->bidservice->getproductbids($bidId);
     }
 
     /**

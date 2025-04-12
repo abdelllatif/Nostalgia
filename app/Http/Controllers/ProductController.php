@@ -11,17 +11,20 @@ use App\Services\TagService;
 use Illuminate\Support\Facades\Auth;
 use DateTime;
 use GrahamCampbell\ResultType\Success;
-
+use App\Http\Controllers\BidController;
 class ProductController extends Controller
 {
     protected $productService;
     protected $tagService;
     protected $categoryService;
-    public function __construct(ProductService $productService, TagService $tagService, CategorieService $categoryService)
+    protected $bidcontroller;
+    public function __construct(ProductService $productService, TagService $tagService, CategorieService $categoryService,BidController $bidcontroller)
     {
         $this->productService = $productService;
         $this->tagService = $tagService;
         $this->categoryService = $categoryService;
+        $this->bidcontroller = $bidcontroller;
+
     }
 
     public function index(Request $request)
@@ -36,6 +39,7 @@ class ProductController extends Controller
     public function show($id)
 {
     $product = $this->productService->getProductById($id);
+    $product->bid=$this->bidcontroller->show($product->id);
     $product->simmilar_product = $this->productService->getSimilarProducts($product->category_id);
 
     if(!$product){

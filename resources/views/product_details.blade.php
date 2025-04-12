@@ -166,9 +166,25 @@
                                 <button class="flex-1 py-2 px-3 border rounded text-sm bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200">9,200 €</button>
                                 <button class="flex-1 py-2 px-3 border rounded text-sm bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200">9,500 €</button>
                             </div>
-                            <div class="flex items-center space-x-4">
-                                <input type="text" placeholder="Autre montant (€)" class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white">
-                                <button class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 font-medium">Enchérir</button>
+                            <div>
+                                @if (session('success'))
+                                <div class="alert alert-success bg-green-200 text-green-700 border py-2 border-green-700 rounded-xl text-center">
+                                    {{ session('success') }}
+                                </div>
+                            @endif
+
+                            @if (session('error'))
+                                <div class="alert alert-danger bg-red-200 text-red-700 border border-red-700">
+                                    {{ session('error') }}
+                                </div>
+                            @endif
+
+                                <form action="{{route('bids.store')}}" method="post" class=" flex items-center space-x-4">
+                                @csrf
+                                    <input name="amount" type="number" min="0" placeholder="Autre montant (€)" class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white">
+                                <input name="product_id" type="hidden" value="{{$product->id}}">
+                                <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 font-medium">Enchérir</button>
+                            </form>
                             </div>
                         </div>
                     </div>

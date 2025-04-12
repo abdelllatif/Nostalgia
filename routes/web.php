@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BidController;
 use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\profileController;
@@ -28,7 +29,7 @@ Route::post('/Dashebored/categories',[CategorieController::class,'store'])->name
 Route::delete('/Dashebored/categorie/{id}', [CategorieController::class, 'destroy'])->name('categorie.destroy');
 Route::put('/Dashebored/categories/{id}', [CategorieController::class, 'update'])->name('categorie.edit');
 Route::get('/catalogue',[ProductController::class,'index'])->name('catalogue.show');
-
+Route::post('/bids', [BidController::class, 'store'])->name('bids.store');
 });
 route::get('/register',[AuthController::class,'register_show']);
 route::get('/login',[AuthController::class,'login_show'])->name('login');
