@@ -3,10 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bid;
+use App\Services\BidService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BidController extends Controller
 {
+    protected $bidservice;
+    public function __construct(BidService $bidService)
+    {
+    $this->bidservice=$bidService;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -24,7 +31,12 @@ class BidController extends Controller
             'amount'=>'required|numeric|min:0',
             'product_id'=>'required|exists:products,id'
         ]);
-        $bid=$this
+        $validater['user_id']=Auth::user()->id;
+        $bid=$this->bidservice->storeaBid($validater);
+        if(!$bid){
+            return back()->with('error','your bid not added');
+        }
+        return back()->with('success','your bid  added succsesfully');
     }
 
     /**

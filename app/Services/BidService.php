@@ -8,8 +8,12 @@ protected $bidrepository;
 
 public function __construct(BidRepository $bidrepository)
 {
-$bidrepository=$this->bidrepository;
+$this->bidrepository=$bidrepository;
 }
-public function 
-
+public function getproductbids($id){
+    return $this->bidrepository->getAllbids($id);
+}
+public function storeaBid($data){
+    return $this->bidrepository->addBid($data);
+}
 }

@@ -10,10 +10,9 @@ class Bid extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
         'product_id',
         'amount',
-        'status',
+        'user_id',
     ];
 
     /**
