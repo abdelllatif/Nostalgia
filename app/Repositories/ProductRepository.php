@@ -72,7 +72,7 @@ class ProductRepository implements ProductRepositoryInterface
 
     public function getSimilarProductsByCategory( $categoryId,  $limit = 4)
     {
-        return Product::where('category_id', $categoryId)
+        return Product::with('category', 'user', 'images', 'tags:id,name')->where('category_id', $categoryId)
             ->orderBy('created_at', 'desc')
             ->take($limit)
             ->get();

@@ -34,14 +34,15 @@ class ProductController extends Controller
     }
 
     public function show($id)
-    {
-        $product = $this->productService->getProductById($id);
-        $product->simmilar_product=$this->productService->getSimilarProducts($product->category_id);
+{
+    $product = $this->productService->getProductById($id);
+    $product->simmilar_product = $this->productService->getSimilarProducts($product->category_id);
+
     if(!$product){
         return 404;
     }
-    return   view('product_details',compact('product'));
-    }
+    return view('product_details', compact('product'));
+}
     public function getTimeRemaining($product)
     {
         $now = new DateTime();

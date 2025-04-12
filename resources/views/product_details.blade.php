@@ -324,7 +324,6 @@
                                         <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Objets similaires</h2>
                                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                                             @foreach ( $product->simmilar_product as $simmillar)
-                                            {{dd($product->simmilar_productt->title)}}
                                                 <!-- Objet similaire 1 -->
                                                     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
                                                         <div class="relative h-48">
@@ -336,10 +335,10 @@
                                                             </div>
                                                         </div>
                                                         <div class="p-4">
-                                                            <h3 class="text-lg font-medium text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400">{{ $product->simmilar_product->title}}</h3>
-                                                            <p class="text-sm text-gray-500 dark:text-gray-400">Allemagne</p>
+                                                            <h3 class="text-lg font-medium text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400">{{ $simmillar->title}}</h3>
+                                                            <p class="text-sm text-gray-500 dark:text-gray-400">{{ $simmillar->category->name}}</p>
                                                             <div class="mt-2 flex justify-between items-center">
-                                                                <span class="text-lg font-bold text-gray-900 dark:text-white">7,500 €</span>
+                                                                <span class="text-lg font-bold text-gray-900 dark:text-white">{{ $simmillar->starting_price}} €</span>
                                                                 <span class="text-sm text-gray-600 dark:text-gray-400">5 enchères</span>
                                                             </div>
                                                             <div class="mt-2 text-sm text-red-600 dark:text-red-400">
