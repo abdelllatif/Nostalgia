@@ -8,7 +8,7 @@ class BidRepository implements BidRepositoryInterface{
 
 public function getAllbids($idproduct)
 {
-return Bid::with('user')->where('product_id',$idproduct)->get();
+return Bid::with('user')->where('product_id',$idproduct)->orderby('created_at','desc')->get();
 }
 
 public function addBid(array $data)

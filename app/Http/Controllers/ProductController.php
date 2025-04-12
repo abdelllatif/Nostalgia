@@ -35,18 +35,24 @@ class ProductController extends Controller
         $categories = $this->categoryService->getAllCategories();
         return view('Catalogue', compact('products', 'tags', 'categories'));
     }
-
     public function show($id)
-{
-    $product = $this->productService->getProductById($id);
-    $product->bid=$this->bidcontroller->show($product->id);
-    $product->simmilar_product = $this->productService->getSimilarProducts($product->category_id);
+    {
+        $product = $this->productService->getProductById($id);
+        $product->bids = $this->bidcontroller->show($product->id);  // All bids
+        $product->simmilar_product = $this->productService->getSimilarProducts($product->category_id);
 
-    if(!$product){
-        return 404;
+        if (!$product) {
+            return response('Product not found', 404);
+        }
+
+        // Get the first 5 bids
+        $firstBids = $product->bids->slice(0, 5);
+
+        return view('product_details', compact('product', 'firstBids'));
     }
-    return view('product_details', compact('product'));
-}
+
+
+
     public function getTimeRemaining($product)
     {
         $now = new DateTime();

@@ -237,103 +237,87 @@
             </div>
         </div>
 
-        <!-- Historique des enchères -->
-        <div class="mt-12 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-            <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">Historique des enchères</h2>
-            <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                    <thead>
-                        <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Enchérisseur</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Montant</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Date et Heure</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-center">
-                                    <div class="h-8 w-8 flex-shrink-0 rounded-full bg-gray-200 overflow-hidden">
-                                        <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Avatar" class="h-full w-full object-cover">
-                                    </div>
-                                    <div class="ml-3">
-                                        <p class="text-sm font-medium text-gray-900 dark:text-white">J. Dubois</p>
-                                        <p class="text-xs text-gray-500 dark:text-gray-400">★★★★★ (28)</p>
-                                    </div>
+      <!-- Historique des enchères -->
+<div class="mt-12 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+    <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">Historique des enchères</h2>
+    <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+            <thead>
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Enchérisseur</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Montant</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Date et Heure</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                @foreach($firstBids as $bid)
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="h-8 w-8 flex-shrink-0 rounded-full bg-gray-200 overflow-hidden">
+                                    <img src="https://via.placeholder.com/150" alt="Avatar" class="h-full w-full object-cover">
                                 </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white font-medium">8,900 €</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">09/04/2025 - 10:28</td>
-                            </tr>
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <div class="h-8 w-8 flex-shrink-0 rounded-full bg-gray-200 overflow-hidden">
-                                            <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Avatar" class="h-full w-full object-cover">
-                                        </div>
-                                        <div class="ml-3">
-                                            <p class="text-sm font-medium text-gray-900 dark:text-white">M. Leclerc</p>
-                                            <p class="text-xs text-gray-500 dark:text-gray-400">★★★★☆ (15)</p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white font-medium">8,750 €</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">09/04/2025 - 08:45</td>
-                            </tr>
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <div class="h-8 w-8 flex-shrink-0 rounded-full bg-gray-200 overflow-hidden">
-                                            <img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Avatar" class="h-full w-full object-cover">
-                                        </div>
-                                        <div class="ml-3">
-                                            <p class="text-sm font-medium text-gray-900 dark:text-white">A. Bernard</p>
-                                            <p class="text-xs text-gray-500 dark:text-gray-400">★★★★★ (42)</p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white font-medium">8,600 €</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">08/04/2025 - 21:17</td>
-                            </tr>
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <div class="h-8 w-8 flex-shrink-0 rounded-full bg-gray-200 overflow-hidden">
-                                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Avatar" class="h-full w-full object-cover">
-                                        </div>
-                                        <div class="ml-3">
-                                            <p class="text-sm font-medium text-gray-900 dark:text-white">P. Martin</p>
-                                            <p class="text-xs text-gray-500 dark:text-gray-400">★★★☆☆ (7)</p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white font-medium">8,400 €</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">08/04/2025 - 16:32</td>
-                            </tr>
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <div class="h-8 w-8 flex-shrink-0 rounded-full bg-gray-200 overflow-hidden">
-                                            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Avatar" class="h-full w-full object-cover">
-                                        </div>
-                                        <div class="ml-3">
-                                            <p class="text-sm font-medium text-gray-900 dark:text-white">S. Petit</p>
-                                            <p class="text-xs text-gray-500 dark:text-gray-400">★★★★☆ (23)</p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white font-medium">8,200 €</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">08/04/2025 - 09:05</td>
-                            </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="mt-4 text-center">
-                                            <button class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium">
-                                                Voir toutes les enchères (19)
-                                            </button>
-                                        </div>
-                                    </div>
+                                <div class="ml-3">
+                                    <p class="text-sm font-medium text-gray-900 dark:text-white">{{ $bid->user->name }}</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">★★★★★</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white font-medium">{{ $bid->amount }} €</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ $bid->created_at->format('d/m/Y - H:i') }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Voir plus / Voir moins Button -->
+    <div class="mt-4 text-center">
+        <button id="see-more" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium">
+            Voir toutes les enchères ({{ count($product->bids) }})
+        </button>
+    </div>
+
+    <div id="extra-bids" class="hidden">
+        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+            <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                @foreach($product->bids->slice(5) as $bid)  <!-- Start from the 6th bid -->
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="h-8 w-8 flex-shrink-0 rounded-full bg-gray-200 overflow-hidden">
+                                    <img src="https://via.placeholder.com/150" alt="Avatar" class="h-full w-full object-cover">
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm font-medium text-gray-900 dark:text-white">{{ $bid->user->name }}</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">★★★★★</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white font-medium">{{ $bid->amount }} €</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ $bid->created_at->format('d/m/Y - H:i') }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    const seeMoreBtn = document.getElementById('see-more');
+    const extraBids = document.getElementById('extra-bids');
+
+    seeMoreBtn.addEventListener('click', () => {
+        if (extraBids.classList.contains('hidden')) {
+            extraBids.classList.remove('hidden');
+            seeMoreBtn.innerText = 'Voir moins';
+        } else {
+            extraBids.classList.add('hidden');
+            seeMoreBtn.innerText = 'Voir toutes les enchères';
+        }
+    });
+</script>
+
 
                                     <!-- Objets similaires -->
                                     <div class="mt-12">

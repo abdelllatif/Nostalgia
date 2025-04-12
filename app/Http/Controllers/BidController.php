@@ -10,9 +10,12 @@ use Illuminate\Support\Facades\Auth;
 class BidController extends Controller
 {
     protected $bidservice;
-    public function __construct(BidService $bidService)
+    protected $productController;
+
+    public function __construct(BidService $bidService,ProductController $productController)
     {
     $this->bidservice=$bidService;
+    $this->productController=$productController;
     }
     /**
      * Display a listing of the resource.
@@ -32,6 +35,18 @@ class BidController extends Controller
             'product_id'=>'required|exists:products,id'
         ]);
         $validater['user_id']=Auth::user()->id;
+        $existingBids = $this->bidservice->getproductbids($request->product_id);
+        if($existingBids->isEmpty()){
+            if($request->amount>$this->productController->show($request->product_id)){
+                return back()->with('error','Your bid must be greater than or equal to the starting price');
+            }
+        }
+        else{
+            $bigbid=$existingBids->first();
+            if($request->amount<=$bigbid){
+                return back()->with('error','Your bid must be greater than the last bid');
+            }
+        }
         $bid=$this->bidservice->storeaBid($validater);
         if(!$bid){
             return back()->with('error','your bid not added');
