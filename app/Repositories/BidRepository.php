@@ -13,7 +13,7 @@ return Bid::where('product_id',$idproduct)->get();
 
 public function addBid(array $data)
 {
-
+return Bid::create($data);
 }
 
 
