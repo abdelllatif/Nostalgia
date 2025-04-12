@@ -155,7 +155,7 @@
                             </div>
                             <div class="flex justify-between text-sm mt-1">
                                 <span class="text-gray-600 dark:text-gray-400">Temps restant:</span>
-                                <span class="text-red-600 dark:text-red-400 font-medium"  id="auction-timer" data-end-date="{{$product->auction_end_date}}"></span>
+                                <span class="text-red-600 dark:text-red-400 font-medium auction-timer" data-end-date="{{$product->auction_end_date}}"></span>
                             </div>
                         </div>
 
@@ -325,7 +325,7 @@
                                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                                             @foreach ( $product->simmilar_product as $simmillar)
                                                 <!-- Objet similaire 1 -->
-                                                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                                                    <a href="{{route('product.details',['id'=>$simmillar->id])}}" class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
                                                         <div class="relative h-48">
                                                             <img src="https://images.unsplash.com/photo-1516979187457-637abb4f9353?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fG9sZCUyMGJvb2t8ZW58MHx8MHx8fDA%3D"
                                                                 alt="Psautier médiéval"
@@ -342,13 +342,13 @@
                                                                 <span class="text-sm text-gray-600 dark:text-gray-400">5 enchères</span>
                                                             </div>
                                                             <div class="mt-2 text-sm text-red-600 dark:text-red-400">
-                                                                <span class="font-medium">Fin: 4 jours</span>
+                                                                <span class="font-medium auction-timer" data-end-date="{{ $simmillar->auction_end_date }}"></span>
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    </a>
                                             @endforeach
 
-                                        </div>
+                                                </div>
                                     </div>
 
                                     <!-- Information de livraison et retours -->
@@ -442,41 +442,64 @@
                                     </div>
                                 </footer>
                                 <script>
-                              document.addEventListener('DOMContentLoaded', function () {
-    const timerElement = document.getElementById('auction-timer');
-    const endDateStr = timerElement.dataset.endDate;
+ document.addEventListener('DOMContentLoaded', function () {
+    // Sélectionner tous les éléments avec la classe 'auction-timer'
+    const timerElements = document.querySelectorAll('.auction-timer');
 
-    // Parse the end date (ensure it's in ISO 8601 format: YYYY-MM-DDTHH:mm:ss)
-    const endDate = new Date(endDateStr);
+    // Pour chaque élément de chronomètre
+    timerElements.forEach(function(timerElement) {
+        const endDateStr = timerElement.dataset.endDate;
 
-    // Validate if the endDate is valid
-    if (isNaN(endDate)) {
-        timerElement.textContent = "Erreur: date de fin invalide.";
-        return;
-    }
+        // Parse the end date (ensure it's in ISO 8601 format: YYYY-MM-DDTHH:mm:ss)
+        const endDate = new Date(endDateStr);
 
-    function updateChrono() {
-        const now = new Date();
-        const diff = endDate - now;
-
-        if (diff <= 0) {
-            timerElement.textContent = "L'enchère est terminée.";
+        // Valider si la date de fin est valide
+        if (isNaN(endDate)) {
+            timerElement.textContent = "Erreur: date de fin invalide.";
             return;
         }
 
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-        const minutes = Math.floor((diff / (1000 * 60)) % 60);
-        const seconds = Math.floor((diff / 1000) % 60);
+        function updateChrono() {
+            const now = new Date();
+            const diff = endDate - now;
 
-        timerElement.textContent =
-            `${days}j ${hours}h ${minutes}m ${seconds}s`;
-    }
+            if (diff <= 0) {
+                timerElement.textContent = "L'enchère est terminée.";
 
-    updateChrono(); // Initial call
-    setInterval(updateChrono, 1000); // Update every second
+                // Désactiver les boutons d'enchère et le champ de saisie si l'enchère est terminée
+                const bidForm = document.querySelector('.bid-form');
+                if (bidForm) {
+                    const bidButtons = bidForm.querySelectorAll('button');
+                    const bidInput = bidForm.querySelector('input[type="text"]');
+
+                    bidButtons.forEach(button => {
+                        button.disabled = true;
+                        button.classList.add('opacity-50', 'cursor-not-allowed');
+                    });
+
+                    if (bidInput) {
+                        bidInput.disabled = true;
+                        bidInput.classList.add('opacity-50', 'cursor-not-allowed');
+                        bidInput.placeholder = "L'enchère est terminée";
+                    }
+                }
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((diff / (1000 * 60)) % 60);
+            const seconds = Math.floor((diff / 1000) % 60);
+
+            timerElement.textContent = `${days}j ${hours}h ${minutes}m ${seconds}s`;
+        }
+
+        updateChrono(); // Appel initial
+        setInterval(updateChrono, 1000); // Mise à jour toutes les secondes
+    });
 });
-                                    </script>
+
+</script>
 
 </body>
 </html>

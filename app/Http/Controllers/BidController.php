@@ -20,7 +20,11 @@ class BidController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validater=$request->validate([
+            'amount'=>'required|numeric|min:0',
+            'product_id'=>'required|exists:products,id'
+        ]);
+        $bid=$this
     }
 
     /**
