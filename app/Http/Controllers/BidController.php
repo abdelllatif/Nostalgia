@@ -6,6 +6,7 @@ use App\Models\Bid;
 use App\Services\BidService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Events\AuctionUpdated;
 
 class BidController extends Controller
 {
@@ -53,7 +54,9 @@ class BidController extends Controller
         if(!$bid){
             return back()->with('error','your bid not added');
         }
-        return back()->with('success','your bid  added succsesfully');
+        event(new AuctionUpdated($bid));
+
+        return back()->with('success','your bid  added succsesfully.'.$bid);
     }
 
     /**

@@ -498,7 +498,10 @@
         setInterval(updateChrono, 1000); // Mise à jour toutes les secondes
     });
 });
-
+window.Echo.channel('auctions')
+    .listen('AuctionUpdated', (e) => {
+        console.log('Auction updated:', e.auction);
+    });
 </script>
 
 </body>

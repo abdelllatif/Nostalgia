@@ -8,6 +8,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\profileController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Mail;
 
 Route::get('/', function () {
     return view('welcome');
@@ -41,3 +42,13 @@ route::get('/En_Attend',[AuthController::class,'Attends_views'])->name('En_Atten
 route::get('/product/details/{id}',[ProductController::class,'show'])->name('product.details');
 Route::get('/catalogue',[ProductController::class,'index'])->name('catalogue.show');
 
+
+Route::get('/test-email', function () {
+    // Send a raw test email
+    Mail::raw('This is a test email for Mailtrap!', function ($message) {
+        $message->to('test@example.com') // Replace with your target email
+                ->subject('Test Email from Nostalgia');
+    });
+
+    return 'Test email has been sent!';
+});
