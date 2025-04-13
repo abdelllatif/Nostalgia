@@ -37,13 +37,15 @@ class BidController extends Controller
         $validater['user_id']=Auth::user()->id;
         $existingBids = $this->bidservice->getproductbids($request->product_id);
         if($existingBids->isEmpty()){
-            if($request->amount>$this->productController->show($request->product_id)){
+            if($request->amount<$this->productController->show($request->product_id)){
                 return back()->with('error','Your bid must be greater than or equal to the starting price');
             }
         }
         else{
             $bigbid=$existingBids->first();
-            if($request->amount<=$bigbid){
+            if($request->amount<=$bigbid->amount){
+
+        //        dd($request->amount<=$bigbid,$request->amount,$bigbid->amount);
                 return back()->with('error','Your bid must be greater than the last bid');
             }
         }

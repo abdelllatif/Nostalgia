@@ -19,7 +19,9 @@ Route::get('/product/Details', function () {
     return view('product_details');
 });
 
-
+Route::get('/hh-test', function() {
+    return "Testing catalogue route";
+});
 route::middleware(['jwt.web'])->group(function(){
     Route::get('/profile',[profileController::class,'show'])->name('profile');
     route::post('/catalogue',[ProductController::class,'store'])->name('catalogue.store');
@@ -28,7 +30,6 @@ Route::get('/Dashebored/categories',[CategorieController::class,'index'])->name(
 Route::post('/Dashebored/categories',[CategorieController::class,'store'])->name('categories.store');
 Route::delete('/Dashebored/categorie/{id}', [CategorieController::class, 'destroy'])->name('categorie.destroy');
 Route::put('/Dashebored/categories/{id}', [CategorieController::class, 'update'])->name('categorie.edit');
-Route::get('/catalogue',[ProductController::class,'index'])->name('catalogue.show');
 Route::post('/bids', [BidController::class, 'store'])->name('bids.store');
 });
 route::get('/register',[AuthController::class,'register_show']);
@@ -38,3 +39,5 @@ route::post('/login',[AuthController::class,'login']);
 route::get('/terms',[AuthController::class,'terms_views']);
 route::get('/En_Attend',[AuthController::class,'Attends_views'])->name('En_Attend');
 route::get('/product/details/{id}',[ProductController::class,'show'])->name('product.details');
+Route::get('/catalogue',[ProductController::class,'index'])->name('catalogue.show');
+

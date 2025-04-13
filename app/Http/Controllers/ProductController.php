@@ -12,18 +12,20 @@ use Illuminate\Support\Facades\Auth;
 use DateTime;
 use GrahamCampbell\ResultType\Success;
 use App\Http\Controllers\BidController;
+use App\Services\BidService;
+
 class ProductController extends Controller
 {
     protected $productService;
     protected $tagService;
     protected $categoryService;
-    protected $bidcontroller;
-    public function __construct(ProductService $productService, TagService $tagService, CategorieService $categoryService,BidController $bidcontroller)
+    protected $bidService;
+    public function __construct(ProductService $productService, TagService $tagService, CategorieService $categoryService,BidService $bidService)
     {
         $this->productService = $productService;
         $this->tagService = $tagService;
         $this->categoryService = $categoryService;
-        $this->bidcontroller = $bidcontroller;
+        $this->bidService = $bidService;
 
     }
 
@@ -33,12 +35,12 @@ class ProductController extends Controller
         $products = $this->productService->getAllProducts($filterBy);
         $tags = $this->tagService->getAllTags();
         $categories = $this->categoryService->getAllCategories();
-        return view('Catalogue', compact('products', 'tags', 'categories'));
+        return view('catalogue', compact('products', 'tags', 'categories'));
     }
     public function show($id)
     {
         $product = $this->productService->getProductById($id);
-        $product->bids = $this->bidcontroller->show($product->id);  // All bids
+        $product->bids = $this->bidService->getproductbids($product->id);  // All bids
         $product->simmilar_product = $this->productService->getSimilarProducts($product->category_id);
 
         if (!$product) {
@@ -51,7 +53,10 @@ class ProductController extends Controller
         return view('product_details', compact('product', 'firstBids'));
     }
 
-
+    public function fetchActiveProducts()
+    {
+        return Product::where('status', 'active')->get();
+    }
 
     public function getTimeRemaining($product)
     {
