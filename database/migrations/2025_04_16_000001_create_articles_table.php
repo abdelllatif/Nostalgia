@@ -15,7 +15,7 @@ class CreateArticlesTable extends Migration
             $table->string('image')->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
-            $table->enum('status', ['draft', 'posted'])->default('posted');
+            $table->enum('status', ['suspended', 'posted'])->default('posted');
             $table->timestamps();
         });
     }
