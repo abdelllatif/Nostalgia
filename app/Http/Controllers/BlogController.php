@@ -74,13 +74,11 @@ class BlogController extends Controller
         if ($request->tags) {
             $article->tags()->attach($request->tags);
         }
-
-        return response()->json(['message' => 'Article created successfully', 'article' => $article]);
+        return redirect()->route('blog')->with('succsess','artricle creaated sucsses');
     }
 
     public function update(Request $request, Article $article)
     {
-        $this->authorize('update', $article);
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',
@@ -106,7 +104,6 @@ class BlogController extends Controller
 
     public function destroy(Article $article)
     {
-        $this->authorize('delete', $article);
 
         if ($article->image) {
             Storage::disk('public')->delete($article->image);
