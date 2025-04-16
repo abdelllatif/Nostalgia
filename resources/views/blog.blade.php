@@ -72,11 +72,9 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center mb-8">
             <h1 class="text-3xl font-bold">Blog</h1>
-            @auth
                 <button onclick="openModal()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
                     Add Article
                 </button>
-            @endauth
         </div>
 
         <!-- Articles Grid -->
