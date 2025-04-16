@@ -22,5 +22,8 @@ class Tag extends Model
 {
     return $this->morphedByMany(Article::class, 'taggable');
 }
-
+public function articles()
+{
+    return $this->belongsToMany(Article::class,'article_tag');
+}
 }
