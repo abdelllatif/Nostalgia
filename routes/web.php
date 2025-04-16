@@ -46,7 +46,7 @@ Route::get('/catalogue',[ProductController::class,'index'])->name('catalogue.sho
 Route::get('/test-email', function () {
     // Send a raw test email
     Mail::raw('This is a test email for Mailtrap!', function ($message) {
-        $message->to('test@example.com') // Replace with your target email
+        $message->to('haissouneabdellatif749@gmail.com') // Replace with your target email
                 ->subject('Test Email from Nostalgia');
     });
 

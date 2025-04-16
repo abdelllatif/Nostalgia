@@ -37,8 +37,8 @@
                         <img src="{{ asset('images/user.jpg') }}" alt="User" class="w-10 h-10 rounded-xl">
                     </div>
                     <div class="flex-grow relative">
-                        <input type="text" name="search" value="{{ request('search') }}" 
-                            placeholder="Rechercher des articles..." 
+                        <input type="text" name="search" value="{{ request('search') }}"
+                            placeholder="Rechercher des articles..."
                             class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
                             onkeyup="if(event.key === 'Enter') document.getElementById('filterForm').submit();">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -146,58 +146,74 @@
                     </button>
                 </div>
                 <div class="px-6 py-4 max-h-[calc(100vh-200px)] overflow-y-auto">
-                <form id="articleForm" action="{{ route('blog.store') }}" method="POST" enctype="multipart/form-data" class="max-h-96 overflow-y-auto pr-2">
-    @csrf
-    <div class="mb-4">
-        <label for="title" class="block text-sm font-medium text-gray-700">Titre</label>
-        <input type="text" name="title" id="title" required class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
-    </div>
-    
-    <div class="mb-4">
-        <label for="content" class="block text-sm font-medium text-gray-700">Contenu</label>
-        <textarea name="content" id="content" rows="4" required class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500"></textarea>
-    </div>
-    
-    <div class="grid grid-cols-2 gap-3 mb-4">
-        <div>
-            <label for="category_id" class="block text-sm font-medium text-gray-700">Catégorie</label>
-            <select name="category_id" id="category_id" required class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
-                @foreach($categories as $category)
-                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                @endforeach
-            </select>
-        </div>
-        
-        <div>
-            <label class="block text-sm font-medium text-gray-700">Tags</label>
-            <select id="tagSelect" onchange="addTag()" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
-                <option value="">Sélectionner...</option>
-                @foreach($tags as $tag)
-                    <option value="{{ $tag->id }}">{{ $tag->name }}</option>
-                @endforeach
-            </select>
-        </div>
-    </div>
-    
-    <div class="mb-4">
-        <div class="flex flex-wrap gap-1 mb-2" id="selectedTags"></div>
-    </div>
-    
-    <div class="mb-4">
-        <label for="image" class="block text-sm font-medium text-gray-700">Image</label>
-        <input type="file" name="image" id="image" accept="image/*" class="w-full text-sm py-1">
-        <div id="imagePreview" class="mt-2 flex flex-wrap"></div>
-    </div>
-    
-    <div class="flex justify-end gap-3 pt-2 border-t">
-        <button type="button" onclick="closeModal()" class="px-3 py-1.5 text-sm border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
-            Annuler
-        </button>
-        <button type="submit" class="px-3 py-1.5 text-sm bg-purple-600 text-white rounded-md hover:bg-purple-700">
-            Publier
-        </button>
-    </div>
-</form>
+                    <div class="w-screen h-screen bg-gray-100 flex items-center justify-center p-4 overflow-hidden">
+                        <div class="w-full max-w-4xl h-full bg-white rounded-lg shadow-lg overflow-y-auto p-6">
+                            <form id="articleForm" action="{{ route('blog.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+                                @csrf
+
+                                <h2 class="text-2xl font-bold text-gray-800">Créer un nouvel article</h2>
+
+                                <!-- Titre -->
+                                <div>
+                                    <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Titre</label>
+                                    <input type="text" name="title" id="title" required
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                                </div>
+
+                                <!-- Contenu -->
+                                <div>
+                                    <label for="content" class="block text-sm font-medium text-gray-700 mb-1">Contenu</label>
+                                    <textarea name="content" id="content" rows="6" required
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500 resize-none"></textarea>
+                                </div>
+
+                                <!-- Catégorie -->
+                                <div>
+                                    <label for="category_id" class="block text-sm font-medium text-gray-700 mb-1">Catégorie</label>
+                                    <select name="category_id" id="category_id" required
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                                        @foreach($categories as $category)
+                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <!-- Tags -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Tags</label>
+                                    <div class="flex flex-wrap gap-2 mb-2" id="selectedTags"></div>
+                                    <select id="tagSelect" onchange="addTag()"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                                        <option value="">Sélectionner un tag...</option>
+                                        @foreach($tags as $tag)
+                                            <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <!-- Image -->
+                                <div>
+                                    <label for="image" class="block text-sm font-medium text-gray-700 mb-1">Image</label>
+                                    <input type="file" name="image" id="image" accept="image/*"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-md">
+                                    <div id="imagePreview" class="mt-2 flex flex-wrap gap-2"></div>
+                                </div>
+
+                                <!-- Buttons -->
+                                <div class="flex justify-end gap-4 pt-4 border-t border-gray-200">
+                                    <button type="button" onclick="closeModal()"
+                                        class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100">
+                                        Annuler
+                                    </button>
+                                    <button type="submit"
+                                        class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700">
+                                        Publier
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -250,7 +266,7 @@
         const select = document.getElementById('tagSelect');
         const tagId = select.value;
         const tagText = select.options[select.selectedIndex].text;
-        
+
         if (tagId && !selectedTags.has(tagId)) {
             selectedTags.add(tagId);
             const tagElement = document.createElement('div');
