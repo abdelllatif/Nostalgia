@@ -131,109 +131,152 @@
             {{ $articles->appends(request()->except('page'))->links() }}
         </div>
 
-        <!-- Add Article Modal -->
-        @auth
-        <div id="addArticleModal" class="fixed inset-0 bg-black bg-opacity-75 hidden items-center justify-center z-50">
-            <div class="bg-white rounded-lg shadow-xl max-w-3xl w-full mx-4 overflow-hidden">
-                <div class="flex items-center justify-between px-6 py-4 border-b">
-                    <h2 class="text-xl font-semibold text-gray-900">Créer un Nouvel Article</h2>
-                    <button onclick="closeModal()" class="text-gray-400 hover:text-gray-500">
-                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                        </svg>
-                    </button>
+ <!-- Add Article Modal -->
+<div id="addArticleModal" class="fixed inset-0 bg-black bg-opacity-75 hidden items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-lg shadow-xl max-w-md w-full relative max-h-[500px] overflow-hidden">
+        <div class="flex items-center justify-between px-4 py-3 border-b sticky top-0 bg-white z-10">
+            <h2 class="text-lg font-semibold text-gray-900">Créer un Nouvel Article</h2>
+            <button onclick="closeModal()" class="text-gray-400 hover:text-gray-500 focus:outline-none">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+        <div class="px-4 py-4 overflow-y-auto" style="max-height: calc(500px - 120px);">
+            <form id="articleForm" action="{{ route('blog.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+
+                <!-- Titre -->
+                <div class="mb-3">
+                    <label for="title" class="block text-sm font-medium text-gray-700">Titre</label>
+                    <input type="text" name="title" id="title" required
+                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
                 </div>
-                <div class="px-6 py-4 max-h-[calc(100vh-200px)] overflow-y-auto">
-                    <div class="w-screen h-screen bg-gray-100 flex items-center justify-center p-4 overflow-hidden">
-                        <div class="w-full max-w-4xl h-full bg-white rounded-lg shadow-lg overflow-y-auto p-6">
-                            <form id="articleForm" action="{{ route('blog.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
-                                @csrf
 
-                                <h2 class="text-2xl font-bold text-gray-800">Créer un nouvel article</h2>
+                <!-- Contenu -->
+                <div class="mb-3">
+                    <label for="content" class="block text-sm font-medium text-gray-700">Contenu</label>
+                    <textarea name="content" id="content" rows="3" required
+                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 resize-none"></textarea>
+                </div>
 
-                                <!-- Titre -->
-                                <div>
-                                    <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Titre</label>
-                                    <input type="text" name="title" id="title" required
-                                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
-                                </div>
+                <!-- Catégorie -->
+                <div class="mb-3">
+                    <label for="category_id" class="block text-sm font-medium text-gray-700">Catégorie</label>
+                    <select name="category_id" id="category_id" required
+                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                        @foreach($categories as $category)
+                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
 
-                                <!-- Contenu -->
-                                <div>
-                                    <label for="content" class="block text-sm font-medium text-gray-700 mb-1">Contenu</label>
-                                    <textarea name="content" id="content" rows="6" required
-                                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500 resize-none"></textarea>
-                                </div>
+                <!-- Tags -->
+                <div class="mb-3">
+                    <label class="block text-sm font-medium text-gray-700">Tags</label>
+                    <div class="flex flex-wrap gap-2 mb-2" id="selectedTags"></div>
+                    <select id="tagSelect" onchange="addTag()"
+                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                        <option value="">Sélectionner un tag...</option>
+                        @foreach($tags as $tag)
+                            <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
 
-                                <!-- Catégorie -->
-                                <div>
-                                    <label for="category_id" class="block text-sm font-medium text-gray-700 mb-1">Catégorie</label>
-                                    <select name="category_id" id="category_id" required
-                                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
-                                        @foreach($categories as $category)
-                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-                                <!-- Tags -->
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Tags</label>
-                                    <div class="flex flex-wrap gap-2 mb-2" id="selectedTags"></div>
-                                    <select id="tagSelect" onchange="addTag()"
-                                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
-                                        <option value="">Sélectionner un tag...</option>
-                                        @foreach($tags as $tag)
-                                            <option value="{{ $tag->id }}">{{ $tag->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-                                <!-- Image -->
-                                <div>
-                                    <label for="image" class="block text-sm font-medium text-gray-700 mb-1">Image</label>
-                                    <input type="file" name="image" id="image" accept="image/*"
-                                        class="w-full px-4 py-2 border border-gray-300 rounded-md">
-                                    <div id="imagePreview" class="mt-2 flex flex-wrap gap-2"></div>
-                                </div>
-
-                                <!-- Buttons -->
-                                <div class="flex justify-end gap-4 pt-4 border-t border-gray-200">
-                                    <button type="button" onclick="closeModal()"
-                                        class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100">
-                                        Annuler
-                                    </button>
-                                    <button type="submit"
-                                        class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700">
-                                        Publier
-                                    </button>
-                                </div>
-                            </form>
+                <!-- Image -->
+                <div class="mb-3">
+                    <label for="image" class="block text-sm font-medium text-gray-700">Image</label>
+                    <div class="mt-1 flex justify-center px-6 pt-3 pb-4 border-2 border-gray-300 border-dashed rounded-md">
+                        <div class="space-y-1 text-center">
+                            <svg class="mx-auto h-6 w-6 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                                <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m0-8z"></path>
+                            </svg>
+                            <div class="flex text-xs text-gray-600 justify-center">
+                                <label for="image" class="cursor-pointer bg-white font-medium text-purple-600 hover:text-purple-500">
+                                    <span>Télécharger</span>
+                                    <input type="file" name="image" id="image" accept="image/*" class="sr-only">
+                                </label>
+                            </div>
                         </div>
                     </div>
-
+                    <div id="imagePreview" class="mt-2 flex flex-wrap gap-2"></div>
                 </div>
             </div>
+
+            <!-- Buttons -->
+            <div class="bg-gray-50 px-4 py-3 flex justify-end rounded-b-lg sticky bottom-0">
+                <button type="button" onclick="closeModal()"
+                    class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 mr-2">
+                    Annuler
+                </button>
+                <button type="submit"
+                    class="bg-purple-600 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-purple-700">
+                    Publier
+                </button>
+            </form>
         </div>
-        @endauth
     </div>
+</div>
+
+        @if (session('success'))
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    Swal.fire({
+                        title: 'Succès!',
+                        text: '{{ session("success") }}',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    });
+                });
+            </script>
+        @endif
+
+        @if (session('error'))
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    Swal.fire({
+                        title: 'Erreur!',
+                        text: '{{ session("error") }}',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                });
+            </script>
+        @endif
+
 
     <script>
-    function openModal() {
-        document.getElementById('addArticleModal').classList.remove('hidden');
-        document.getElementById('addArticleModal').classList.add('flex');
-        document.body.style.overflow = 'hidden';
-    }
+    document.addEventListener('DOMContentLoaded', function() {
+        window.openModal = function() {
+            const modal = document.getElementById('addArticleModal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                document.body.style.overflow = 'hidden';
+            }
+        }
 
-    function closeModal() {
-        document.getElementById('addArticleModal').classList.add('hidden');
-        document.getElementById('addArticleModal').classList.remove('flex');
-        document.body.style.overflow = 'auto';
-        // Reset form
-        document.getElementById('imagePreview').innerHTML = '';
-        document.getElementById('selectedTags').innerHTML = '';
-        document.getElementById('articleForm').reset();
-    }
+        window.closeModal = function() {
+            const modal = document.getElementById('addArticleModal');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                document.body.style.overflow = 'auto';
+                // Reset form
+                document.getElementById('imagePreview').innerHTML = '';
+                document.getElementById('selectedTags').innerHTML = '';
+                document.getElementById('articleForm').reset();
+                selectedTags.clear();
+            }
+        }
+
+        // Initialize the modal button
+        const addButton = document.querySelector('button[onclick="openModal()"]');
+        if (addButton) {
+            addButton.addEventListener('click', openModal);
+        }
+    });
 
     // Image preview functionality
     document.getElementById('image').addEventListener('change', function(e) {
@@ -290,6 +333,10 @@
             closeModal();
         }
     });
+
     </script>
+
+    <!-- Add SweetAlert2 for better notifications -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>

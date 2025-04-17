@@ -7,7 +7,7 @@ use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\profileController;
 use App\Http\Controllers\TagController;
-use App\Http\Controllers\BlogController;
+use App\Http\Controllers\ArticleController;
 
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Mail;
@@ -34,6 +34,9 @@ Route::post('/Dashebored/categories',[CategorieController::class,'store'])->name
 Route::delete('/Dashebored/categorie/{id}', [CategorieController::class, 'destroy'])->name('categorie.destroy');
 Route::put('/Dashebored/categories/{id}', [CategorieController::class, 'update'])->name('categorie.edit');
 Route::post('/bids', [BidController::class, 'store'])->name('bids.store');
+
+Route::post('/blog', [ArticleController::class, 'store'])->name('blog.store');
+
 });
 route::get('/register',[AuthController::class,'register_show']);
 route::get('/login',[AuthController::class,'login_show'])->name('login');
@@ -49,14 +52,13 @@ Route::get('/catalogue',[ProductController::class,'index'])->name('catalogue.sho
 
 
 
-Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
-Route::get('/blog/{article}', [BlogController::class, 'show'])->name('blog.show');
-Route::post('/blog', [BlogController::class, 'store'])->name('blog.store');
-Route::put('/blog/{article}', [BlogController::class, 'update'])->name('blog.update');
-Route::delete('/blog/{article}', [BlogController::class, 'destroy'])->name('blog.destroy');
+Route::get('/blog', [ArticleController::class, 'index'])->name('blog.index');
+Route::get('/blog/{article}', [ArticleController::class, 'show'])->name('blog.show');
+Route::put('/blog/{article}', [ArticleController::class, 'update'])->name('blog.update');
+Route::delete('/blog/{article}', [ArticleController::class, 'destroy'])->name('blog.destroy');
 
 // Admin blog routes
-Route::get('/dashboard/blog', [BlogController::class, 'adminIndex'])->name('admin.blog.index');
+Route::get('/dashboard/blog', [ArticleController::class, 'adminIndex'])->name('admin.blog.index');
 
 
 
@@ -65,7 +67,6 @@ Route::get('/dashboard/blog', [BlogController::class, 'adminIndex'])->name('admi
 
 
 Route::get('/test-email', function () {
-    // Send a raw test email
     Mail::raw('This is a test email for Mailtrap!', function ($message) {
         $message->to('haissouneabdellatif749@gmail.com') // Replace with your target email
                 ->subject('Test Email from Nostalgia');
