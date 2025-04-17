@@ -42,14 +42,14 @@ class ArticlesController extends Controller
 
     public function show(Article $article)
     {
-        $article->load(['user', 'category', 'tags']);
+        $article->load(['user', 'categorie', 'tags']);
         $similarArticles = Article::where('category_id', $article->category_id)
             ->where('id', '!=', $article->id)
             ->with(['user', 'category', 'tags'])
             ->take(3)
             ->get();
 
-        return view('blog.show', compact('article', 'similarArticles'));
+        return view('show_article', compact('article', 'similarArticles'));
     }
 
     public function store(Request $request)

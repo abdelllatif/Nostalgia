@@ -269,22 +269,18 @@
                 modal.classList.add('hidden');
                 modal.classList.remove('flex');
                 document.body.style.overflow = 'auto';
-                // Reset form
                 document.getElementById('imagePreview').innerHTML = '';
                 document.getElementById('selectedTags').innerHTML = '';
                 document.getElementById('articleForm').reset();
                 selectedTags.clear();
             }
         }
-
-        // Initialize the modal button
         const addButton = document.querySelector('button[onclick="openModal()"]');
         if (addButton) {
             addButton.addEventListener('click', openModal);
         }
     });
 
-    // Image preview functionality
     document.getElementById('image').addEventListener('change', function(e) {
         const file = e.target.files[0];
         if (file) {

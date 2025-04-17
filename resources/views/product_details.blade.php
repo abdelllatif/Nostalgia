@@ -99,32 +99,21 @@
                 </div>
 
                 <!-- Authentification et Provenance -->
-                <div class="mt-8 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Authentification et Provenance</h3>
+               <div class="mt-8 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Information sur le vendeur</h3>
                     <div class="space-y-4 text-gray-700 dark:text-gray-300">
                         <div class="flex items-center">
-                            <svg class="h-5 w-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>Certificat d'authenticité</span>
                         </div>
                         <div class="flex items-center">
-                            <svg class="h-5 w-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                         <!--   <svg class="h-5 w-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>Expertise réalisée par Dr. Michel Blanc (Université de la Sorbonne)</span>
+                            </svg> -->
+
                         </div>
                         <div class="flex items-center">
-                            <svg class="h-5 w-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>Provenance: Collection privée française, acquis en 1965</span>
                         </div>
                         <div class="flex items-center">
-                            <svg class="h-5 w-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>Documentation historique complète disponible</span>
+
                         </div>
                     </div>
                 </div>
@@ -212,7 +201,7 @@
                     <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
                         <div class="flex items-center">
                             <div class="flex-shrink-0">
-                                <img class="h-12 w-12 rounded-full" src="https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Vendeur">
+                                <img class="h-12 w-12 rounded-full" src="data:image/png;base64,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" alt="Vendeur">
                             </div>
                             <div class="ml-4">
                                 <h3 class="text-lg font-medium text-gray-900 dark:text-white">{{$product->user->name." ".$product->user->first_name}}</h3>
@@ -225,7 +214,6 @@
                                         @endfor
 
                                     </div>
-                                    <span class="ml-2">83 évaluations</span>
                                 </div>
                             </div>
                             <div class="ml-auto">
@@ -281,7 +269,7 @@
     <div id="extra-bids" class="hidden">
         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
             <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-                @foreach($product->bids->slice(5) as $bid)  <!-- Start from the 6th bid -->
+                @foreach($product->bids->slice(5) as $bid)
                     <tr>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="flex items-center">
@@ -318,13 +306,11 @@
     });
 </script>
 
-
                                     <!-- Objets similaires -->
                                     <div class="mt-12">
                                         <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Objets similaires</h2>
                                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                                             @foreach ( $product->simmilar_product as $simmillar)
-                                                <!-- Objet similaire 1 -->
                                                     <a href="{{route('product.details',['id'=>$simmillar->id])}}" class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
                                                         <div class="relative h-48">
                                                             <img src="https://images.unsplash.com/photo-1516979187457-637abb4f9353?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fG9sZCUyMGJvb2t8ZW58MHx8MHx8fDA%3D"
@@ -353,31 +339,9 @@
 
                                     <!-- Information de livraison et retours -->
                                     <div class="mt-12 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-                                        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">Informations pratiques</h2>
-                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                            <div class="flex flex-col items-center p-4 text-center">
-                                                <svg class="h-10 w-10 text-blue-600 dark:text-blue-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                                </svg>
-                                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Retrait et livraison</h3>
-                                                <p class="text-gray-700 dark:text-gray-300">
-                                                    Retrait possible à la galerie à Paris<br>
-                                                    Livraison sécurisée dans le monde entier<br>
-                                                    Délai de 3-5 jours ouvrés après paiement
-                                                </p>
-                                            </div>
-                                            <div class="flex flex-col items-center p-4 text-center">
-                                                <svg class="h-10 w-10 text-blue-600 dark:text-blue-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                                </svg>
-                                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Paiement</h3>
-                                                <p class="text-gray-700 dark:text-gray-300">
-                                                    Carte bancaire, virement<br>
-                                                    Possibilité de paiement en 3 fois<br>
-                                                    Transaction sécurisée
-                                                </p>
-                                            </div>
-                                            <div class="flex flex-col items-center p-4 text-center">
+                                        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">Informations </h2>
+                                        <div class="flex justify-center">
+                                            <div class=" p-4 text-center">
                                                 <svg class="h-10 w-10 text-blue-600 dark:text-blue-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
                                                 </svg>
@@ -394,79 +358,24 @@
 
                                 <!-- Footer -->
                                 <footer class="bg-white dark:bg-gray-900 mt-16 border-t border-gray-200 dark:border-gray-800">
-                                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                                        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                                            <div>
-                                                <div class="flex items-center space-x-2 mb-4">
-                                                    <img src="https://img.icons8.com/ios-filled/50/000000/retro-tv.png" alt="Logo Nostalgia" class="w-8 h-8 dark:filter dark:invert">
-                                                    <span class="text-xl font-bold text-gray-900 dark:text-white">Nostalgia</span>
-                                                </div>
-                                                <p class="text-gray-600 dark:text-gray-400 mb-4">
-                                                    Spécialiste des objets de collection et d'antiquités depuis 2010.
-                                                </p>
-                                                <div class="flex space-x-4">
-                                                    <a href="#" class="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
-                                                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-                                                    </a>
-                                                    <a href="#" class="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
-                                                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723 10.054 10.054 0 01-3.127 1.184 4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
-                                                    </a>
-                                                    <a href="#" class="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
-                                                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/></svg>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <h3 class="text-gray-900 dark:text-white font-semibold mb-4">Liens rapides</h3>
-                                                <ul class="space-y-2 text-gray-600 dark:text-gray-400">
-                                                    <li><a href="#" class="hover:text-blue-600 dark:hover:text-blue-400">Accueil</a></li>
-                                                    <li><a href="#" class="hover:text-blue-600 dark:hover:text-blue-400">Catalogue</a></li>
-                                                    <li><a href="#" class="hover:text-blue-600 dark:hover:text-blue-400">Comment enchérir</a></li>
-                                                    <li><a href="#" class="hover:text-blue-600 dark:hover:text-blue-400">Vendre un objet</a></li>
-                                                    <li><a href="#" class="hover:text-blue-600 dark:hover:text-blue-400">Blog</a></li>
-                                                </ul>
-                                            </div>
-                                            <div>
-                                                <h3 class="text-gray-900 dark:text-white font-semibold mb-4">Catégories</h3>
-                                                <ul class="space-y-2 text-gray-600 dark:text-gray-400">
-                                                    <li><a href="#" class="hover:text-blue-600 dark:hover:text-blue-400">Manuscrits</a></li>
-                                                    <li><a href="#" class="hover:text-blue-600 dark:hover:text-blue-400">Livres anciens</a></li>
-                                                    <li><a href="#" class="hover:text-blue-600 dark:hover:text-blue-400">Estampes</a></li>
-                                                    <li><a href="#" class="hover:text-blue-600 dark:hover:text-blue-400">Arts décoratifs</a></li>
-                                                    <li><a href="#" class="hover:text-blue-600 dark:hover:text-blue-400">Toutes les catégories</a></li>
-                                                </ul>
-                                            </div>
-                                            <div>
-                                            </div>
-                                        </div>
-                                    </div>
+
                                 </footer>
                                 <script>
  document.addEventListener('DOMContentLoaded', function () {
-    // Sélectionner tous les éléments avec la classe 'auction-timer'
     const timerElements = document.querySelectorAll('.auction-timer');
-
-    // Pour chaque élément de chronomètre
     timerElements.forEach(function(timerElement) {
         const endDateStr = timerElement.dataset.endDate;
-
-        // Parse the end date (ensure it's in ISO 8601 format: YYYY-MM-DDTHH:mm:ss)
         const endDate = new Date(endDateStr);
-
-        // Valider si la date de fin est valide
         if (isNaN(endDate)) {
             timerElement.textContent = "Erreur: date de fin invalide.";
             return;
         }
-
         function updateChrono() {
             const now = new Date();
             const diff = endDate - now;
 
             if (diff <= 0) {
                 timerElement.textContent = "L'enchère est terminée.";
-
-                // Désactiver les boutons d'enchère et le champ de saisie si l'enchère est terminée
                 const bidForm = document.querySelector('.bid-form');
                 if (bidForm) {
                     const bidButtons = bidForm.querySelectorAll('button');
@@ -494,14 +403,11 @@
             timerElement.textContent = `${days}j ${hours}h ${minutes}m ${seconds}s`;
         }
 
-        updateChrono(); // Appel initial
-        setInterval(updateChrono, 1000); // Mise à jour toutes les secondes
+        updateChrono();
+        setInterval(updateChrono, 1000);
     });
 });
-window.Echo.channel('auctions')
-    .listen('AuctionUpdated', (e) => {
-        console.log('Auction updated:', e.auction);
-    });
+
 </script>
 
 </body>

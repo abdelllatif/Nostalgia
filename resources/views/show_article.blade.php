@@ -14,7 +14,7 @@
         <div class="mb-8">
             <div class="flex items-center justify-between mb-4">
                 <div class="flex items-center">
-                    <img src="{{ $article->user->avatar_url }}" alt="{{ $article->user->name }}" 
+                    <img src="{{ $article->user->avatar_url }}" alt="{{ $article->user->name }}"
                         class="w-12 h-12 rounded-full mr-4">
                     <div>
                         <h3 class="font-medium">{{ $article->user->name }}</h3>
@@ -28,7 +28,7 @@
                                 <path d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
                             </svg>
                         </button>
-                        <div x-show="open" @click.away="open = false" 
+                        <div x-show="open" @click.away="open = false"
                             class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1">
                             <button onclick="openEditModal()" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">
                                 Edit Article
@@ -42,9 +42,13 @@
             </div>
             <h1 class="text-4xl font-bold mb-4">{{ $article->title }}</h1>
             <div class="flex flex-wrap gap-2 mb-4">
-                <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded">
-                    {{ $article->category->name }}
-                </span>
+                @empty($record->categorie)
+                                <span class="text-gray-500">Aucune categoie</span>
+
+                                @endempty
+                                @if($article->categorie)
+                                {{ $article->categorie->name }}
+                                @endif
                 @foreach($article->tags as $tag)
                     <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded">
                         {{ $tag->name }}
@@ -52,7 +56,7 @@
                 @endforeach
             </div>
             @if($article->image)
-                <img src="{{ $article->image_url }}" alt="{{ $article->title }}" 
+                <img src="{{ $article->image_url }}" alt="{{ $article->title }}"
                     class="w-full h-[400px] object-cover rounded-lg mb-8">
             @endif
         </div>
@@ -71,7 +75,7 @@
                         <a href="{{ route('blog.show', $similar) }}" class="block">
                             <div class="bg-white rounded-lg shadow-md overflow-hidden">
                                 @if($similar->image)
-                                    <img src="{{ $similar->image_url }}" alt="{{ $similar->title }}" 
+                                    <img src="{{ $similar->image_url }}" alt="{{ $similar->title }}"
                                         class="w-full h-40 object-cover">
                                 @endif
                                 <div class="p-4">
@@ -94,7 +98,7 @@
                 <form id="editForm" onsubmit="updateArticle(event)" class="space-y-4">
                     <div>
                         <label class="block text-sm font-medium mb-1">Title</label>
-                        <input type="text" id="editTitle" required class="w-full px-4 py-2 border rounded" 
+                        <input type="text" id="editTitle" required class="w-full px-4 py-2 border rounded"
                             value="{{ $article->title }}">
                     </div>
                     <div>
@@ -117,7 +121,7 @@
                             @foreach($article->tags as $tag)
                                 <div class="bg-blue-100 text-blue-800 px-3 py-1 rounded flex items-center gap-2">
                                     {{ $tag->name }}
-                                    <button type="button" onclick="removeEditTag('{{ $tag->id }}', this)" 
+                                    <button type="button" onclick="removeEditTag('{{ $tag->id }}', this)"
                                         class="text-blue-600 hover:text-blue-800">&times;</button>
                                 </div>
                             @endforeach
@@ -134,7 +138,7 @@
                         <input type="file" id="editImage" accept="image/*" class="w-full">
                     </div>
                     <div class="flex justify-end gap-4">
-                        <button type="button" onclick="closeEditModal()" 
+                        <button type="button" onclick="closeEditModal()"
                             class="px-4 py-2 border rounded hover:bg-gray-100">
                             Cancel
                         </button>
@@ -169,7 +173,7 @@ function addEditTag() {
     const select = document.getElementById('editTagSelect');
     const tagId = select.value;
     const tagText = select.options[select.selectedIndex].text;
-    
+
     if (tagId && !editSelectedTags.has(tagId)) {
         editSelectedTags.add(tagId);
         const tagElement = document.createElement('div');
@@ -188,66 +192,6 @@ function addEditTag() {
 function removeEditTag(tagId, button) {
     editSelectedTags.delete(tagId);
     button.parentElement.remove();
-}
-
-async function updateArticle(event) {
-    event.preventDefault();
-    
-    const formData = new FormData();
-    formData.append('_method', 'PUT');
-    formData.append('title', document.getElementById('editTitle').value);
-    formData.append('content', document.getElementById('editContent').value);
-    formData.append('category_id', document.getElementById('editCategory').value);
-    editSelectedTags.forEach(tagId => formData.append('tags[]', tagId));
-    
-    const imageFile = document.getElementById('editImage').files[0];
-    if (imageFile) {
-        formData.append('image', imageFile);
-    }
-
-    try {
-        const response = await fetch('{{ route("blog.update", $article) }}', {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            body: formData
-        });
-
-        if (response.ok) {
-            window.location.reload();
-        } else {
-            const data = await response.json();
-            alert(data.message || 'Error updating article');
-        }
-    } catch (error) {
-        alert('Error updating article');
-    }
-}
-
-async function deleteArticle() {
-    if (!confirm('Are you sure you want to delete this article?')) {
-        return;
-    }
-
-    try {
-        const response = await fetch('{{ route("blog.destroy", $article) }}', {
-            method: 'DELETE',
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                'Content-Type': 'application/json'
-            }
-        });
-
-        if (response.ok) {
-            window.location.href = '{{ route("blog.index") }}';
-        } else {
-            const data = await response.json();
-            alert(data.message || 'Error deleting article');
-        }
-    } catch (error) {
-        alert('Error deleting article');
-    }
 }
 </script>
 </body>

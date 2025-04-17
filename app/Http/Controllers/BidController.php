@@ -56,7 +56,7 @@ class BidController extends Controller
         }
         event(new AuctionUpdated($bid));
 
-        return back()->with('success','your bid  added succsesfully.'.$bid);
+        return back()->with('success','your bid  added succsesfully.');
     }
 
     /**
