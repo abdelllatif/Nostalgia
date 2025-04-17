@@ -36,7 +36,6 @@ Route::delete('/Dashebored/categorie/{id}', [CategorieController::class, 'destro
 Route::put('/Dashebored/categories/{id}', [CategorieController::class, 'update'])->name('categorie.edit');
 Route::post('/bids', [BidController::class, 'store'])->name('bids.store');
 
-Route::post('/blog', [ArticleController::class, 'store'])->name('blog.store');
 
 });
 route::get('/register',[AuthController::class,'register_show']);
@@ -49,17 +48,6 @@ route::get('/product/details/{id}',[ProductController::class,'show'])->name('pro
 Route::get('/catalogue',[ProductController::class,'index'])->name('catalogue.show');
 
 
-
-
-
-
-Route::get('/blog', [ArticleController::class, 'index'])->name('blog.index');
-Route::get('/blog/{article}', [ArticleController::class, 'show'])->name('blog.show');
-Route::put('/blog/{article}', [ArticleController::class, 'update'])->name('blog.update');
-Route::delete('/blog/{article}', [ArticleController::class, 'destroy'])->name('blog.destroy');
-
-// Admin blog routes
-Route::get('/dashboard/blog', [ArticleController::class, 'adminIndex'])->name('admin.blog.index');
 
 
 
@@ -81,11 +69,11 @@ Route::get('/test-email', function () {
 
 
 
+Route::get('admin/users',[AdminUserController::class,'index'])->name('admin.users.index');
 
-
-
-Route::get('/admin/users', [AdminUserController::class, 'index'])->name('admin.users.index');
+Route::get('/admin/users',[AdminUserController::class, 'index'])->name('admin.users.index');
 Route::post('/admin/users/{id}/approve', [AdminUserController::class, 'approve'])->name('admin.users.approve');
 Route::post('/admin/users/{id}/reject', [AdminUserController::class, 'reject'])->name('admin.users.reject');
 Route::post('/admin/users/{id}/suspend', [AdminUserController::class, 'suspend'])->name('admin.users.suspend');
 Route::post('/admin/users/{id}/activate', [AdminUserController::class, 'activate'])->name('admin.users.activate');
+Route::get('/admin/users/{id}', [AdminUserController::class, 'view'])->name('admin.users.view');
