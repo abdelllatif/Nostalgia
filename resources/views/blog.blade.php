@@ -99,7 +99,13 @@
                         <p class="text-gray-600 mb-4 line-clamp-3">{{ Str::limit($article->content, 150) }}</p>
                         <div class="flex flex-wrap gap-2 mb-4">
                             <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800">
-                                {{ $article->category->name }}
+                                @empty($record->categorie)
+                                <span class="text-gray-500">Aucune categoie</span>
+
+                                @endempty
+                                @if($article->categorie)
+                                {{ $article->categorie->name }}
+                                @endif
                             </span>
                             @foreach($article->tags as $tag)
                                 <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
@@ -107,7 +113,7 @@
                                 </span>
                             @endforeach
                         </div>
-                        <a href="{{ route('blog.show', $article) }}" class="inline-flex items-center text-purple-600 hover:text-purple-700">
+                        <a href="{{ route('Article.show', ['id'=> $article->id]) }}" class="inline-flex items-center text-purple-600 hover:text-purple-700">
                             Lire la suite
                             <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>

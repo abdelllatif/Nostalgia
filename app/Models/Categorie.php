@@ -20,6 +20,6 @@ class Categorie extends Model
 
     public function Articles()
     {
-        return $this->hasMany(Article::class);
+        return $this->hasMany(Article::class,'category_id');
     }
 }

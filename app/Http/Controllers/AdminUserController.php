@@ -17,12 +17,12 @@ class AdminUserController extends Controller
     public function index()
     {
         // Récupérer les utilisateurs en attente d'approbation
-        $pendingUsers = User::where('status', 'pending')
+        $pendingUsers = User::where('status', 'waiting_to_approved')
             ->orderBy('created_at', 'desc')
             ->paginate(10, ['*'], 'pending_page');
 
         // Récupérer les utilisateurs actifs et suspendus
-        $users = User::whereIn('status', ['active', 'suspended'])
+        $users = User::whereIn('status', ['avtive', 'suspended'])
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
@@ -39,13 +39,13 @@ class AdminUserController extends Controller
     {
         $user = User::findOrFail($id);
 
-        if ($user->status !== 'pending') {
+        if ($user->status !== 'waiting_to_approved') {
             return redirect()->route('admin.users.index')
                 ->with('error', 'Cet utilisateur n\'est pas en attente d\'approbation.');
         }
 
         // Mettre à jour le statut de l'utilisateur
-        $user->status = 'active';
+        $user->status = 'avtive';
         $user->save();
 
         // Envoi d'un email de confirmation (à implémenter)
@@ -65,22 +65,15 @@ class AdminUserController extends Controller
     {
         $user = User::findOrFail($id);
 
-        if ($user->status !== 'pending') {
+        if ($user->status !== 'waiting_to_approved') {
             return redirect()->route('admin.users.index')
                 ->with('error', 'Cet utilisateur n\'est pas en attente d\'approbation.');
         }
 
         // Supprimer les images associées au compte si elles existent
-        if ($user->user_image) {
-            Storage::delete('public/' . $user->user_image);
-        }
 
-        if ($user->identity_image) {
-            Storage::delete('public/' . $user->identity_image);
-        }
 
-        // Supprimer l'utilisateur
-        $user->delete();
+
 
         // Envoi d'un email de rejet (à implémenter)
         // Mail::to($user->email)->send(new AccountRejected($user));
@@ -99,7 +92,7 @@ class AdminUserController extends Controller
     {
         $user = User::findOrFail($id);
 
-        if ($user->status !== 'active') {
+        if ($user->status !== 'avtive') {
             return redirect()->route('admin.users.index')
                 ->with('error', 'Cet utilisateur n\'est pas actif.');
         }
@@ -131,7 +124,7 @@ class AdminUserController extends Controller
         }
 
         // Mettre à jour le statut de l'utilisateur
-        $user->status = 'active';
+        $user->status = 'avtive';
         $user->save();
 
         // Envoi d'un email d'activation (à implémenter)

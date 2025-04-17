@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminUserController;
+use App\Http\Controllers\ArticlesController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BidController;
@@ -8,9 +9,9 @@ use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\profileController;
 use App\Http\Controllers\TagController;
-use App\Http\Controllers\ArticleController;
 
 use App\Http\Controllers\UserController;
+use App\Services\ArticleService;
 use Illuminate\Support\Facades\Mail;
 
 Route::get('/', function () {
@@ -65,14 +66,17 @@ Route::get('/test-email', function () {
 });
 
 
-
+Route::get('blog',[ArticlesController::class,'index'])->name('blog.index');
+Route::get('blog/Article/{{id}}',[ArticlesController::class,'show'])->name('Article.show');
+Route::POST('blog',[ArticlesController::class,'store'])->name('blog.store');
+Route::get('blog/Article/{{id}}',[ArticlesController::class,'show'])->name('Article.show');
 
 
 
 Route::get('admin/users',[AdminUserController::class,'index'])->name('admin.users.index');
 
-Route::post('/admin/users/{id}/approve', [AdminUserController::class, 'approve'])->name('admin.users.approve');
-Route::post('/admin/users/{id}/reject', [AdminUserController::class, 'reject'])->name('admin.users.reject');
+Route::post('/admin/users/{id}/approve', [AdminUserController::class, 'approve'])->name('users.approve');
+Route::post('/admin/users/{id}/reject', [AdminUserController::class, 'reject'])->name('users.reject');
 Route::post('/admin/users/{id}/suspend', [AdminUserController::class, 'suspend'])->name('admin.users.suspend');
-Route::post('/admin/users/{id}/activate', [AdminUserController::class, 'activate'])->name('admin.users.activate');
+Route::post('/admin/users/{id}/activate', [AdminUserController::class, 'activate'])->name('users.activate');
 Route::get('/admin/users/{id}', [AdminUserController::class, 'view'])->name('admin.users.view');
