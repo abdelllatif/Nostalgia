@@ -131,7 +131,7 @@
                         </div>
                         <textarea name="content" required rows="3" class="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-200" placeholder="Write your comment..."></textarea>
                         <div class="flex justify-end">
-                            <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">Submit</button>
+                            <button id="buttonContent" type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">Submit</button>
                         </div>
                     </form>
                 </div>
@@ -215,7 +215,18 @@ function removeEditTag(tagId, button) {
 
 
 Document.addEventListener('DomcontentLoaded',()=>{
-    document.getElementById()
+    document.getElementById('buttonContent').addEventListener('click',()=>{
+        fetch('{{route('reaction.add')}}'){
+            method:'POST',
+            header:('content-type':'application/json'),
+            body:json.stringify({
+                article_id:document.getElementById('article_id').value,
+                rating:document.getElementById('ratingInput').value,
+                content:document.getElementById('content').value
+            })
+        }
+        .then(res => res.ok ? alert('Success!') : alert('Failed!'));
+    })
 })
 
 
