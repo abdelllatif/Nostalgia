@@ -80,3 +80,6 @@ Route::post('/admin/users/{id}/reject', [AdminUserController::class, 'reject'])-
 Route::post('/admin/users/{id}/suspend', [AdminUserController::class, 'suspend'])->name('admin.users.suspend');
 Route::post('/admin/users/{id}/activate', [AdminUserController::class, 'activate'])->name('users.activate');
 Route::get('/admin/users/{id}', [AdminUserController::class, 'view'])->name('admin.users.view');
+
+
+Route::get('/comment', [AdminUserController::class, 'store'])->name('reaction.add');

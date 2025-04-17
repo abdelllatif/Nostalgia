@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Comment;
 use App\Models\Rating;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class RatingController extends Controller
@@ -21,7 +22,7 @@ class RatingController extends Controller
         if ($validator->fails()) {
             return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 422);
         }
-        $user_id = auth()->user()->id;
+        $user_id = Auth::user()->id;
         try {
             $reaction = Comment::create([
                 'user_id' => $user_id,
