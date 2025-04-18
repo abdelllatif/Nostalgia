@@ -25,10 +25,13 @@ class Article extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function categorie()
-    {
-        return $this->belongsTo(Categorie::class);
-    }
+// app/Models/Article.php
+
+public function categorie()
+{
+    return $this->belongsTo(Categorie::class, 'category_id');
+}
+
 
     public function tags()
     {

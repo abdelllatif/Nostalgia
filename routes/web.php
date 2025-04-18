@@ -38,6 +38,7 @@ Route::delete('/Dashebored/categorie/{id}', [CategorieController::class, 'destro
 Route::put('/Dashebored/categories/{id}', [CategorieController::class, 'update'])->name('categorie.edit');
 Route::post('/bids', [BidController::class, 'store'])->name('bids.store');
 Route::post('/Reaction', [ReactionController::class, 'store'])->name('reaction.add');
+Route::POST('blog',[ArticlesController::class,'store'])->name('blog.store');
 
 
 });
@@ -70,7 +71,6 @@ Route::get('/test-email', function () {
 
 Route::get('blog',[ArticlesController::class,'index'])->name('blog.index');
 Route::get('blog/Article/{article}', [ArticlesController::class, 'show'])->name('Article.show');
-Route::POST('blog',[ArticlesController::class,'store'])->name('blog.store');
 Route::get('blog/Article/{article}', [ArticlesController::class, 'show'])->name('Article.show');
 
 

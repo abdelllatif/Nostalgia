@@ -53,20 +53,21 @@ class ArticlesController extends Controller
             ->with(['user', 'categorie', 'tags'])
             ->take(4)
             ->get();
-
-        return view('show_article', compact('article', 'similarArticles'));
+            $categories = Categorie::all();
+            $tags = Tag::all();
+        return view('show_article', compact('article', 'similarArticles','categories','tags'));
     }
 
     public function store(Request $request)
     {
         try {
             $validated = $request->validate([
-                'title' => 'required|string|max:255',
-                'content' => 'required',
+                'title' => 'required|string|max:2255', // كذلك max خصها تكون رقم معقول، غادي نرجع لها
+                'content' => 'required|string', // <-- هنا صلحناها
                 'category_id' => 'required|exists:categories,id',
                 'tags' => 'array',
                 'tags.*' => 'exists:tags,id',
-                'image' => 'nullable|image|max:54000'
+                'image' => 'nullable|image|max:5120' // 5MB مثلا
             ]);
             $article = new Article($validated);
             $article->user_id = Auth::user()->id;
