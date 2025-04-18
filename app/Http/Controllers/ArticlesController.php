@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use App\Models\Categorie;
 use App\Models\Tag;
+use Dom\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -43,10 +44,11 @@ class ArticlesController extends Controller
     public function show(Article $article)
     {
         $article->load(['user', 'categorie', 'tags']);
+        $reaction = Article::with(['comments.user', 'ratings'])->find($article->id);
         $similarArticles = Article::where('category_id', $article->category_id)
             ->where('id', '!=', $article->id)
             ->with(['user', 'category', 'tags'])
-            ->take(3)
+            ->take(4)
             ->get();
 
         return view('show_article', compact('article', 'similarArticles'));

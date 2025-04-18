@@ -43,9 +43,9 @@
                             {!! nl2br(e($article->content)) !!}
                         </div>
                         <!-- Similar Articles -->
+                        <h2 class="text-2xl font-bold mb-6 text-gray-900">Similar Articles</h2>
                         @if($similarArticles->count() > 0)
                         <div class="border-t pt-8 mt-8">
-                            <h2 class="text-2xl font-bold mb-6 text-gray-900">Similar Articles</h2>
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                                 @foreach($similarArticles as $similar)
                                     <a href="{{ route('blog.show', $similar) }}" class="block group">
@@ -62,6 +62,11 @@
                                 @endforeach
                             </div>
                         </div>
+                        @else
+                            <div class ="border border-gray-200 rounded-lg p-4 m-8">
+                                <p class="text-gray-400 ">No simmailaire articlze here</p>
+                            </div>
+
                         @endif
                     </article>
                 </main>
@@ -212,36 +217,74 @@ function removeEditTag(tagId, button) {
     button.parentElement.remove();
 }
 
-//here i add the ajax
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('buttonContent').addEventListener('click', (e) => {
         e.preventDefault();
 
-        fetch('{{ route('reaction.add') }}', {
+        // Get form values
+        const articleId = document.getElementById('article_id').value;
+        const rating = document.getElementById('ratingInput').value;
+        const content = document.getElementById('content').value;
+
+        // Validate input before sending
+        if (!rating || rating === '0') {
+            alert('Please select a rating');
+            return;
+        }
+
+        if (!content.trim()) {
+            alert('Please enter a comment');
+            return;
+        }
+
+        // Get the CSRF token from the meta tag
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        // Create form data instead of JSON
+        const formData = new FormData();
+        formData.append('article_id', articleId);
+        formData.append('rating', rating);
+        formData.append('content', content);
+        formData.append('_token', csrfToken);
+
+        fetch('{{ route("reaction.add") }}', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                'X-CSRF-TOKEN': csrfToken
             },
-            body: JSON.stringify({
-                article_id: document.getElementById('article_id').value,
-                rating: document.getElementById('ratingInput').value,
-                content: document.getElementById('content').value
-            })
+            body: formData
         })
-        .then(async res => {
-    const data = await res.json();
-    if (res.ok) {
-        alert('Success: ' + data.message);
-    } else {
-        alert('Failed: ' + data.message);
-        console.error('Error details:', data.error);
-    }
-})
-        .catch(error => console.error('Error:', error));
+        .then(response => {
+            // Check if the response is JSON
+            const contentType = response.headers.get('content-type');
+            if (contentType && contentType.includes('application/json')) {
+                return response.json().then(data => {
+                    if (!response.ok) {
+                        throw new Error(data.message || 'Something went wrong');
+                    }
+                    return data;
+                });
+            } else {
+                // If not JSON, get the text and throw an error
+                return response.text().then(text => {
+                    throw new Error('Server returned non-JSON response. You might need to log in.');
+                });
+            }
+        })
+        .then(data => {
+            alert(data.message || 'Comment and rating added successfully!');
+            // Reset form
+            document.getElementById('content').value = '';
+            document.getElementById('ratingInput').value = '0';
+            selectedRating = 0;
+            stars.forEach(s => s.classList.remove('text-yellow-400'));
+        })
+        .catch(error => {
+            alert('Error: ' + error.message);
+            console.error('Error:', error);
+        });
     });
 });
-
 
 
 </script>
