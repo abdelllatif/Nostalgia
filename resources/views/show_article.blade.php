@@ -200,23 +200,40 @@
     </main>
 
     <!-- Edit Article Modal -->
-    <div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white rounded-lg p-6 max-w-2xl w-full mx-4">
-            <h3 class="text-xl font-bold text-gray-900 mb-4">Edit Article</h3>
-            <form id="editForm" action="" method="POST" enctype="multipart/form-data">
-                @csrf
-                @method('PUT')
-                <div class="space-y-4">
-                    <!-- Title field -->
-                    <div>
-                        <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Title</label>
-                        <input type="text" id="title" name="title" value="{{ $article->title }}" class="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-200">
+    <div id="editModal" class="fixed inset-0 bg-black bg-opacity-75 hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full relative max-h-[90vh] overflow-hidden">
+            <div class="flex items-center justify-between px-6 py-4 border-b sticky top-0 bg-white z-10">
+                <h2 class="text-xl font-semibold text-gray-900">Modifier l'Article</h2>
+                <button id="cancelEdit" class="text-gray-400 hover:text-gray-500 focus:outline-none">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="px-6 py-5 overflow-y-auto" style="max-height: calc(90vh - 120px);">
+                <form id="editForm" action="" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+
+                    <!-- Title -->
+                    <div class="mb-5">
+                        <label for="edit_title" class="block text-sm font-medium text-gray-700 mb-1">Titre</label>
+                        <input type="text" id="edit_title" name="title" value="{{ $article->title }}" required
+                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
                     </div>
 
-                    <!-- Category field -->
-                    <div>
-                        <label for="category_id" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
-                        <select id="category_id" name="category_id" class="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-200">
+                    <!-- Content -->
+                    <div class="mb-5">
+                        <label for="edit_content" class="block text-sm font-medium text-gray-700 mb-1">Contenu</label>
+                        <textarea id="edit_content" name="content" rows="6" required
+                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-2 focus:ring-purple-500 focus:border-purple-500">{{ $article->content }}</textarea>
+                    </div>
+
+                    <!-- Category -->
+                    <div class="mb-5">
+                        <label for="edit_category_id" class="block text-sm font-medium text-gray-700 mb-1">Catégorie</label>
+                        <select id="edit_category_id" name="category_id" required
+                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
                             @foreach($categories as $category)
                                 <option value="{{ $category->id }}" {{ $article->category_id == $category->id ? 'selected' : '' }}>
                                     {{ $category->name }}
@@ -225,25 +242,74 @@
                         </select>
                     </div>
 
-                    <!-- Content field -->
-                    <div>
-                        <label for="content" class="block text-sm font-medium text-gray-700 mb-1">Content</label>
-                        <textarea id="content" name="content" rows="6" class="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-200">{{ $article->content }}</textarea>
+                    <!-- Tags -->
+                    <div class="mb-5">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Tags</label>
+                        <div class="flex flex-wrap gap-2 mb-2" id="selectedTags">
+                            @foreach($article->tags as $tag)
+                                <div class="inline-flex items-center bg-purple-100 px-3 py-1 rounded-full text-sm font-medium text-purple-800 m-1">
+                                    {{ $tag->name }}
+                                    <input type="hidden" name="tags[]" value="{{ $tag->id }}">
+                                    <span class="ml-2 cursor-pointer text-purple-600 hover:text-purple-800" onclick="removeTag('{{ $tag->id }}', this)">&times;</span>
+                                </div>
+                            @endforeach
+                        </div>
+                        <select id="tagSelect" onchange="addTag()"
+                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                            <option value="">Sélectionner un tag...</option>
+                            @foreach($tags as $tag)
+                                <option value="{{ $tag->id }}" {{ $article->tags->contains($tag->id) ? 'disabled' : '' }}>
+                                    {{ $tag->name }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
 
-                    <!-- Image field -->
-                    <div>
-                        <label for="image" class="block text-sm font-medium text-gray-700 mb-1">Image</label>
-                        <input type="file" id="image" name="image" class="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-200">
-                        <p class="text-xs text-gray-500 mt-1">Leave empty to keep the current image</p>
-                    </div>
-                </div>
+                    <!-- Image -->
+                    <div class="mb-5">
+                        <label for="edit_image" class="block text-sm font-medium text-gray-700 mb-1">Image</label>
+                        <div class="mt-3 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md hover:border-purple-500 transition-colors">
+                            <div class="space-y-1 text-center">
+                                <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                                    <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m0-8z"></path>
+                                </svg>
+                                <div class="flex text-sm text-gray-600 justify-center">
+                                    <label for="edit_image" class="cursor-pointer bg-white font-medium text-purple-600 hover:text-purple-500">
+                                        <span>Télécharger une image</span>
+                                        <input type="file" name="image" id="edit_image" accept="image/*" class="sr-only">
+                                    </label>
+                                </div>
+                                <p class="text-xs text-gray-500">PNG, JPG, GIF jusqu'à 10MB</p>
+                            </div>
+                        </div>
 
-                <div class="flex justify-end space-x-4 mt-6">
-                    <button type="button" id="cancelEdit" class="px-4 py-2 border rounded text-gray-700 hover:bg-gray-100">Cancel</button>
-                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Save Changes</button>
-                </div>
-            </form>
+                        <!-- Current Image Display -->
+                        <div id="currentImageContainer" class="mt-4">
+                            @if($article->image)
+                                <div class="relative inline-block">
+                                    <img src="{{ $article->image_url }}" alt="Current image" id="currentArticleImage" class="h-32 w-32 object-cover rounded">
+                                    <span class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center cursor-pointer" onclick="removeEditImage()">&times;</span>
+                                </div>
+                            @endif
+                        </div>
+
+                        <!-- Image Preview -->
+                        <div id="editImagePreview" class="mt-3 flex flex-wrap gap-2"></div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Buttons -->
+            <div class="bg-gray-50 px-6 py-4 flex justify-end rounded-b-lg sticky bottom-0">
+                <button type="button" id="cancelEditBtn"
+                    class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 mr-2">
+                    Annuler
+                </button>
+                <button type="submit" form="editForm"
+                    class="bg-purple-600 py-2 px-5 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-purple-700 transition-colors">
+                    Mettre à jour
+                </button>
+            </div>
         </div>
     </div>
 
@@ -298,19 +364,60 @@
             const editModal = document.getElementById('editModal');
             const editBtn = document.getElementById('editArticleBtn');
             const cancelEditBtn = document.getElementById('cancelEdit');
+            const cancelEditBtn2 = document.getElementById('cancelEditBtn');
 
             editBtn.addEventListener('click', () => {
                 editModal.classList.remove('hidden');
+                editModal.classList.add('flex');
+                document.body.style.overflow = 'hidden';
             });
 
             cancelEditBtn.addEventListener('click', () => {
                 editModal.classList.add('hidden');
+                editModal.classList.remove('flex');
+                document.body.style.overflow = 'auto';
+            });
+
+            cancelEditBtn2.addEventListener('click', () => {
+                editModal.classList.add('hidden');
+                editModal.classList.remove('flex');
+                document.body.style.overflow = 'auto';
             });
 
             // Close edit modal when clicking outside
             editModal.addEventListener('click', (e) => {
                 if (e.target === editModal) {
                     editModal.classList.add('hidden');
+                    editModal.classList.remove('flex');
+                    document.body.style.overflow = 'auto';
+                }
+            });
+
+            // Image preview for edit form
+            document.getElementById('edit_image').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        // Update the current image
+                        const currentImage = document.getElementById('currentArticleImage');
+                        if (currentImage) {
+                            currentImage.src = e.target.result;
+                        } else {
+                            // If no current image exists, create one
+                            const currentImageContainer = document.getElementById('currentImageContainer');
+                            currentImageContainer.innerHTML = `
+                                <div class="relative inline-block">
+                                    <img src="${e.target.result}" alt="Current image" id="currentArticleImage" class="h-32 w-32 object-cover rounded">
+                                    <span class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center cursor-pointer" onclick="removeEditImage()">&times;</span>
+                                </div>
+                            `;
+                        }
+
+                        // Clear the preview area
+                        document.getElementById('editImagePreview').innerHTML = '';
+                    }
+                    reader.readAsDataURL(file);
                 }
             });
 
@@ -339,128 +446,153 @@
             // Comment form submission
             // This code handles the submission of new comments
             // It includes validation, AJAX submission, and UI updates
-            document.getElementById('commentForm').addEventListener('submit', (e) => {
-                e.preventDefault();
+            document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('buttonContent').addEventListener('click', (e) => {
+        e.preventDefault();
 
-                // Get form values
-                const articleId = document.getElementById('article_id').value;
-                const rating = document.getElementById('ratingInput').value;
-                const content = document.getElementById('content').value;
+        // Get form values
+        const articleId = document.getElementById('article_id').value;
+        const rating = document.getElementById('ratingInput').value;
+        const content = document.getElementById('content').value;
 
-                // Validate input before sending
-                if (!rating || rating === '0') {
-                    alert('Please select a rating');
-                    return;
-                }
+        // Validate input before sending
+        if (!rating || rating === '0') {
+            alert('Please select a rating');
+            return;
+        }
 
-                if (!content.trim()) {
-                    alert('Please enter a comment');
-                    return;
-                }
+        if (!content.trim()) {
+            alert('Please enter a comment');
+            return;
+        }
 
-                // Get the CSRF token from the meta tag
-                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        // Get the CSRF token from the meta tag
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-                // Create form data
-                const formData = new FormData();
-                formData.append('article_id', articleId);
-                formData.append('rating', rating);
-                formData.append('content', content);
-                formData.append('_token', csrfToken);
+        // Create form data instead of JSON
+        const formData = new FormData();
+        formData.append('article_id', articleId);
+        formData.append('rating', rating);
+        formData.append('content', content);
+        formData.append('_token', csrfToken);
 
-                // Show loading state
-                const submitButton = document.getElementById('buttonContent');
-                const originalButtonText = submitButton.innerText;
-                submitButton.innerText = 'Submitting...';
-                submitButton.disabled = true;
+        fetch('{{ route("reaction.add") }}', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Comment and rating added successfully!');
 
-                fetch('{{ route("reaction.add") }}', {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': csrfToken
-                    },
-                    body: formData
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.success) {
-                        // Clear the input fields
-                        document.getElementById('content').value = '';
+                // Clear form fields
+                document.getElementById('content').value = '';
+                document.getElementById('ratingInput').value = 0;
 
-                        // Reset stars display
-                        selectedRating = 0;
-                        document.getElementById('ratingInput').value = 0;
-                        stars.forEach(star => {
-                            star.classList.remove('text-yellow-400');
-                            star.classList.add('text-gray-300');
-                        });
+                // Update UI dynamically
+                const commentSection = document.querySelector('.space-y-6');
 
-                        // Create HTML for rating stars
-                        let starsHtml = '';
-                        for (let i = 1; i <= 5; i++) {
-                            if (i <= data.rating) {
-                                starsHtml += `<svg class="w-4 h-4 text-yellow-400" fill="#fbbf24" stroke="#fbbf24" viewBox="0 0 24 24">
-                                    <polygon stroke-width="2" points="12 17.27 18.18 21 16.54 13.97 22 9.24 14.81 8.63 12 2 9.19 8.63 2 9.24 7.46 13.97 5.82 21 12 17.27"></polygon>
-                                </svg>`;
-                            } else {
-                                starsHtml += `<svg class="w-4 h-4 text-gray-300" fill="none" stroke="#fbbf24" viewBox="0 0 24 24">
-                                    <polygon stroke-width="2" points="12 17.27 18.18 21 16.54 13.97 22 9.24 14.81 8.63 12 2 9.19 8.63 2 9.24 7.46 13.97 5.82 21 12 17.27"></polygon>
-                                </svg>`;
-                            }
-                        }
+                // Create a new comment div
+                const newComment = document.createElement('div');
+                newComment.classList.add('rounded-xl', 'bg-gray-50', 'border', 'border-gray-200', 'p-4', 'shadow-sm');
 
-                        // Create the new comment element
-                        const commentSection = document.querySelector('.space-y-6');
-                        const newComment = document.createElement('div');
-                        newComment.classList.add('rounded-xl', 'bg-gray-50', 'border', 'border-gray-200', 'p-4', 'shadow-sm');
+                // Fill the comment div with data
+                newComment.innerHTML = `
+                    <div class="flex items-center mb-2">
+                        <img src="${data.user.avatar_url || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(data.user.name)}"
+                             alt="${data.user.name}" class="w-9 h-9 rounded-full mr-3 border">
+                        <div class="flex-1">
+                            <span class="font-semibold text-sm text-gray-900">${data.user.name}</span>
+                            <span class="block text-xs text-gray-400">${data.created_at}</span>
+                        </div>
+                    </div>
+                    <div class="text-gray-800 text-sm mb-1">${data.comment}</div>
+                    <div class="flex items-center gap-1">
+                        ${[1, 2, 3, 4, 5].map(i => `
+                            <svg class="w-4 h-4 ${i <= data.rating ? 'text-yellow-400' : 'text-gray-300'}"
+                                 fill="${i <= data.rating ? '#fbbf24' : 'none'}"
+                                 stroke="${i <= data.rating ? '#fbbf24' : '#fbbf24'}"
+                                 viewBox="0 0 24 24">
+                                <polygon stroke-width="2" points="12 17.27 18.18 21 16.54 13.97 22 9.24 14.81 8.63 12 2 9.19 8.63 2 9.24 7.46 13.97 5.82 21 12 17.27"></polygon>
+                            </svg>
+                        `).join('')}
+                    </div>
+                `;
 
-                        // Add user info, comment, and rating
-                        newComment.innerHTML = `
-                            <div class="flex items-center mb-2">
-                                <img src="${data.user.avatar_url}"
-                                    alt="${data.user.name}" class="w-9 h-9 rounded-full mr-3 border">
-                                <div class="flex-1">
-                                    <span class="font-semibold text-sm text-gray-900">${data.user.name}</span>
-                                    <span class="block text-xs text-gray-400">${data.comment_time}</span>
-                                </div>
-                            </div>
-                            <div class="text-gray-800 text-sm mb-1">${data.comment}</div>
-                            <div class="flex items-center gap-1">
-                                ${starsHtml}
-                            </div>
-                        `;
-
-                        // If "No comments yet" message exists, remove it
-                        const noCommentsMsg = commentSection.querySelector('p.text-gray-500.text-center');
-                        if (noCommentsMsg && noCommentsMsg.textContent.includes('No comments yet')) {
-                            noCommentsMsg.parentElement.remove();
-                        }
-
-                        // Add the new comment at the top of the comments section
-                        commentSection.prepend(newComment);
-
-                        // Notify user of success
-                        alert('Comment and rating added successfully!');
-                    } else {
-                        alert('There was an error while submitting the comment.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('There was an error while submitting the comment.');
-                })
-                .finally(() => {
-                    // Reset button state
-                    submitButton.innerText = originalButtonText;
-                    submitButton.disabled = false;
-                });
-            });
+                // Append the new comment to the comment section
+                commentSection.prepend(newComment); // Adds to the top, use .append() for bottom
+            } else {
+                alert('There was an error while submitting the comment.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('There was an error while submitting the comment.');
         });
+    });
+});
+
+});
+
+        // Function to remove the current image in edit form
+        function removeEditImage() {
+            document.getElementById('edit_image').value = '';
+            document.getElementById('editImagePreview').innerHTML = '';
+
+            // Hide the current image
+            const currentImageContainer = document.getElementById('currentImageContainer');
+            currentImageContainer.innerHTML = '';
+
+            // Add a hidden input to indicate image should be removed
+            const form = document.getElementById('editForm');
+            const hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = 'remove_image';
+            hiddenInput.value = '1';
+            form.appendChild(hiddenInput);
+        }
+
+        // Tags functionality
+        let selectedTags = new Set(@json($article->tags->pluck('id')));
+
+        function addTag() {
+            const select = document.getElementById('tagSelect');
+            const tagId = select.value;
+            const tagText = select.options[select.selectedIndex].text;
+
+            if (tagId && !selectedTags.has(tagId)) {
+                selectedTags.add(tagId);
+                const tagElement = document.createElement('div');
+                tagElement.className = 'inline-flex items-center bg-purple-100 px-3 py-1 rounded-full text-sm font-medium text-purple-800 m-1';
+                tagElement.innerHTML = `
+                    ${tagText}
+                    <input type="hidden" name="tags[]" value="${tagId}">
+                    <span class="ml-2 cursor-pointer text-purple-600 hover:text-purple-800" onclick="removeTag('${tagId}', this)">&times;</span>
+                `;
+                document.getElementById('selectedTags').appendChild(tagElement);
+
+                // Disable the selected option
+                select.options[select.selectedIndex].disabled = true;
+            }
+            select.value = '';
+        }
+
+        function removeTag(tagId, button) {
+            selectedTags.delete(tagId);
+            button.parentElement.remove();
+
+            // Re-enable the option in the dropdown
+            const select = document.getElementById('tagSelect');
+            for (let option of select.options) {
+                if (option.value === tagId) {
+                    option.disabled = false;
+                    break;
+                }
+            }
+        }
     </script>
 </body>
 </html>
