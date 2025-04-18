@@ -9,6 +9,7 @@ use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\profileController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\Reaction;
 
 use App\Http\Controllers\UserController;
 use App\Services\ArticleService;
@@ -82,4 +83,4 @@ Route::post('/admin/users/{id}/activate', [AdminUserController::class, 'activate
 Route::get('/admin/users/{id}', [AdminUserController::class, 'view'])->name('admin.users.view');
 
 
-Route::get('/comment', [AdminUserController::class, 'store'])->name('reaction.add');
+Route::post('/comment', [Reaction::class, 'store'])->name('reaction.add');

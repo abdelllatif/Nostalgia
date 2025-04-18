@@ -8,46 +8,39 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
-class RatingController extends Controller
+class Reaction extends Controller
 {
     public function store(Request $request)
     {
-        // أولاً: التحقق من صحة البيانات
-        $validator = Validator::make($request->all(), [
+        // Validate the incoming data
+        $request->validate([
             'article_id' => 'required|integer|exists:articles,id',
-            'content' => 'required|string', // like, dislike, etc.
-            'rating' => 'required|integer|between:1,5', // تقييم من 1 إلى 5
+            'rating' => 'required|integer|between:1,5',
+            'content' => 'required|string|max:500',
         ]);
-
-        if ($validator->fails()) {
-            return response()->json(['message' => 'Validation failed', 'errors' => $validator->errors()], 422);
-        }
-        $user_id = Auth::user()->id;
+dd($request->all());
         try {
-            $reaction = Comment::create([
-                'user_id' => $user_id,
-                'article_id' => $request->article_id,
-                'content' => $request->content,
-            ]);
-
-            // إنشاء التقييم
+            // Store the rating
             $rating = Rating::create([
-                'user_id' => $user_id,
+                'user_id' => auth::user()->id,  // Authenticated user ID
                 'article_id' => $request->article_id,
                 'rating' => $request->rating,
             ]);
 
-            // إرجاع الرد بنجاح
-            return response()->json(['message' => 'Reaction and Rating added successfully!', 'reaction' => $reaction, 'rating' => $rating], 200);
+            // Store the comment/reaction
+            $reaction = Reaction::create([
+                'user_id' => auth::user()->id,
+                'article_id' => $request->article_id,
+                'reaction_type' => 'comment',  // Assuming it's a comment
+                'content' => $request->content,
+            ]);
 
+            // Return success response
+            return response()->json(['message' => 'Comment and rating added successfully!'], 200);
         } catch (\Exception $e) {
-            // في حالة وقوع خطأ
-            return response()->json(['message' => 'Failed to add reaction or rating', 'error' => $e->getMessage()], 500);
+            return response()->json(['message' => 'Failed to add comment or rating', 'error' => $e->getMessage()], 500);
         }
     }
-
-
-
 
 
 

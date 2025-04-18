@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $article->title }}</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
@@ -115,8 +116,9 @@
             <div class=" max-w-2xl w-full mx-auto ">
                 <div class="bg-white rounded-2xl shadow-2xl p-8 border border-blue-100">
                     <h3 class="text-lg font-semibold mb-4 text-gray-900">Leave a Comment</h3>
-                    <form id="commentForm" class="space-y-4" autocomplete="off">
+                    <form id="commentForm" action="{{ route('reaction.add') }}" method="POST" class="space-y-4" autocomplete="off">
                         <!-- Rating Stars -->
+                        @csrf
                         <div class="flex items-center gap-2 mb-2">
                             <span class="mr-2 font-medium text-gray-700">Your Rating:</span>
                             <div id="starRating" class="flex gap-1">
@@ -128,8 +130,9 @@
                                 <svg data-value="5" class="w-7 h-7 cursor-pointer text-gray-300 transition-colors duration-150" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.921-.755 1.688-1.54 1.118l-3.386-2.46a1 1 0 00-1.175 0l-3.386 2.46c-.784.57-1.838-.197-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.045 9.394c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.967z"/></svg>
                             </div>
                             <input type="hidden" name="rating" id="ratingInput" value="0">
+                            <input type="hidden" name="article_id" id="article_id" value="{{$article->id}}">
                         </div>
-                        <textarea name="content" required rows="3" class="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-200" placeholder="Write your comment..."></textarea>
+                        <textarea id="content" name="content" required rows="3" class="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-200" placeholder="Write your comment..."></textarea>
                         <div class="flex justify-end">
                             <button id="buttonContent" type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">Submit</button>
                         </div>
@@ -212,22 +215,28 @@ function removeEditTag(tagId, button) {
     button.parentElement.remove();
 }
 
+//here i add the ajax
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('').addEventListener('click', (e) => {
+        e.preventDefault();
 
-
-Document.addEventListener('DomcontentLoaded',()=>{
-    document.getElementById('buttonContent').addEventListener('click',()=>{
-        fetch('{{route('reaction.add')}}'){
-            method:'POST',
-            header:('content-type':'application/json'),
-            body:json.stringify({
-                article_id:document.getElementById('article_id').value,
-                rating:document.getElementById('ratingInput').value,
-                content:document.getElementById('content').value
+        fetch('', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({
+                article_id: document.getElementById('article_id').value,
+                rating: document.getElementById('ratingInput').value,
+                content: document.getElementById('content').value
             })
-        }
-        .then(res => res.ok ? alert('Success!') : alert('Failed!'));
-    })
-})
+        })
+        .then(res => res.ok ? alert('Success!') : alert('Failed!'))
+        .catch(error => console.error('Error:', error));
+    });
+});
+
 
 
 </script>
