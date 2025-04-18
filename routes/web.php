@@ -37,7 +37,7 @@ Route::post('/Dashebored/categories',[CategorieController::class,'store'])->name
 Route::delete('/Dashebored/categorie/{id}', [CategorieController::class, 'destroy'])->name('categorie.destroy');
 Route::put('/Dashebored/categories/{id}', [CategorieController::class, 'update'])->name('categorie.edit');
 Route::post('/bids', [BidController::class, 'store'])->name('bids.store');
-Route::post('/comment', [ReactionController::class, 'store'])->name('reaction.add');
+Route::post('/Reaction', [ReactionController::class, 'store'])->name('reaction.add');
 
 
 });

@@ -229,7 +229,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 content: document.getElementById('content').value
             })
         })
-        .then(res => res.ok ? alert('Success!') : alert('Failed!'))
+        .then(async res => {
+    const data = await res.json();
+    if (res.ok) {
+        alert('Success: ' + data.message);
+    } else {
+        alert('Failed: ' + data.message);
+        console.error('Error details:', data.error);
+    }
+})
         .catch(error => console.error('Error:', error));
     });
 });
