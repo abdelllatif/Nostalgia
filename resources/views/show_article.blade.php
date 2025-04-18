@@ -7,31 +7,48 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+      /* Custom scrollbar for professional polish */
+      ::-webkit-scrollbar { width: 8px; background: #f1f1f1; }
+      ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 8px; }
+      ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
 </head>
-<body class="bg-gray-50 dark:bg-gray-900 min-h-screen flex flex-col">
+<body class="bg-white min-h-screen flex flex-col">
     <!-- Navbar -->
-    <nav class="bg-white shadow-md px-6 py-4 flex items-center justify-between">
-        <div class="flex items-center space-x-2">
-            <img src="https://img.icons8.com/ios-filled/50/000000/retro-tv.png" alt="Logo Nostalgia" class="w-8 h-8">
-            <span class="text-xl font-bold text-gray-800">Nostalgia</span>
+    <nav class="bg-white/90 dark:bg-gray-950/90 shadow-lg px-6 py-3 flex items-center justify-between sticky top-0 z-50 backdrop-blur-lg">
+        <div class="flex items-center space-x-3">
+            <img src="https://img.icons8.com/ios-filled/50/000000/retro-tv.png" alt="Logo Nostalgia" class="w-9 h-9">
+            <span class="text-2xl font-bold text-gray-800 dark:text-white tracking-tight">Nostalgia</span>
         </div>
-        <ul class="hidden md:flex space-x-6 text-gray-700 font-medium">
-            <li><a href="/" class="hover:text-blue-600">Accueil</a></li>
-            <li><a href="/catalogue" class="hover:text-blue-600">Catalogue</a></li>
-            <li><a href="/blog" class="hover:text-blue-600">Blog</a></li>
-            <li><a href="/about" class="hover:text-blue-600">About</a></li>
-            <li><a href="#" class="hover:text-blue-600">Contact</a></li>
+        <ul class="hidden md:flex space-x-8 text-gray-700 dark:text-gray-200 font-medium">
+            <li><a href="/" class="hover:text-blue-600 focus:text-blue-700 transition-colors">Accueil</a></li>
+            <li><a href="/catalogue" class="hover:text-blue-600 focus:text-blue-700 transition-colors">Catalogue</a></li>
+            <li><a href="/blog" class="hover:text-blue-600 focus:text-blue-700 transition-colors">Blog</a></li>
+            <li><a href="/about" class="hover:text-blue-600 focus:text-blue-700 transition-colors">About</a></li>
+            <li><a href="#" class="hover:text-blue-600 focus:text-blue-700 transition-colors">Contact</a></li>
         </ul>
         <div class="hidden md:flex space-x-4">
-            <a href="/login" class="px-4 py-2 border rounded-full text-sm hover:bg-gray-100">Connexion</a>
-            <a href="/register" class="px-4 py-2 bg-blue-600 text-white rounded-full text-sm hover:bg-blue-700">Inscription</a>
+            <a href="/login" class="px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-full text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition">Connexion</a>
+            <a href="/register" class="px-4 py-2 bg-blue-600 text-white rounded-full text-sm font-semibold shadow hover:bg-blue-700 transition">Inscription</a>
         </div>
+        <!-- Mobile menu button -->
         <div class="md:hidden">
-            <button>
-                <svg class="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button aria-label="Open menu" @click="open = !open" x-data="{ open: false }" x-on:click="open = !open">
+                <svg class="w-7 h-7 text-gray-800 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                 </svg>
             </button>
+            <!-- Mobile menu dropdown -->
+            <div x-show="open" x-transition class="absolute right-6 mt-3 w-48 bg-white dark:bg-gray-900 rounded-lg shadow-lg py-2 flex flex-col space-y-2 z-50">
+                <a href="/" class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded">Accueil</a>
+                <a href="/catalogue" class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded">Catalogue</a>
+                <a href="/blog" class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded">Blog</a>
+                <a href="/about" class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded">About</a>
+                <a href="#" class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded">Contact</a>
+                <a href="/login" class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded">Connexion</a>
+                <a href="/register" class="px-4 py-2 bg-blue-600 text-white rounded-full text-sm font-semibold shadow hover:bg-blue-700 transition mx-2">Inscription</a>
+            </div>
         </div>
     </nav>
     <!-- End Navbar -->
@@ -98,42 +115,15 @@
                     </div>
                 </div>
             </section>
-            <!-- Add Comment & Rating (above comments sidebar) -->
+            <!-- Comments Sidebar (improved) -->
             <aside class="w-full lg:w-[370px] flex-shrink-0">
-                <div class="mb-6">
-                    <div class="rounded-2xl border border-blue-200 bg-blue-50 shadow-lg p-4">
-                        <h3 class="text-lg font-semibold mb-3 text-blue-800 flex items-center gap-2">
-                            <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V10a2 2 0 012-2h2m10-4h-4m0 0V4m0 0L8 8m8-4l-4 4"></path></svg>
-                            Ajouter un commentaire
-                        </h3>
-                        <form id="commentForm" class="space-y-2" autocomplete="off">
-                            @csrf
-                            <div class="flex items-center gap-2">
-                                <span class="mr-2 font-medium text-gray-700">Votre note :</span>
-                                <div id="starRating" class="flex gap-1">
-                                    <svg data-value="1" class="w-6 h-6 cursor-pointer text-gray-300 transition-colors duration-150" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.921-.755 1.688-1.54 1.118l-3.386-2.46a1 1 0 00-1.175 0l-3.386 2.46c-.784.57-1.838-.197-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.045 9.394c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.967z"/></svg>
-                                    <svg data-value="2" class="w-6 h-6 cursor-pointer text-gray-300 transition-colors duration-150" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.921-.755 1.688-1.54 1.118l-3.386-2.46a1 1 0 00-1.175 0l-3.386 2.46c-.784.57-1.838-.197-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.045 9.394c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.967z"/></svg>
-                                    <svg data-value="3" class="w-6 h-6 cursor-pointer text-gray-300 transition-colors duration-150" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.921-.755 1.688-1.54 1.118l-3.386-2.46a1 1 0 00-1.175 0l-3.386 2.46c-.784.57-1.838-.197-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.045 9.394c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.967z"/></svg>
-                                    <svg data-value="4" class="w-6 h-6 cursor-pointer text-gray-300 transition-colors duration-150" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.921-.755 1.688-1.54 1.118l-3.386-2.46a1 1 0 00-1.175 0l-3.386 2.46c-.784.57-1.838-.197-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.045 9.394c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.967z"/></svg>
-                                    <svg data-value="5" class="w-6 h-6 cursor-pointer text-gray-300 transition-colors duration-150" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.921-.755 1.688-1.54 1.118l-3.386-2.46a1 1 0 00-1.175 0l-3.386 2.46c-.784.57-1.838-.197-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.045 9.394c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.967z"/></svg>
-                                </div>
-                                <input type="hidden" name="rating" id="ratingInput" value="0">
-                                <input type="hidden" name="article_id" id="article_id" value="{{$article->id}}">
-                            </div>
-                            <textarea id="content" name="content" required rows="2" class="w-full px-3 py-1.5 border rounded focus:ring-2 focus:ring-blue-200 text-sm" placeholder="Écrivez votre commentaire..."></textarea>
-                            <div class="flex justify-end mt-2">
-                                <button id="buttonContent" type="submit" class="bg-blue-600 text-white px-4 py-1.5 rounded hover:bg-blue-700 text-sm">Envoyer</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <!-- Comments Sidebar (unchanged) -->
-                <div class="bg-white rounded-2xl shadow-lg p-7 top-10">
+                <div class="bg-white rounded-2xl shadow-lg p-6 top-10 flex flex-col">
                     <h2 class="text-xl font-bold mb-5 flex items-center gap-2 text-blue-700">
                         <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V10a2 2 0 012-2h2m10-4h-4m0 0V4m0 0L8 8m8-4l-4 4"></path></svg>
                         Comments
                     </h2>
-                    <div class="space-y-6 max-h-[430px] overflow-y-auto pr-2">
+                    <!-- Shorter scroll area for comments -->
+                    <div class="space-y-6 max-h-[220px] overflow-y-auto pr-2 border-b pb-4 mb-4">
                         @if($article->comments->count() > 0)
                             @foreach($article->comments as $comment)
                                 <div class="rounded-xl bg-gray-50 border border-gray-200 p-4 shadow-sm">
@@ -175,6 +165,14 @@
                                 <p class="text-gray-500 text-center">No comments yet. Be the first to comment!</p>
                             </div>
                         @endif
+            Comments
+        </h2>
+        <div class="space-y-6 max-h-[430px] overflow-y-auto pr-2">
+            @if($article->comments->count() > 0)
+                @foreach($article->comments as $comment)
+                    <div class="rounded-xl bg-gray-50 border border-gray-200 p-4 shadow-sm">
+                        <div class="flex items-center mb-2">
+                            <img src="{{ $comment->user->avatar_url ?? 'https://ui-avatars.com/api/?name='.urlencode($comment->user->name) }}"
                                 alt="{{ $comment->user->name }}"
                                 class="w-9 h-9 rounded-full mr-3 border">
                             <div class="flex-1">
@@ -212,34 +210,35 @@
                 </div>
             @endif
         </div>
+        <!-- Comment Form always visible below comments -->
+        <div class="pt-4">
+            <div class="bg-white rounded-2xl shadow-2xl p-4 border border-blue-100">
+                <h3 class="text-lg font-semibold mb-4 text-gray-900">Leave a Comment</h3>
+                <form id="commentForm" class="space-y-4" autocomplete="off">
+                    @csrf
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="mr-2 font-medium text-gray-700">Your Rating:</span>
+                        <div id="starRating" class="flex gap-1">
+                        <svg data-value="1" class="w-7 h-7 cursor-pointer text-gray-300 transition-colors duration-150" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.921-.755 1.688-1.54 1.118l-3.386-2.46a1 1 0 00-1.175 0l-3.386 2.46c-.784.57-1.838-.197-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.045 9.394c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.967z"/></svg>
+                        <svg data-value="2" class="w-7 h-7 cursor-pointer text-gray-300 transition-colors duration-150" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.921-.755 1.688-1.54 1.118l-3.386-2.46a1 1 0 00-1.175 0l-3.386 2.46c-.784.57-1.838-.197-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.045 9.394c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.967z"/></svg>
+                        <svg data-value="3" class="w-7 h-7 cursor-pointer text-gray-300 transition-colors duration-150" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.921-.755 1.688-1.54 1.118l-3.386-2.46a1 1 0 00-1.175 0l-3.386 2.46c-.784.57-1.838-.197-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.045 9.394c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.967z"/></svg>
+                        <svg data-value="4" class="w-7 h-7 cursor-pointer text-gray-300 transition-colors duration-150" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.921-.755 1.688-1.54 1.118l-3.386-2.46a1 1 0 00-1.175 0l-3.386 2.46c-.784.57-1.838-.197-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.045 9.394c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.967z"/></svg>
+                        <svg data-value="5" class="w-7 h-7 cursor-pointer text-gray-300 transition-colors duration-150" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.921-.755 1.688-1.54 1.118l-3.386-2.46a1 1 0 00-1.175 0l-3.386 2.46c-.784.57-1.838-.197-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.045 9.394c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.967z"/></svg>
+                    </div>
+                    <input type="hidden" name="rating" id="ratingInput" value="0">
+                    <input type="hidden" name="article_id" id="article_id" value="{{$article->id}}">
+                </div>
+                <textarea id="content" name="content" required rows="3" class="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-200" placeholder="Write your comment..."></textarea>
+                <div class="flex justify-end">
+                    <button id="buttonContent" type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">Submit</button>
+                </div>
+            </form>
+        </div>
     </div>
 </aside>
             </div>
-            <!-- Comment -->
-            <div class=" max-w-2xl w-full mx-auto ">
-                <div class="bg-white rounded-2xl shadow-2xl p-4 border border-blue-100">
-                    <h3 class="text-lg font-semibold mb-4 text-gray-900">Leave a Comment</h3>
-                    <form id="commentForm" class="space-y-4" autocomplete="off">
-                        @csrf
-                        <div class="flex items-center gap-2 mb-2">
-                            <span class="mr-2 font-medium text-gray-700">Your Rating:</span>
-                            <div id="starRating" class="flex gap-1">
-                                <svg data-value="1" class="w-7 h-7 cursor-pointer text-gray-300 transition-colors duration-150" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.921-.755 1.688-1.54 1.118l-3.386-2.46a1 1 0 00-1.175 0l-3.386 2.46c-.784.57-1.838-.197-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.045 9.394c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.967z"/></svg>
-                                <svg data-value="2" class="w-7 h-7 cursor-pointer text-gray-300 transition-colors duration-150" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.921-.755 1.688-1.54 1.118l-3.386-2.46a1 1 0 00-1.175 0l-3.386 2.46c-.784.57-1.838-.197-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.045 9.394c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.967z"/></svg>
-                                <svg data-value="3" class="w-7 h-7 cursor-pointer text-gray-300 transition-colors duration-150" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.921-.755 1.688-1.54 1.118l-3.386-2.46a1 1 0 00-1.175 0l-3.386 2.46c-.784.57-1.838-.197-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.045 9.394c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.967z"/></svg>
-                                <svg data-value="4" class="w-7 h-7 cursor-pointer text-gray-300 transition-colors duration-150" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.921-.755 1.688-1.54 1.118l-3.386-2.46a1 1 0 00-1.175 0l-3.386 2.46c-.784.57-1.838-.197-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.045 9.394c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.967z"/></svg>
-                                <svg data-value="5" class="w-7 h-7 cursor-pointer text-gray-300 transition-colors duration-150" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.921-.755 1.688-1.54 1.118l-3.386-2.46a1 1 0 00-1.175 0l-3.386 2.46c-.784.57-1.838-.197-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.045 9.394c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.967z"/></svg>
-                            </div>
-                            <input type="hidden" name="rating" id="ratingInput" value="0">
-                            <input type="hidden" name="article_id" id="article_id" value="{{$article->id}}">
-                        </div>
-                        <textarea id="content" name="content" required rows="3" class="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-blue-200" placeholder="Write your comment..."></textarea>
-                        <div class="flex justify-end">
-                            <button id="buttonContent" type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">Submit</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+
+
         </div>
     </div>
         <script>
