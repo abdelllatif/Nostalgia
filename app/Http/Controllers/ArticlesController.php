@@ -44,10 +44,13 @@ class ArticlesController extends Controller
     public function show(Article $article)
     {
         $article->load(['user', 'categorie', 'tags']);
-        $reaction = Article::with(['comments.user', 'ratings'])->find($article->id);
+
+        // Change this line to remove the dd() and properly load comments with users
+        $article->load(['comments.user', 'ratings.user']);
+
         $similarArticles = Article::where('category_id', $article->category_id)
             ->where('id', '!=', $article->id)
-            ->with(['user', 'category', 'tags'])
+            ->with(['user', 'categorie', 'tags'])
             ->take(4)
             ->get();
 

@@ -47,7 +47,19 @@ class ReactionController extends Controller
             }
 
             DB::commit();
-            return response()->json(['message' => 'Comment and rating added successfully!'], 200);
+
+            // Return the data needed for UI update
+            return response()->json([
+                'success' => true,
+                'message' => 'Comment and rating added successfully!',
+                'comment' => $comment->content,
+                'rating' => $rating->rating,
+                'user' => [
+                    'name' => Auth::user()->name,
+                    'avatar_url' => Auth::user()->avatar_url ?? 'https://ui-avatars.com/api/?name='.urlencode(Auth::user()->name)
+                ],
+                'comment_time' => $comment->created_at->diffForHumans()
+            ], 200);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['message' => 'Failed to add comment or rating', 'error' => $e->getMessage()], 500);

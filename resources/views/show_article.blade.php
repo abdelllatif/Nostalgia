@@ -71,51 +71,58 @@
                     </article>
                 </main>
                 <!-- Comments Sidebar (Static Example Data) -->
-                <aside class="w-full lg:w-[370px] flex-shrink-0">
-                    <div class="bg-white rounded-2xl shadow-lg p-7  top-10">
-                        <h2 class="text-xl font-bold mb-5 flex items-center gap-2 text-blue-700">
-                            <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V10a2 2 0 012-2h2m10-4h-4m0 0V4m0 0L8 8m8-4l-4 4"></path></svg>
-                            Comments
-                        </h2>
-                        <div class="space-y-6 max-h-[430px] overflow-y-auto pr-2">
-                            <!-- Static Example Comments -->
-                            <div class="rounded-xl bg-gray-50 border border-gray-200 p-4 shadow-sm">
-                                <div class="flex items-center mb-2">
-                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="John Doe" class="w-9 h-9 rounded-full mr-3 border">
-                                    <div class="flex-1">
-                                        <span class="font-semibold text-sm text-gray-900">John Doe</span>
-                                        <span class="block text-xs text-gray-400">2 hours ago</span>
-                                    </div>
-                                </div>
-                                <div class="text-gray-800 text-sm mb-1">Great article! Very informative.</div>
-                                <div class="flex items-center gap-1">
-                                    <svg class="w-4 h-4 text-yellow-400" fill="#fbbf24" stroke="#fbbf24" viewBox="0 0 24 24"><polygon stroke-width="2" points="12 17.27 18.18 21 16.54 13.97 22 9.24 14.81 8.63 12 2 9.19 8.63 2 9.24 7.46 13.97 5.82 21 12 17.27"></polygon></svg>
-                                    <svg class="w-4 h-4 text-yellow-400" fill="#fbbf24" stroke="#fbbf24" viewBox="0 0 24 24"><polygon stroke-width="2" points="12 17.27 18.18 21 16.54 13.97 22 9.24 14.81 8.63 12 2 9.19 8.63 2 9.24 7.46 13.97 5.82 21 12 17.27"></polygon></svg>
-                                    <svg class="w-4 h-4 text-yellow-400" fill="#fbbf24" stroke="#fbbf24" viewBox="0 0 24 24"><polygon stroke-width="2" points="12 17.27 18.18 21 16.54 13.97 22 9.24 14.81 8.63 12 2 9.19 8.63 2 9.24 7.46 13.97 5.82 21 12 17.27"></polygon></svg>
-                                    <svg class="w-4 h-4 text-gray-300" fill="none" stroke="#fbbf24" viewBox="0 0 24 24"><polygon stroke-width="2" points="12 17.27 18.18 21 16.54 13.97 22 9.24 14.81 8.63 12 2 9.19 8.63 2 9.24 7.46 13.97 5.82 21 12 17.27"></polygon></svg>
-                                    <svg class="w-4 h-4 text-gray-300" fill="none" stroke="#fbbf24" viewBox="0 0 24 24"><polygon stroke-width="2" points="12 17.27 18.18 21 16.54 13.97 22 9.24 14.81 8.63 12 2 9.19 8.63 2 9.24 7.46 13.97 5.82 21 12 17.27"></polygon></svg>
-                                </div>
-                            </div>
-                            <div class="rounded-xl bg-gray-50 border border-gray-200 p-4 shadow-sm">
-                                <div class="flex items-center mb-2">
-                                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Jane Smith" class="w-9 h-9 rounded-full mr-3 border">
-                                    <div class="flex-1">
-                                        <span class="font-semibold text-sm text-gray-900">Jane Smith</span>
-                                        <span class="block text-xs text-gray-400">1 day ago</span>
-                                    </div>
-                                </div>
-                                <div class="text-gray-800 text-sm mb-1">Loved the insights. Keep it up!</div>
-                                <div class="flex items-center gap-1">
-                                    <svg class="w-4 h-4 text-yellow-400" fill="#fbbf24" stroke="#fbbf24" viewBox="0 0 24 24"><polygon stroke-width="2" points="12 17.27 18.18 21 16.54 13.97 22 9.24 14.81 8.63 12 2 9.19 8.63 2 9.24 7.46 13.97 5.82 21 12 17.27"></polygon></svg>
-                                    <svg class="w-4 h-4 text-yellow-400" fill="#fbbf24" stroke="#fbbf24" viewBox="0 0 24 24"><polygon stroke-width="2" points="12 17.27 18.18 21 16.54 13.97 22 9.24 14.81 8.63 12 2 9.19 8.63 2 9.24 7.46 13.97 5.82 21 12 17.27"></polygon></svg>
-                                    <svg class="w-4 h-4 text-yellow-400" fill="#fbbf24" stroke="#fbbf24" viewBox="0 0 24 24"><polygon stroke-width="2" points="12 17.27 18.18 21 16.54 13.97 22 9.24 14.81 8.63 12 2 9.19 8.63 2 9.24 7.46 13.97 5.82 21 12 17.27"></polygon></svg>
-                                    <svg class="w-4 h-4 text-yellow-400" fill="#fbbf24" stroke="#fbbf24" viewBox="0 0 24 24"><polygon stroke-width="2" points="12 17.27 18.18 21 16.54 13.97 22 9.24 14.81 8.63 12 2 9.19 8.63 2 9.24 7.46 13.97 5.82 21 12 17.27"></polygon></svg>
-                                    <svg class="w-4 h-4 text-gray-300" fill="none" stroke="#fbbf24" viewBox="0 0 24 24"><polygon stroke-width="2" points="12 17.27 18.18 21 16.54 13.97 22 9.24 14.81 8.63 12 2 9.19 8.63 2 9.24 7.46 13.97 5.82 21 12 17.27"></polygon></svg>
-                                </div>
+              <!-- Comments Sidebar -->
+<aside class="w-full lg:w-[370px] flex-shrink-0">
+    <div class="bg-white rounded-2xl shadow-lg p-7 top-10">
+        <h2 class="text-xl font-bold mb-5 flex items-center gap-2 text-blue-700">
+            <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V10a2 2 0 012-2h2m10-4h-4m0 0V4m0 0L8 8m8-4l-4 4"></path></svg>
+            Comments
+        </h2>
+        <div class="space-y-6 max-h-[430px] overflow-y-auto pr-2">
+            @if($article->comments->count() > 0)
+                @foreach($article->comments as $comment)
+                    <div class="rounded-xl bg-gray-50 border border-gray-200 p-4 shadow-sm">
+                        <div class="flex items-center mb-2">
+                            <img src="{{ $comment->user->avatar_url ?? 'https://ui-avatars.com/api/?name='.urlencode($comment->user->name) }}"
+                                alt="{{ $comment->user->name }}"
+                                class="w-9 h-9 rounded-full mr-3 border">
+                            <div class="flex-1">
+                                <span class="font-semibold text-sm text-gray-900">{{ $comment->user->name }}</span>
+                                <span class="block text-xs text-gray-400">{{ $comment->created_at->diffForHumans() }}</span>
                             </div>
                         </div>
+                        <div class="text-gray-800 text-sm mb-1">{{ $comment->content }}</div>
+
+                        @php
+                            // Find the matching rating by the same user for this article
+                            $rating = $article->ratings->where('user_id', $comment->user_id)->first();
+                        @endphp
+
+                        @if($rating)
+                            <div class="flex items-center gap-1">
+                                @for($i = 1; $i <= 5; $i++)
+                                    @if($i <= $rating->rating)
+                                        <svg class="w-4 h-4 text-yellow-400" fill="#fbbf24" stroke="#fbbf24" viewBox="0 0 24 24">
+                                            <polygon stroke-width="2" points="12 17.27 18.18 21 16.54 13.97 22 9.24 14.81 8.63 12 2 9.19 8.63 2 9.24 7.46 13.97 5.82 21 12 17.27"></polygon>
+                                        </svg>
+                                    @else
+                                        <svg class="w-4 h-4 text-gray-300" fill="none" stroke="#fbbf24" viewBox="0 0 24 24">
+                                            <polygon stroke-width="2" points="12 17.27 18.18 21 16.54 13.97 22 9.24 14.81 8.63 12 2 9.19 8.63 2 9.24 7.46 13.97 5.82 21 12 17.27"></polygon>
+                                        </svg>
+                                    @endif
+                                @endfor
+                            </div>
+                        @endif
                     </div>
-                </aside>
+                @endforeach
+            @else
+                <div class="rounded-xl bg-gray-50 border border-gray-200 p-4 shadow-sm">
+                    <p class="text-gray-500 text-center">No comments yet. Be the first to comment!</p>
+                </div>
+            @endif
+        </div>
+    </div>
+</aside>
             </div>
             <!-- Comment -->
             <div class=" max-w-2xl w-full mx-auto ">
@@ -240,12 +247,18 @@ document.addEventListener('DOMContentLoaded', () => {
         // Get the CSRF token from the meta tag
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-        // Create form data instead of JSON
+        // Create form data
         const formData = new FormData();
         formData.append('article_id', articleId);
         formData.append('rating', rating);
         formData.append('content', content);
         formData.append('_token', csrfToken);
+
+        // Show loading state
+        const submitButton = document.getElementById('buttonContent');
+        const originalButtonText = submitButton.innerText;
+        submitButton.innerText = 'Submitting...';
+        submitButton.disabled = true;
 
         fetch('{{ route("reaction.add") }}', {
             method: 'POST',
@@ -255,33 +268,82 @@ document.addEventListener('DOMContentLoaded', () => {
             body: formData
         })
         .then(response => {
-            // Check if the response is JSON
-            const contentType = response.headers.get('content-type');
-            if (contentType && contentType.includes('application/json')) {
-                return response.json().then(data => {
-                    if (!response.ok) {
-                        throw new Error(data.message || 'Something went wrong');
-                    }
-                    return data;
-                });
-            } else {
-                // If not JSON, get the text and throw an error
-                return response.text().then(text => {
-                    throw new Error('Server returned non-JSON response. You might need to log in.');
-                });
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
             }
+            return response.json();
         })
         .then(data => {
-            alert(data.message || 'Comment and rating added successfully!');
-            // Reset form
-            document.getElementById('content').value = '';
-            document.getElementById('ratingInput').value = '0';
-            selectedRating = 0;
-            stars.forEach(s => s.classList.remove('text-yellow-400'));
+            if (data.success) {
+                // Clear the input fields
+                document.getElementById('content').value = '';
+
+                // Reset stars display
+                selectedRating = 0;
+                document.getElementById('ratingInput').value = 0;
+                stars.forEach(star => {
+                    star.classList.remove('text-yellow-400');
+                    star.classList.add('text-gray-300');
+                });
+
+                // Create HTML for rating stars
+                let starsHtml = '';
+                for (let i = 1; i <= 5; i++) {
+                    if (i <= data.rating) {
+                        starsHtml += `<svg class="w-4 h-4 text-yellow-400" fill="#fbbf24" stroke="#fbbf24" viewBox="0 0 24 24">
+                            <polygon stroke-width="2" points="12 17.27 18.18 21 16.54 13.97 22 9.24 14.81 8.63 12 2 9.19 8.63 2 9.24 7.46 13.97 5.82 21 12 17.27"></polygon>
+                        </svg>`;
+                    } else {
+                        starsHtml += `<svg class="w-4 h-4 text-gray-300" fill="none" stroke="#fbbf24" viewBox="0 0 24 24">
+                            <polygon stroke-width="2" points="12 17.27 18.18 21 16.54 13.97 22 9.24 14.81 8.63 12 2 9.19 8.63 2 9.24 7.46 13.97 5.82 21 12 17.27"></polygon>
+                        </svg>`;
+                    }
+                }
+
+                // Create the new comment element
+                const commentSection = document.querySelector('.space-y-6');
+                const newComment = document.createElement('div');
+                newComment.classList.add('rounded-xl', 'bg-gray-50', 'border', 'border-gray-200', 'p-4', 'shadow-sm');
+
+                // Add user info, comment, and rating
+                newComment.innerHTML = `
+                    <div class="flex items-center mb-2">
+                        <img src="${data.user.avatar_url}"
+                            alt="${data.user.name}" class="w-9 h-9 rounded-full mr-3 border">
+                        <div class="flex-1">
+                            <span class="font-semibold text-sm text-gray-900">${data.user.name}</span>
+                            <span class="block text-xs text-gray-400">${data.comment_time}</span>
+                        </div>
+                    </div>
+                    <div class="text-gray-800 text-sm mb-1">${data.comment}</div>
+                    <div class="flex items-center gap-1">
+                        ${starsHtml}
+                    </div>
+                `;
+
+                // If "No comments yet" message exists, remove it
+                const noCommentsMsg = commentSection.querySelector('p.text-gray-500.text-center');
+                if (noCommentsMsg && noCommentsMsg.textContent.includes('No comments yet')) {
+                    noCommentsMsg.parentElement.remove();
+                }
+
+                // Add the new comment at the top of the comments section
+                commentSection.prepend(newComment);
+
+                // Notify user of success
+                alert('Comment and rating added successfully!');
+            } else {
+                alert('There was an error while submitting the comment.');
+            }
         })
         .catch(error => {
-            alert('Error: ' + error.message);
             console.error('Error:', error);
+            alert('There was an error while submitting the comment.');
+        })
+        .finally(() => {
+            // Reset button state
+            submitButton.innerText = originalButtonText;
+            submitButton.disabled = false;
         });
     });
 });
