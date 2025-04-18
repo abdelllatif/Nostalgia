@@ -112,17 +112,15 @@
                     </div>
                 </aside>
             </div>
-            <!-- Comment Input Section (Full Width Floating Card) -->
+            <!-- Comment -->
             <div class=" max-w-2xl w-full mx-auto ">
                 <div class="bg-white rounded-2xl shadow-2xl p-8 border border-blue-100">
                     <h3 class="text-lg font-semibold mb-4 text-gray-900">Leave a Comment</h3>
-                    <form id="commentForm" action="{{ route('reaction.add') }}" method="POST" class="space-y-4" autocomplete="off">
-                        <!-- Rating Stars -->
+                    <form id="commentForm" class="space-y-4" autocomplete="off">
                         @csrf
                         <div class="flex items-center gap-2 mb-2">
                             <span class="mr-2 font-medium text-gray-700">Your Rating:</span>
                             <div id="starRating" class="flex gap-1">
-                                <!-- 5 stars -->
                                 <svg data-value="1" class="w-7 h-7 cursor-pointer text-gray-300 transition-colors duration-150" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.921-.755 1.688-1.54 1.118l-3.386-2.46a1 1 0 00-1.175 0l-3.386 2.46c-.784.57-1.838-.197-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.045 9.394c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.967z"/></svg>
                                 <svg data-value="2" class="w-7 h-7 cursor-pointer text-gray-300 transition-colors duration-150" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.921-.755 1.688-1.54 1.118l-3.386-2.46a1 1 0 00-1.175 0l-3.386 2.46c-.784.57-1.838-.197-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.045 9.394c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.967z"/></svg>
                                 <svg data-value="3" class="w-7 h-7 cursor-pointer text-gray-300 transition-colors duration-150" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.921-.755 1.688-1.54 1.118l-3.386-2.46a1 1 0 00-1.175 0l-3.386 2.46c-.784.57-1.838-.197-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.045 9.394c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.967z"/></svg>
@@ -141,8 +139,7 @@
             </div>
         </div>
     </div>
-            <script>
-        // Interactive star rating logic
+        <script>
         const stars = document.querySelectorAll('#starRating svg');
         let selectedRating = 0;
         stars.forEach(star => {
@@ -165,7 +162,7 @@
                 });
             });
         });
-        // Simple AJAX (6 lines) for comment submission
+        //  AJAX
         document.getElementById('commentForm').onsubmit = function(e) {
             e.preventDefault();
             fetch('/fake/comments', {method:'POST',body:new FormData(this)}).then(r=>r.json()).then(data=>alert('Comment sent!'));
@@ -217,10 +214,10 @@ function removeEditTag(tagId, button) {
 
 //here i add the ajax
 document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('').addEventListener('click', (e) => {
+    document.getElementById('buttonContent').addEventListener('click', (e) => {
         e.preventDefault();
 
-        fetch('', {
+        fetch('{{ route('reaction.add') }}', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

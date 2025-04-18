@@ -10,7 +10,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\profileController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\Reaction;
-
+use App\Http\Controllers\ReactionController;
 use App\Http\Controllers\UserController;
 use App\Services\ArticleService;
 use Illuminate\Support\Facades\Mail;
@@ -83,4 +83,4 @@ Route::post('/admin/users/{id}/activate', [AdminUserController::class, 'activate
 Route::get('/admin/users/{id}', [AdminUserController::class, 'view'])->name('admin.users.view');
 
 
-Route::post('/comment', [Reaction::class, 'store'])->name('reaction.add');
+Route::post('/comment', [ReactionController::class, 'store'])->name('reaction.add');
