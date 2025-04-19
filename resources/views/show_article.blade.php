@@ -201,7 +201,7 @@
                 </button>
             </div>
             <div class="px-6 py-5 overflow-y-auto" style="max-height: calc(90vh - 120px);">
-                <form id="editForm" action="{{route('Article.edit')}}" method="POST" enctype="multipart/form-data">
+                <form id="editForm" action="{{ route('Article.edit', $article->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
 
