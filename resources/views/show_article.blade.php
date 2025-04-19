@@ -165,7 +165,7 @@
                 <!-- Comment Form -->
                 <div class="bg-white rounded-2xl shadow-lg p-6 border border-blue-100">
                     <h3 class="text-lg font-semibold mb-4 text-gray-900">Leave a Comment</h3>
-                    <form id="commentForm" class="space-y-4" autocomplete="off">
+                    <form id="commentForm" class="space-y-4" >
                         @csrf
                         <div class="flex items-center gap-2 mb-2">
                             <span class="mr-2 font-medium text-gray-700">Your Rating:</span>
@@ -201,7 +201,7 @@
                 </button>
             </div>
             <div class="px-6 py-5 overflow-y-auto" style="max-height: calc(90vh - 120px);">
-                <form id="editForm" action="" method="POST" enctype="multipart/form-data">
+                <form id="editForm" action="{{route('Article.edit')}}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
 
