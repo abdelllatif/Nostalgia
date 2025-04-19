@@ -68,17 +68,8 @@
                                 </button>
 
                                 <!-- Dropdown menu -->
-                                <div x-show="open"
-                                     @click.away="open = false"
-                                     x-transition:enter="transition ease-out duration-100"
-                                     x-transition:enter-start="transform opacity-0 scale-95"
-                                     x-transition:enter-end="transform opacity-100 scale-100"
-                                     x-transition:leave="transition ease-in duration-75"
-                                     x-transition:leave-start="transform opacity-100 scale-100"
-                                     x-transition:leave-end="transform opacity-0 scale-95"
-                                     class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
+                                <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
                                     <div class="py-1">
-                                        <!-- Edit button that opens a popup instead of linking directly -->
                                         <button id="editArticleBtn" class="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
@@ -103,7 +94,7 @@
                     <div class="prose max-w-none text-gray-800 mb-10">
                         {!! nl2br(e($article->content)) !!}
                     </div>
-                    <!-- Similar Articles (Static, horizontal scroll) -->
+                    <!-- Similar Articles -->
                     <h2 class="text-2xl font-bold mb-4 text-gray-900">Articles Similaires</h2>
                     <div class="overflow-x-auto flex gap-6 pb-2 mb-8">
                         @foreach ($similarArticles as $article)
@@ -127,7 +118,7 @@
                         <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V10a2 2 0 012-2h2m10-4h-4m0 0V4m0 0L8 8m8-4l-4 4"></path></svg>
                         Comments
                     </h2>
-                    <div class="space-y-6 max-h-[430px] overflow-y-auto pr-2">
+                    <div class="space-y-6 max-h-[430px] overflow-y-auto pr-2" id="commentsContainer">
                         @if($article->comments->count() > 0)
                             @foreach($article->comments as $comment)
                                 <div class="rounded-xl bg-gray-50 border border-gray-200 p-4 shadow-sm">
@@ -143,7 +134,6 @@
                                     <div class="text-gray-800 text-sm mb-1">{{ $comment->content }}</div>
 
                                     @php
-                                        // Find the matching rating by the same user for this article
                                         $rating = $article->ratings->where('user_id', $comment->user_id)->first();
                                     @endphp
 
@@ -329,38 +319,53 @@
         </div>
     </div>
 
+    <!-- JavaScript -->
     <script>
-        // Star rating functionality
-        // This code handles the interactive star rating system
-        // It allows users to hover over stars to preview ratings
-        // and click to select a rating value
-        const stars = document.querySelectorAll('#starRating svg');
-        let selectedRating = 0;
-        stars.forEach(star => {
-            star.addEventListener('mouseenter', function() {
-                const val = parseInt(this.getAttribute('data-value'));
-                stars.forEach((s, idx) => {
-                    if (idx < val) s.classList.add('text-yellow-400'); else s.classList.remove('text-yellow-400');
-                });
-            });
-            star.addEventListener('mouseleave', function() {
-                stars.forEach((s, idx) => {
-                    if (idx < selectedRating) s.classList.add('text-yellow-400'); else s.classList.remove('text-yellow-400');
-                });
-            });
-            star.addEventListener('click', function() {
-                selectedRating = parseInt(this.getAttribute('data-value'));
-                document.getElementById('ratingInput').value = selectedRating;
-                stars.forEach((s, idx) => {
-                    if (idx < selectedRating) s.classList.add('text-yellow-400'); else s.classList.remove('text-yellow-400');
-                });
-            });
+        document.addEventListener('DOMContentLoaded', () => {
+            initStarRating();
+            initModals();
+            initCommentForm();
+            initImagePreview();
         });
 
-        document.addEventListener('DOMContentLoaded', () => {
-            // Edit modal functionality
-            // This code handles showing and hiding the edit article modal
-            // It also manages the form submission process
+        // Star rating functionality
+        function initStarRating() {
+            const stars = document.querySelectorAll('#starRating svg');
+            let selectedRating = 0;
+
+            stars.forEach(star => {
+                star.addEventListener('mouseenter', function() {
+                    const val = parseInt(this.getAttribute('data-value'));
+                    updateStarsDisplay(val);
+                });
+
+                star.addEventListener('mouseleave', function() {
+                    updateStarsDisplay(selectedRating);
+                });
+
+                star.addEventListener('click', function() {
+                    selectedRating = parseInt(this.getAttribute('data-value'));
+                    document.getElementById('ratingInput').value = selectedRating;
+                    updateStarsDisplay(selectedRating);
+                });
+            });
+
+            function updateStarsDisplay(rating) {
+                stars.forEach((s, idx) => {
+                    if (idx < rating) {
+                        s.classList.add('text-yellow-400');
+                        s.classList.remove('text-gray-300');
+                    } else {
+                        s.classList.remove('text-yellow-400');
+                        s.classList.add('text-gray-300');
+                    }
+                });
+            }
+        }
+
+        // Modal functionality
+        function initModals() {
+            // Edit modal
             const editModal = document.getElementById('editModal');
             const editBtn = document.getElementById('editArticleBtn');
             const cancelEditBtn = document.getElementById('cancelEdit');
@@ -393,7 +398,155 @@
                 }
             });
 
-            // Image preview for edit form
+            // Delete modal
+            const deleteModal = document.getElementById('deleteModal');
+            const deleteBtn = document.getElementById('deleteArticleBtn');
+            const cancelBtn = document.getElementById('cancelDelete');
+
+            deleteBtn.addEventListener('click', () => {
+                deleteModal.classList.remove('hidden');
+            });
+
+            cancelBtn.addEventListener('click', () => {
+                deleteModal.classList.add('hidden');
+            });
+
+            // Close delete modal when clicking outside
+            deleteModal.addEventListener('click', (e) => {
+                if (e.target === deleteModal) {
+                    deleteModal.classList.add('hidden');
+                }
+            });
+        }
+
+        // Comment form submission
+        function initCommentForm() {
+            document.getElementById('commentForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                // Get form values
+                const articleId = document.getElementById('article_id').value;
+                const rating = document.getElementById('ratingInput').value;
+                const content = document.getElementById('content').value;
+
+                // Validate input
+                if (!rating || rating === '0') {
+                    alert('Please select a rating');
+                    return;
+                }
+
+                if (!content.trim()) {
+                    alert('Please enter a comment');
+                    return;
+                }
+
+                // Get CSRF token
+                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+                // Show loading state
+                const submitButton = document.getElementById('buttonContent');
+                const originalButtonText = submitButton.innerText;
+                submitButton.innerText = 'Submitting...';
+                submitButton.disabled = true;
+
+                // Create form data
+                const formData = new FormData();
+                formData.append('article_id', articleId);
+                formData.append('rating', rating);
+                formData.append('content', content);
+                formData.append('_token', csrfToken);
+
+                // Send AJAX request
+                fetch('/reaction/store', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    body: formData
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Server error: ' + response.status);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        // Clear form
+                        document.getElementById('content').value = '';
+
+                        // Reset stars
+                        const stars = document.querySelectorAll('#starRating svg');
+                        stars.forEach(star => {
+                            star.classList.remove('text-yellow-400');
+                            star.classList.add('text-gray-300');
+                        });
+                        document.getElementById('ratingInput').value = 0;
+
+                        // Create stars HTML
+                        let starsHtml = '';
+                        for (let i = 1; i <= 5; i++) {
+                            if (i <= data.rating) {
+                                starsHtml += `<svg class="w-4 h-4 text-yellow-400" fill="#fbbf24" stroke="#fbbf24" viewBox="0 0 24 24">
+                                    <polygon stroke-width="2" points="12 17.27 18.18 21 16.54 13.97 22 9.24 14.81 8.63 12 2 9.19 8.63 2 9.24 7.46 13.97 5.82 21 12 17.27"></polygon>
+                                </svg>`;
+                            } else {
+                                starsHtml += `<svg class="w-4 h-4 text-gray-300" fill="none" stroke="#fbbf24" viewBox="0 0 24 24">
+                                    <polygon stroke-width="2" points="12 17.27 18.18 21 16.54 13.97 22 9.24 14.81 8.63 12 2 9.19 8.63 2 9.24 7.46 13.97 5.82 21 12 17.27"></polygon>
+                                </svg>`;
+                            }
+                        }
+
+                        // Create new comment element
+                        const commentSection = document.getElementById('commentsContainer');
+                        const newComment = document.createElement('div');
+                        newComment.classList.add('rounded-xl', 'bg-gray-50', 'border', 'border-gray-200', 'p-4', 'shadow-sm');
+
+                        // Add user info, comment, and rating
+                        newComment.innerHTML = `
+                            <div class="flex items-center mb-2">
+                                <img src="${data.user.avatar_url}"
+                                    alt="${data.user.name}" class="w-9 h-9 rounded-full mr-3 border">
+                                <div class="flex-1">
+                                    <span class="font-semibold text-sm text-gray-900">${data.user.name}</span>
+                                    <span class="block text-xs text-gray-400">${data.comment_time}</span>
+                                </div>
+                            </div>
+                            <div class="text-gray-800 text-sm mb-1">${data.comment}</div>
+                            <div class="flex items-center gap-1">
+                                ${starsHtml}
+                            </div>
+                        `;
+
+                        // Remove "No comments" message if it exists
+                        const noCommentsMsg = commentSection.querySelector('p.text-gray-500.text-center');
+                        if (noCommentsMsg && noCommentsMsg.textContent.includes('No comments yet')) {
+                            noCommentsMsg.parentElement.remove();
+                        }
+
+                        // Add new comment at the top
+                        commentSection.prepend(newComment);
+
+                        // Show success message
+                        alert('Comment and rating added successfully!');
+                    } else {
+                        alert('Error: ' + (data.message || 'Unknown error occurred'));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error submitting comment: ' + error.message);
+                })
+                .finally(() => {
+                    // Reset button state
+                    submitButton.innerText = originalButtonText;
+                    submitButton.disabled = false;
+                });
+            });
+        }
+
+        // Image preview functionality
+        function initImagePreview() {
             document.getElementById('edit_image').addEventListener('change', function(e) {
                 const file = e.target.files[0];
                 if (file) {
@@ -420,122 +573,7 @@
                     reader.readAsDataURL(file);
                 }
             });
-
-            // Delete modal functionality
-            // This code handles showing and hiding the delete confirmation modal
-            // It provides a safety check before permanently deleting an article
-            const deleteModal = document.getElementById('deleteModal');
-            const deleteBtn = document.getElementById('deleteArticleBtn');
-            const cancelBtn = document.getElementById('cancelDelete');
-
-            deleteBtn.addEventListener('click', () => {
-                deleteModal.classList.remove('hidden');
-            });
-
-            cancelBtn.addEventListener('click', () => {
-                deleteModal.classList.add('hidden');
-            });
-
-            // Close delete modal when clicking outside
-            deleteModal.addEventListener('click', (e) => {
-                if (e.target === deleteModal) {
-                    deleteModal.classList.add('hidden');
-                }
-            });
-
-            // Comment form submission
-            // This code handles the submission of new comments
-            // It includes validation, AJAX submission, and UI updates
-            document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('buttonContent').addEventListener('click', (e) => {
-        e.preventDefault();
-
-        // Get form values
-        const articleId = document.getElementById('article_id').value;
-        const rating = document.getElementById('ratingInput').value;
-        const content = document.getElementById('content').value;
-
-        // Validate input before sending
-        if (!rating || rating === '0') {
-            alert('Please select a rating');
-            return;
         }
-
-        if (!content.trim()) {
-            alert('Please enter a comment');
-            return;
-        }
-
-        // Get the CSRF token from the meta tag
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-        // Create form data instead of JSON
-        const formData = new FormData();
-        formData.append('article_id', articleId);
-        formData.append('rating', rating);
-        formData.append('content', content);
-        formData.append('_token', csrfToken);
-
-        fetch('{{ route("reaction.add") }}', {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': csrfToken
-            },
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Comment and rating added successfully!');
-
-                // Clear form fields
-                document.getElementById('content').value = '';
-                document.getElementById('ratingInput').value = 0;
-
-                // Update UI dynamically
-                const commentSection = document.querySelector('.space-y-6');
-
-                // Create a new comment div
-                const newComment = document.createElement('div');
-                newComment.classList.add('rounded-xl', 'bg-gray-50', 'border', 'border-gray-200', 'p-4', 'shadow-sm');
-
-                // Fill the comment div with data
-                newComment.innerHTML = `
-                    <div class="flex items-center mb-2">
-                        <img src="${data.user.avatar_url || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(data.user.name)}"
-                             alt="${data.user.name}" class="w-9 h-9 rounded-full mr-3 border">
-                        <div class="flex-1">
-                            <span class="font-semibold text-sm text-gray-900">${data.user.name}</span>
-                            <span class="block text-xs text-gray-400">${data.created_at}</span>
-                        </div>
-                    </div>
-                    <div class="text-gray-800 text-sm mb-1">${data.comment}</div>
-                    <div class="flex items-center gap-1">
-                        ${[1, 2, 3, 4, 5].map(i => `
-                            <svg class="w-4 h-4 ${i <= data.rating ? 'text-yellow-400' : 'text-gray-300'}"
-                                 fill="${i <= data.rating ? '#fbbf24' : 'none'}"
-                                 stroke="${i <= data.rating ? '#fbbf24' : '#fbbf24'}"
-                                 viewBox="0 0 24 24">
-                                <polygon stroke-width="2" points="12 17.27 18.18 21 16.54 13.97 22 9.24 14.81 8.63 12 2 9.19 8.63 2 9.24 7.46 13.97 5.82 21 12 17.27"></polygon>
-                            </svg>
-                        `).join('')}
-                    </div>
-                `;
-
-                // Append the new comment to the comment section
-                commentSection.prepend(newComment); // Adds to the top, use .append() for bottom
-            } else {
-                alert('There was an error while submitting the comment.');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('There was an error while submitting the comment.');
-        });
-    });
-});
-
-});
 
         // Function to remove the current image in edit form
         function removeEditImage() {
