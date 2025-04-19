@@ -457,7 +457,7 @@
                 formData.append('_token', csrfToken);
 
                 // Send AJAX request
-                fetch('/reaction/store', {
+                fetch('{{ route("reaction.add") }}', {
                     method: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': csrfToken
