@@ -96,14 +96,38 @@
                     </div>
                     <!-- Similar Articles -->
                     <h2 class="text-2xl font-bold mb-4 text-gray-900">Articles Similaires</h2>
-                    <div class="overflow-x-auto flex gap-6 pb-2 mb-8">
+                    <div class="overflow-x-auto flex gap-6 pb-4 mb-8">
                         @foreach ($similarArticles as $article)
-                            <a href="{{ $article['link'] }}" class="min-w-[260px] max-w-xs bg-white rounded-xl shadow-md hover:shadow-lg transition flex-shrink-0 border border-gray-100">
-                                <img src="{{ $article['image'] }}" alt="{{ $article['title'] }}" class="w-full h-36 object-cover rounded-t-xl">
+                            <a href="{{ route('Article.show', $article['id']) }}" class="min-w-[280px] max-w-xs bg-white rounded-2xl shadow hover:shadow-lg transition-all flex-shrink-0 border border-gray-100">
+                                <img src="{{ $article->image_url }}" alt="{{ $article['title'] }}" class="w-full h-40 object-cover rounded-t-2xl">
+
                                 <div class="p-4">
-                                    <h3 class="font-semibold mb-1 text-gray-900">{{ $article['title'] }}</h3>
-                                    <p class="text-xs text-gray-600 mb-2">{{ $article['description'] }}</p>
-                                    <span class="text-blue-600 text-xs font-medium">Lire l'article</span>
+                                    <!-- Category -->
+                                    <div class="text-xs text-purple-600 font-semibold mb-1">{{ $article->categorie->name ?? 'Sans catégorie' }}</div>
+
+                                    <!-- Title -->
+                                    <h3 class="font-bold text-gray-900 mb-2 text-sm">{{ $article['title'] }}</h3>
+
+                                    <!-- Description -->
+                                    <p class="text-xs text-gray-500 mb-3 line-clamp-2">{{ $article['description'] }}</p>
+
+                                    <!-- Tags -->
+                                    <div class="flex flex-wrap gap-2 mb-3">
+                                        @foreach ($article['tags'] as $tag)
+                                            <span class="bg-purple-100 text-purple-700 text-xs px-2 py-0.5 rounded-full">{{ $tag['name'] }}</span>
+                                        @endforeach
+                                    </div>
+
+                                    <!-- User -->
+                                    <div class="flex items-center gap-2 mt-3">
+                                        <img src="{{ $article['user']['image'] ?? asset('default-user.png') }}" alt="Author" class="h-8 w-8 rounded-full object-cover">
+                                        <span class="text-xs text-gray-700 font-medium">{{ $article['user']['name'] ?? 'Anonyme' }}</span>
+                                    </div>
+
+                                    <!-- Link -->
+                                    <div class="mt-3">
+                                        <span class="inline-block text-blue-600 text-xs font-semibold hover:underline">Lire l'article →</span>
+                                    </div>
                                 </div>
                             </a>
                         @endforeach
@@ -201,7 +225,7 @@
                 </button>
             </div>
             <div class="px-6 py-5 overflow-y-auto" style="max-height: calc(90vh - 120px);">
-                <form id="editForm" action="{{ route('Article.edit', $article->id) }}" method="POST" enctype="multipart/form-data">
+                <form id="editForm" action="{{ route('Article.update', $article->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
 

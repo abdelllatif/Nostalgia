@@ -24,7 +24,7 @@ class ArticlesController extends Controller
         if ($request->search) {
             $query->where(function($q) use ($request) {
                 $q->where('title', 'like', "%{$request->search}%")
-                  ->orWhere('content', 'like', "%{$request->search}%");
+                ->orWhere('content', 'like', "%{$request->search}%");
             });
         }
 
@@ -48,8 +48,7 @@ class ArticlesController extends Controller
         // Change this line to remove the dd() and properly load comments with users
         $article->load(['comments.user', 'ratings.user']);
 
-        $similarArticles = Article::where('category_id', $article->category_id)
-            ->where('id', '!=', $article->id)
+        $similarArticles = Article::where('id', '!=', $article->id)
             ->with(['user', 'categorie', 'tags'])
             ->take(4)
             ->get();
