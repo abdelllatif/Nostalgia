@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon Profil - Nostalogia</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="bg-gray-50 dark:bg-gray-900">
     <nav class="bg-white shadow-md px-6 py-4 flex items-center justify-between">
@@ -65,15 +66,17 @@
     <section class="bg-gray-100 dark:bg-gray-800 py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row items-center md:items-start space-y-4 md:space-y-0 md:space-x-8">
-                <div class="relative w-32 h-32">
-                    <img src="{{asset('storage/anonymes_users/anonyme_user.jpg')}}" alt="Photo de profil" class="rounded-full w-full h-full object-cover border-4 border-white">
-                    <button class="absolute bottom-0 right-0 bg-gray-600 text-white p-2 rounded-full hover:bg-gray-700">
+                <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data" class="relative w-32 h-32">
+                    @csrf
+                    <img id="profile-image-preview" src="{{ $user->profile_image ? asset('storage/' . $user->profile_image) : asset('storage/anonymes_users/anonyme_user.jpg') }}" alt="Photo de profil" class="rounded-full w-full h-full object-cover border-4 border-white">
+                    <input type="file" id="profile-image-input" name="profile_image" class="hidden" accept="image/*">
+                    <label for="profile-image-input" class="absolute bottom-0 right-0 bg-gray-600 text-white p-2 rounded-full hover:bg-gray-700 cursor-pointer">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                         </svg>
-                    </button>
-                </div>
+                    </label>
+                </form>
                 <div class="flex-1 text-center md:text-left">
                     <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{$user->first_name." ".$user->name}}</h1>
                     <p class="text-gray-600 dark:text-gray-300">{{$user->email}}</p>
@@ -93,12 +96,11 @@
     <div class="bg-white dark:bg-gray-900 shadow">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex overflow-x-auto py-4 space-x-8 border-b">
-                <button class="text-gray-900 dark:text-white border-b-2 border-gray-600 px-1 py-2 font-medium">Aperçu</button>
-                <button class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 px-1 py-2 font-medium">Mes articles</button>
-                <button class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 px-1 py-2 font-medium">Favoris</button>
-                <button class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 px-1 py-2 font-medium">Mes enchères</button>
-                <button class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 px-1 py-2 font-medium">Mes produits</button>
-                <button class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 px-1 py-2 font-medium">Paramètres</button>
+                <button data-tab="overview" class="text-gray-900 dark:text-white border-b-2 border-gray-600 px-1 py-2 font-medium">Aperçu</button>
+                <button data-tab="articles" class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 px-1 py-2 font-medium border-b-2 border-transparent">Mes articles</button>
+                <button data-tab="products" class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 px-1 py-2 font-medium border-b-2 border-transparent">Mes produits</button>
+                <button data-tab="stats" class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 px-1 py-2 font-medium border-b-2 border-transparent">Statistiques</button>
+                <button data-tab="settings" class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 px-1 py-2 font-medium border-b-2 border-transparent">Paramètres</button>
             </div>
         </div>
     </div>
@@ -106,6 +108,160 @@
     <!-- Main Content -->
     <main class="py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Overview Section -->
+            <div data-section="overview" class="space-y-8">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                    <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Informations personnelles</h2>
+                    <form action="{{ route('profile.update') }}" method="POST" class="space-y-4">
+                        @csrf
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Bio</label>
+                            <textarea name="bio" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">{{ $user->bio }}</textarea>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Education</label>
+                                <input type="text" name="education" value="{{ $user->education }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Work</label>
+                                <input type="text" name="work" value="{{ $user->work }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            </div>
+                        </div>
+                        <div class="flex justify-end">
+                            <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Articles</h3>
+                        <p class="text-3xl font-bold text-blue-600">{{ $statistics['articles_count'] }}</p>
+                    </div>
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Products</h3>
+                        <p class="text-3xl font-bold text-green-600">{{ $statistics['products_count'] }}</p>
+                    </div>
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Total Views</h3>
+                        <p class="text-3xl font-bold text-orange-600">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Articles Section -->
+            <div data-section="articles" class="hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">My Articles</h2>
+                    <a href="/articles/create" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">New Article</a>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    @foreach($articles as $article)
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
+                        <img src="{{ $article->image ? asset('storage/' . $article->image) : asset('images/placeholder.jpg') }}"
+                             alt="{{ $article->title }}"
+                             class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ $article->title }}</h3>
+                                <div class="relative">
+                                    <button class="article-menu-button p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
+                                        <svg class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"></path>
+                                        </svg>
+                                    </button>
+                                    <div class="article-menu hidden absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg z-10">
+                                        <a href="/articles/{{ $article->id }}/edit" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Edit</a>
+                                        <form action="/articles/{{ $article->id }}" method="POST" class="block">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700">Delete</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="mt-2 text-gray-600 dark:text-gray-400">{{ Str::limit($article->content, 100) }}</p>
+                            <div class="mt-4 flex justify-between items-center">
+                                <span class="text-sm text-gray-500">{{ $article->created_at->diffForHumans() }}</span>
+                                <a href="/articles/{{ $article->id }}" class="text-blue-600 hover:underline">Read more</a>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+
+            <!-- Products Section -->
+            <div data-section="products" class="hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">My Products</h2>
+                    <a href="/products/create" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Add Product</a>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    @foreach($products as $product)
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
+                        <img src="{{ $product->image ? asset('storage/' . $product->image) : asset('images/placeholder.jpg') }}"
+                             alt="{{ $product->name }}"
+                             class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ $product->name }}</h3>
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">{{ $product->status }}</span>
+                            </div>
+                            <p class="mt-2 text-gray-600 dark:text-gray-400">{{ Str::limit($product->description, 100) }}</p>
+                            <div class="mt-4 flex justify-between items-center">
+                                <span class="text-xl font-bold text-gray-900 dark:text-white">${{ number_format($product->price, 2) }}</span>
+                                <a href="/products/{{ $product->id }}/edit" class="text-blue-600 hover:underline">Edit</a>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+
+            <!-- Statistics Section -->
+            <div data-section="stats" class="hidden">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Activity Statistics</h2>
+                    <div class="aspect-w-16 aspect-h-9">
+                        <canvas id="profileStats"></canvas>
+                    </div>
+                    <input type="hidden" data-stats="articles" value="{{ $statistics['articles_count'] }}">
+                    <input type="hidden" data-stats="products" value="{{ $statistics['products_count'] }}">
+                    <input type="hidden" data-stats="favorites" value="0">
+                </div>
+            </div>
+
+            <!-- Settings Section -->
+            <div data-section="settings" class="hidden">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Account Settings</h2>
+                    <div class="space-y-6">
+                        <div>
+                            <h3 class="text-lg font-medium text-gray-900 dark:text-white">Email Notifications</h3>
+                            <div class="mt-4 space-y-4">
+                                <div class="flex items-center">
+                                    <input type="checkbox" class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                                    <label class="ml-2 text-sm text-gray-700 dark:text-gray-300">New article comments</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                                    <label class="ml-2 text-sm text-gray-700 dark:text-gray-300">Product updates</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pt-6 border-t border-gray-200 dark:border-gray-700">
+                            <h3 class="text-lg font-medium text-gray-900 dark:text-white">Delete Account</h3>
+                            <p class="mt-1 text-sm text-gray-500">Once you delete your account, all of your data will be permanently removed.</p>
+                            <button class="mt-4 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700">Delete Account</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- Overview Section -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- User Info Card -->
@@ -650,21 +806,8 @@
     </div>
 </main>
 
-<!-- Footer -->
-<footer class="bg-gray-800 text-white mt-16 py-8">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div>
-                <h3 class="text-lg font-bold mb-4">Nostalgia</h3>
-                <p class="text-sm text-gray-300">Votre plateforme dédiée aux objets historiques, antiquités et œuvres d'art de collection.</p>
-                <div class="flex space-x-4 mt-4">
-                    <a href="#" class="text-gray-300 hover:text-white">
-                        <span class="sr-only">Facebook</span>
-                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                            <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd"></path>
-                        </svg>
-                    </a>
-                    <a href="#" class="text-gray-300 hover:text-white">
-                        <span class="sr-only">Instagram</span>
-                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                            <path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058
+<script src="{{ asset('js/profile.js') }}"></script>
+
+
+</body>
+</html>
