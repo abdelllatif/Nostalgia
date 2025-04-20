@@ -9,10 +9,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
-class User extends Authenticatable implements JWTSubject , MustVerifyEmail
+use Laravel\Sanctum\HasApiTokens;
+
+class User extends Authenticatable implements JWTSubject, MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -28,6 +30,10 @@ class User extends Authenticatable implements JWTSubject , MustVerifyEmail
         'is_verifier',
         'status',
         'identity_image',
+        'education',
+        'work',
+        'bio',
+        'last_active_section'
     ];
 
 
@@ -87,13 +93,13 @@ class User extends Authenticatable implements JWTSubject , MustVerifyEmail
 
 
     public function comments()
-{
-    return $this->hasMany(Comment::class);
-}
+    {
+        return $this->hasMany(Comment::class);
+    }
 
-public function ratings()
-{
-    return $this->hasMany(Rating::class);
-}
+    public function ratings()
+    {
+        return $this->hasMany(Rating::class);
+    }
 
 }

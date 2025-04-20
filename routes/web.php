@@ -14,6 +14,8 @@ use App\Http\Controllers\ReactionController;
 use App\Http\Controllers\UserController;
 use App\Services\ArticleService;
 use Illuminate\Support\Facades\Mail;
+use App\Http\Controllers\UserProfileController;
+use App\Http\Controllers\PublicProfileController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -29,7 +31,6 @@ Route::get('/hh-test', function() {
     return "Testing catalogue route";
 });
 route::middleware(['jwt.web'])->group(function(){
-    Route::get('/profile',[profileController::class,'show'])->name('profile');
     route::post('/catalogue',[ProductController::class,'store'])->name('catalogue.store');
 Route::get('/Dashebored/tags',[TagController::class,'index'] )->name('tags.show');
 Route::get('/Dashebored/categories',[CategorieController::class,'index'])->name('categories.show');
@@ -39,7 +40,15 @@ Route::put('/Dashebored/categories/{id}', [CategorieController::class, 'update']
 Route::post('/bids', [BidController::class, 'store'])->name('bids.store');
 Route::post('/Reaction', [ReactionController::class, 'store'])->name('reaction.add');
 Route::POST('blog',[ArticlesController::class,'store'])->name('blog.store');
+    // User's own profile
+    Route::get('/profile', [UserProfileController::class, 'index'])->name('profile');
+    Route::post('/profile/update', [UserProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile/last-active-section', [UserProfileController::class, 'updateLastActiveSection'])->name('profile.last-active-section');
 
+    // Public profiles
+    Route::get('/users/{id}', [PublicProfileController::class, 'show'])->name('users.show');
+    Route::get('/users/{id}/articles', [PublicProfileController::class, 'articles'])->name('users.articles');
+    Route::get('/users/{id}/products', [PublicProfileController::class, 'products'])->name('users.products');
 
 });
 route::get('/register',[AuthController::class,'register_show']);
@@ -82,5 +91,9 @@ Route::post('/admin/users/{id}/reject', [AdminUserController::class, 'reject'])-
 Route::post('/admin/users/{id}/suspend', [AdminUserController::class, 'suspend'])->name('admin.users.suspend');
 Route::post('/admin/users/{id}/activate', [AdminUserController::class, 'activate'])->name('users.activate');
 Route::get('/admin/users/{id}', [AdminUserController::class, 'view'])->name('admin.users.view');
+
+Route::middleware(['auth'])->group(function () {
+
+});
 
 
