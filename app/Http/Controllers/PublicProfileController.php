@@ -45,5 +45,32 @@ class PublicProfileController extends Controller
         ));
     }
 
-   
+    /**
+     * Display a user's articles
+     */
+    public function articles($id)
+    {
+        $user = User::findOrFail($id);
+
+        $articles = Article::where('user_id', $user->id)
+            ->orderBy('created_at', 'desc')
+            ->paginate(12);
+
+        return view('user_articles', compact('user', 'articles'));
+    }
+
+    /**
+     * Display a user's products
+     */
+    public function products($id)
+    {
+        $user = User::findOrFail($id);
+
+        $products = Product::where('user_id', $user->id)
+            ->where('status', '!=', 'finished')
+            ->orderBy('created_at', 'desc')
+            ->paginate(12);
+
+        return view('user_products', compact('user', 'products'));
+    }
 }
