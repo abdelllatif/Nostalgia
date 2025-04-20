@@ -80,8 +80,11 @@
                 </div>
                 <div class="col-md-9">
                     <h2>{{ $user->first_name }} {{ $user->name }}</h2>
+                    <p class="mb-2"><i class="fas fa-envelope me-2"></i>{{ $user->email }}</p>
                     <p class="mb-2"><i class="fas fa-briefcase me-2"></i>{{ $user->work ?? 'No work information' }}</p>
-                    <p class="mb-0"><i class="fas fa-graduation-cap me-2"></i>{{ $user->education ?? 'No education information' }}</p>
+                    <p class="mb-2"><i class="fas fa-graduation-cap me-2"></i>{{ $user->education ?? 'No education information' }}</p>
+                    <p class="mb-2"><i class="fas fa-user me-2"></i>{{ $user->bio ?? 'No bio available' }}</p>
+                    <p class="mb-0"><i class="fas fa-calendar-alt me-2"></i>Member since {{ $user->created_at->format('F Y') }}</p>
                 </div>
             </div>
         </div>
@@ -145,6 +148,21 @@
                 <div class="card-body">
                     <h5 class="card-title mb-4">About Me</h5>
                     <form id="profileForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">First Name</label>
+                                <input type="text" class="form-control bg-gray-100" name="first_name" value="{{ $user->first_name }}">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Last Name</label>
+                                <input type="text" class="form-control bg-gray-100" name="name" value="{{ $user->name }}">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control bg-gray-100" value="{{ $user->email }}" disabled>
+                            <small class="text-muted">Email cannot be changed</small>
+                        </div>
                         <div class="mb-3">
                             <label class="form-label">Work</label>
                             <input type="text" class="form-control bg-gray-100" name="work" value="{{ $user->work }}">
@@ -353,6 +371,7 @@
                 submitBtn.textContent = 'Saving...';
 
                 const formData = new FormData(this);
+                formData.append('_token', '{{ csrf_token() }}');
 
                 fetch('/profile/update', {
                     method: 'POST',
@@ -366,9 +385,15 @@
                     if (data.success) {
                         showAlert('success', 'Profile updated successfully!');
                         // Update the displayed values
+                        document.querySelector('input[name="first_name"]').value = formData.get('first_name');
+                        document.querySelector('input[name="name"]').value = formData.get('name');
                         document.querySelector('input[name="work"]').value = formData.get('work');
                         document.querySelector('input[name="education"]').value = formData.get('education');
                         document.querySelector('textarea[name="bio"]').value = formData.get('bio');
+
+                        // Update the profile header
+                        document.querySelector('h2').textContent = `${formData.get('first_name')} ${formData.get('name')}`;
+                        document.querySelector('.profile-bio').textContent = formData.get('bio') || 'No bio available';
                     } else {
                         showAlert('danger', 'Error updating profile. Please try again.');
                     }
