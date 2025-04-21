@@ -24,9 +24,10 @@ class homeController extends Controller
 
     public function article()
     {
-        $articles = Article::with(['user', 'categorie'])
+        $articles = Article::with(['user', 'categorie', 'comments'])
             ->where('status', 'posted')
-            ->latest()
+            ->withCount('comments')
+            ->orderBy('comments_count', 'desc')
             ->take(3)
             ->get();
 
@@ -35,12 +36,14 @@ class homeController extends Controller
 
     public function product()
     {
-        $products = Product::with(['categorie'])
-        ->latest()
-        ->take(3)
-        ->get();
+        $products = Product::with(['category', 'bids'])
+            ->where('status', 'active')
+            ->withCount('bids')
+            ->orderBy('bids_count', 'desc')
+            ->take(3)
+            ->get();
 
-        return view('products.index', compact('products'));
+        return $products;
     }
 
     private function topCategories()
