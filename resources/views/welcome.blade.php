@@ -202,102 +202,89 @@
         </div>
     </section>
 
-    <!-- Products Section -->
-    <section class="py-12 bg-white dark:bg-gray-800">
+    <!-- Featured Products Section -->
+    <div class="py-12 bg-white dark:bg-gray-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-                    Nos Produits
+            <div class="text-center">
+                <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white sm:text-4xl">
+                    Produits Populaires
                 </h2>
-                <p class="mt-4 max-w-2xl text-xl text-gray-500 dark:text-gray-400 mx-auto">
-                    Découvrez notre sélection de produits uniques.
+                <p class="mt-3 max-w-2xl mx-auto text-xl text-gray-500 dark:text-gray-400 sm:mt-4">
+                    Découvrez nos articles les plus convoités
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
                 @foreach($products as $product)
                 <div class="rounded-lg shadow-lg overflow-hidden bg-gray-50 dark:bg-gray-900 transition-transform duration-300 hover:scale-105">
                     <div class="h-64 w-full overflow-hidden">
-                        <img src="{{ $product->image_url }}"
-                             alt="{{ $product->name }}"
-                             class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500">
+                        <img src="{{ $product->images->first() ? asset('storage/' . $product->images->first()->image_path) : 'https://images.unsplash.com/photo-1741805190625-7386d2180e57?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw1M3x8fGVufDB8fHx8fA%3D%3D' }}"
+                            alt="{{ $product->title }}"
+                            class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500">
                     </div>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">{{ $product->name }}</h3>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">{{ $product->title }}</h3>
                         <div class="flex items-center mt-2">
-                            <span class="text-gray-600 dark:text-gray-500 font-semibold">{{ number_format($product->price, 2) }}€</span>
-                            @if($product->categorie)
-                            <span class="ml-auto text-sm text-gray-500 dark:text-gray-400">{{ $product->categorie->name }}</span>
-                            @endif
+                            <span class="text-gray-600 dark:text-gray-500 font-semibold">Prix de départ: {{ number_format($product->starting_price, 2) }}€</span>
+                            <span class="ml-auto text-gray-500 dark:text-gray-400 text-sm">{{ $product->bids_count }} enchères</span>
                         </div>
-                        <div class="mt-4">
-                            <p class="text-gray-600 dark:text-gray-400 line-clamp-2">{{ Str::limit($product->description, 100) }}</p>
+                        <div class="mt-4 border-t border-gray-200 dark:border-gray-700 pt-4">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500 dark:text-gray-400">Fin de l'enchère:</span>
+                                <span class="text-gray-900 dark:text-white font-medium">{{ \Carbon\Carbon::parse($product->auction_end_date)->format('d F, H:i') }}</span>
+                            </div>
                         </div>
-                        <a href="{{ route('product.details', $product->id) }}" class="mt-4 w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 dark:hover:bg-gray-500">
+                        <a href="/produit/{{ $product->id }}" class="mt-4 w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 dark:hover:bg-gray-500">
                             Voir les détails
                         </a>
                     </div>
                 </div>
                 @endforeach
             </div>
-
-            <div class="mt-12 text-center">
-                <a href="{{ route('catalogue.show') }}" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-gray-600 hover:bg-gray-700 dark:hover:bg-gray-500">
-                    Voir tous les produits
-                    <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                    </svg>
-                </a>
-            </div>
         </div>
-    </section>
+    </div>
 
-    <!-- Latest Articles Section -->
-    <section class="py-12 bg-gray-50 dark:bg-gray-900">
+    <!-- Featured Articles Section -->
+    <div class="py-12 bg-gray-50 dark:bg-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-                    Articles Récents
+            <div class="text-center">
+                <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white sm:text-4xl">
+                    Articles Populaires
                 </h2>
-                <p class="mt-4 max-w-2xl text-xl text-gray-500 dark:text-gray-400 mx-auto">
-                    Découvrez nos derniers articles sur le patrimoine culturel.
+                <p class="mt-3 max-w-2xl mx-auto text-xl text-gray-500 dark:text-gray-400 sm:mt-4">
+                    Les articles les plus discutés de notre communauté
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
                 @foreach($articles as $article)
                 <div class="rounded-lg shadow-lg overflow-hidden bg-white dark:bg-gray-800 transition-transform duration-300 hover:scale-105">
-                    <div class="h-48 w-full overflow-hidden">
+                    <div class="h-64 w-full overflow-hidden">
                         <img src="{{ $article->image_url }}"
-                             alt="{{ $article->title }}"
-                             class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500">
+                            alt="{{ $article->title }}"
+                            class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500">
                     </div>
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white">{{ $article->title }}</h3>
-                        <p class="mt-2 text-gray-600 dark:text-gray-400 line-clamp-2">{{ Str::limit($article->content, 100) }}</p>
-                        <div class="mt-4 flex items-center justify-between">
-                            <span class="text-sm text-gray-500 dark:text-gray-400">{{ $article->created_at->format('d M Y') }}</span>
-                            <a href="{{ route('Article.show', $article->id) }}" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
-                                Lire plus →
-                            </a>
+                        <div class="flex items-center mt-2">
+                            <span class="text-gray-600 dark:text-gray-500">Par {{ $article->user->name }}</span>
+                            <span class="ml-auto text-gray-500 dark:text-gray-400 text-sm">{{ $article->comments_count }} commentaires</span>
                         </div>
+                        <div class="mt-4 border-t border-gray-200 dark:border-gray-700 pt-4">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-500 dark:text-gray-400">Catégorie:</span>
+                                <span class="text-gray-900 dark:text-white font-medium">{{ $article->categorie->name }}</span>
+                            </div>
+                        </div>
+                        <a href="/article/{{ $article->id }}" class="mt-4 w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 dark:hover:bg-gray-500">
+                            Lire l'article
+                        </a>
                     </div>
                 </div>
                 @endforeach
             </div>
-
-            <div class="mt-12 text-center">
-                <a href="{{ route('blog.index') }}" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-gray-600 hover:bg-gray-700 dark:hover:bg-gray-500">
-                    Voir tous les articles
-                    <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                    </svg>
-                </a>
-            </div>
         </div>
-    </section>
-
-
+    </div>
 
     <!-- About Section -->
     <section class="py-16 bg-gray-50 dark:bg-gray-900">
@@ -362,6 +349,7 @@
             </div>
         </div>
     </section>
+   <!-- Footer Section -->
    <footer class="bg-gray-900 text-white py-6">
     <div class="max-w-7xl mx-auto text-center">
         <p>&copy; 2025 Nostalogia. Tous droits réservés.</p>
