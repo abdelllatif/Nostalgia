@@ -68,7 +68,7 @@
             <div class="row align-items-center">
                 <div class="col-md-3 text-center">
                     <div class="position-relative d-inline-block">
-                        <img src="{{ $user->profile_image ? asset('storage/' . $user->profile_image) : asset('storage/anonymes_users/anonyme_user.jpg') }}"
+                        <img src="{{ $user->profile_image ? asset('storage/' . $user->profile_image) : asset('storage/anonyme_user.jpg') }}"
                              alt="Profile"
                              class="profile-image rounded-circle"
                              id="profileImage">

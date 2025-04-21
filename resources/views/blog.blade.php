@@ -83,7 +83,7 @@
                 <div class="bg-white rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
                     @if($article->image)
                         <div class="relative h-48">
-                            <img src="{{ $article->image_url }}" alt="{{ $article->title }}" class="w-full h-full object-cover">
+                            <img src="{{asset('storage/' .  $article->image )}}" alt="{{ $article->title }}" class="w-full h-full object-cover">
                             <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent h-24"></div>
                         </div>
                     @endif
