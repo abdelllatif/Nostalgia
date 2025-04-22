@@ -20,6 +20,16 @@ class Product extends Model
     ];
 
     /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'auction_end_date' => 'datetime',
+        'starting_price' => 'decimal:2',
+    ];
+
+    /**
      * The category that the product belongs to.
      */
     public function category()

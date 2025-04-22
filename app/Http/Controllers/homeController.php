@@ -33,6 +33,7 @@ class homeController extends Controller
 
         return $articles;
     }
+
     public function product()
     {
         $products = Product::with(['category', 'bids'])

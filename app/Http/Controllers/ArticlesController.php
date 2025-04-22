@@ -59,43 +59,28 @@ class ArticlesController extends Controller
 
     public function store(Request $request)
     {
-        try {
-            $validated = $request->validate([
-                'title' => 'required|string|max:2255', // كذلك max خصها تكون رقم معقول، غادي نرجع لها
-                'content' => 'required|string', // <-- هنا صلحناها
-                'category_id' => 'required|exists:categories,id',
-                'tags' => 'array',
-                'tags.*' => 'exists:tags,id',
-                'image' => 'nullable|image|max:5120' // 5MB مثلا
-            ]);
-            $article = new Article($validated);
-            $article->user_id = Auth::user()->id;
-            $article->status = 'posted';
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required',
+            'category_id' => 'required|exists:categories,id',
+            'tags' => 'array',
+            'tags.*' => 'exists:tags,id',
+            'image' => 'nullable|image|max:2048'
+        ]);
 
-            if ($request->hasFile('image')) {
-                $article->image = $request->file('image')->store('articles', 'public');
-            }
-
-            $article->save();
-
-            if ($request->tags) {
-                $article->tags()->attach($request->tags);
-            }
-            dd($article);
-            return redirect()->route('blog')->with('succsess','artricle creaated sucsses');
-
-
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Erreur lors de la création de l\'article: ' . $e->getMessage()
-            ], 500);
+        if ($request->hasFile('image')) {
+            $validated['image'] = $request->file('image')->store('articles', 'public');
         }
+
+        $validated['user_id'] = Auth::id();
+        $article = Article::create($validated);
+        $article->tags()->sync($request->tags);
+
+        return response()->json(['message' => 'Article created successfully', 'article' => $article]);
     }
 
     public function update(Request $request, Article $article)
     {
-
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required',

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Article extends Model
 {
@@ -17,7 +18,10 @@ class Article extends Model
 
     public function getImageUrlAttribute()
     {
-        return $this->image ? asset('storage/' . $this->image) : null;
+        if (!$this->image) {
+            return asset('images/placeholder.jpg');
+        }
+        return asset('storage/' . $this->image);
     }
 
     public function user()

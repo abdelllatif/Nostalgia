@@ -16,10 +16,14 @@ use App\Services\ArticleService;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\PublicProfileController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\DashboardArticleController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Home routes
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/articles', [HomeController::class, 'article'])->name('articles.index');
+Route::get('/products', [HomeController::class, 'product'])->name('products.index');
+
 Route::get('/about', function () {
     return view('about');
 });
@@ -49,7 +53,12 @@ Route::POST('blog',[ArticlesController::class,'store'])->name('blog.store');
     Route::get('/users/{id}', [PublicProfileController::class, 'show'])->name('users.show');
     Route::get('/users/{id}/articles', [PublicProfileController::class, 'articles'])->name('users.articles');
     Route::get('/users/{id}/products', [PublicProfileController::class, 'products'])->name('users.products');
+    Route::get('/users/{id}/reactions', [UserProfileController::class, 'reactions'])->name('users.reactions');
 
+    Route::get('/dashboard/articles', [DashboardArticleController::class, 'index'])->name('dashboard.articles');
+    Route::post('/dashboard/articles/{article}/suspend', [DashboardArticleController::class, 'suspend'])->name('articles.suspend');
+    Route::post('/dashboard/articles/{article}/restore', [DashboardArticleController::class, 'restore'])->name('articles.restore');
+    Route::get('/dashboard/articles/filter', [DashboardArticleController::class, 'filter'])->name('articles.filter');
 });
 route::get('/register',[AuthController::class,'register_show']);
 route::get('/login',[AuthController::class,'login_show'])->name('login');
@@ -58,6 +67,7 @@ route::post('/login',[AuthController::class,'login']);
 route::get('/terms',[AuthController::class,'terms_views']);
 route::get('/En_Attend',[AuthController::class,'Attends_views'])->name('En_Attend');
 route::get('/product/details/{id}',[ProductController::class,'show'])->name('product.details');
+// Public route for viewing catalogue
 Route::get('/catalogue',[ProductController::class,'index'])->name('catalogue.show');
 
 
@@ -93,6 +103,15 @@ Route::post('/admin/users/{id}/activate', [AdminUserController::class, 'activate
 Route::get('/admin/users/{id}', [AdminUserController::class, 'view'])->name('admin.users.view');
 
 Route::middleware(['auth'])->group(function () {
+
+});
+
+// Reaction routes
+Route::put('/reactions/{id}', [ReactionController::class, 'update'])->name('reactions.update');
+Route::delete('/reactions/{id}', [ReactionController::class, 'destroy'])->name('reactions.destroy');
+
+// Dashboard Article Management Routes
+Route::middleware(['auth', 'admin'])->group(function () {
 
 });
 

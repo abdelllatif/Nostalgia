@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use App\Models\ArticleReaction;
 
 class ReactionController extends Controller
 {
@@ -64,5 +65,38 @@ class ReactionController extends Controller
             DB::rollBack();
             return response()->json(['message' => 'Failed to add comment or rating', 'error' => $e->getMessage()], 500);
         }
+    }
+
+    public function update(Request $request, $id)
+    {
+        $reaction = ArticleReaction::findOrFail($id);
+
+        // Check if the user owns this reaction
+        if ($reaction->user_id !== auth()->id()) {
+            return back()->with('error', 'You are not authorized to edit this reaction.');
+        }
+
+        $validated = $request->validate([
+            'comment' => 'nullable|string|max:1000',
+            'rating' => 'nullable|integer|min:1|max:5'
+        ]);
+
+        $reaction->update($validated);
+
+        return back()->with('success', 'Reaction updated successfully.');
+    }
+
+    public function destroy($id)
+    {
+        $reaction = ArticleReaction::findOrFail($id);
+
+        // Check if the user owns this reaction
+        if ($reaction->user_id !== auth()->id()) {
+            return back()->with('error', 'You are not authorized to delete this reaction.');
+        }
+
+        $reaction->delete();
+
+        return back()->with('success', 'Reaction deleted successfully.');
     }
 }

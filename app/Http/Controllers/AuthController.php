@@ -66,7 +66,7 @@ public function login(Request $request)
         return redirect()->route('login')->with('error', 'Login failed. Please try again.');
     }
     $token = $response['token'];
-    $cookie = cookie('jwt_token', $token, 60*2, null, null, false, true);
+    $cookie = cookie('jwt_token', $token, 60*24, '/', null, config('app.env') === 'production', true, false, 'lax');
     return redirect('/profile')
         ->withCookie($cookie)
         ->with('success', 'Login successful.');

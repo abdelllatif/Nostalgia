@@ -9,6 +9,7 @@ use App\Models\ProductImage;
 use App\Services\CategorieService;
 use App\Services\TagService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use DateTime;
 use GrahamCampbell\ResultType\Success;
 use App\Http\Controllers\BidController;
@@ -31,11 +32,68 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
-        $filterBy = $request->filterby ?? 'created_at';
-        $products = $this->productService->getAllProducts($filterBy);
+        $query = Product::with(['category', 'user', 'images', 'tags:id,name']);
+
+        // Filter by category
+        if ($request->filled('category')) {
+            $query->where('category_id', $request->category);
+        }
+
+        // Search by title or description
+        if ($request->filled('search')) {
+            $searchTerm = $request->search;
+            $query->where(function($q) use ($searchTerm) {
+                $q->where('title', 'like', "%{$searchTerm}%")
+                  ->orWhere('description', 'like', "%{$searchTerm}%");
+            });
+        }
+
+        // Sort products
+        if ($request->filled('sort')) {
+            switch ($request->sort) {
+                case 'price_asc':
+                    $query->orderBy('starting_price', 'asc');
+                    break;
+                case 'price_desc':
+                    $query->orderBy('starting_price', 'desc');
+                    break;
+                case 'ending_soon':
+                    $query->orderBy('auction_end_date', 'asc');
+                    break;
+                case 'newest':
+                default:
+                    $query->orderBy('created_at', 'desc');
+                    break;
+            }
+        } else {
+            $query->orderBy('created_at', 'desc');
+        }
+
+        $products = $query->paginate(12);
         $tags = $this->tagService->getAllTags();
         $categories = $this->categoryService->getAllCategories();
-        return view('catalogue', compact('products', 'tags', 'categories'));
+
+        // Check for JWT authentication even on public routes
+        $user = null;
+        if ($request->hasCookie('jwt_token')) {
+            try {
+                $token = $request->cookie('jwt_token');
+                \Tymon\JWTAuth\Facades\JWTAuth::setToken($token);
+                $user = \Tymon\JWTAuth\Facades\JWTAuth::authenticate();
+            } catch (\Exception $e) {
+                // Log the error but continue without authentication
+                \Log::error('JWT Authentication error in public route:', [
+                    'error' => $e->getMessage()
+                ]);
+            }
+        }
+
+        // Add the authenticated user to the request for the view
+        if ($user) {
+            $request->merge(['auth_user' => $user]);
+        }
+
+        return view('catalogue', compact('products', 'tags', 'categories', 'user'));
     }
     public function show($id)
     {

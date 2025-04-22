@@ -7,6 +7,7 @@ use App\Services\BidService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Events\AuctionUpdated;
+use App\Models\Product;
 
 class BidController extends Controller
 {
@@ -31,32 +32,37 @@ class BidController extends Controller
      */
     public function store(Request $request)
     {
-        $validater=$request->validate([
-            'amount'=>'required|numeric|min:0',
-            'product_id'=>'required|exists:products,id'
+        $request->validate([
+            'amount' => 'required|numeric|min:0',
+            'product_id' => 'required|exists:products,id'
         ]);
-        $validater['user_id']=Auth::user()->id;
-        $existingBids = $this->bidservice->getproductbids($request->product_id);
-        if($existingBids->isEmpty()){
-            if($request->amount>$this->productController->show($request->product_id)){
-                return back()->with('error','Your bid must be greater than or equal to the starting price');
-            }
-        }
-        else{
-            $bigbid=$existingBids->first();
-            if($request->amount<=$bigbid->amount){
 
-        //        dd($request->amount<=$bigbid,$request->amount,$bigbid->amount);
-                return back()->with('error','Your bid must be greater than the last bid');
-            }
-        }
-        $bid=$this->bidservice->storeaBid($validater);
-        if(!$bid){
-            return back()->with('error','your bid not added');
-        }
-        event(new AuctionUpdated($bid));
+        $product = Product::findOrFail($request->product_id);
+        $currentPrice = $product->bids->isNotEmpty() ? $product->bids->max('amount') : $product->starting_price;
 
-        return back()->with('success','your bid  added succsesfully.');
+        // Check if auction has ended
+        if ($product->auction_end_date->isPast()) {
+            return back()->with('error', 'Cette enchère est terminée.');
+        }
+
+        // Check if bid amount is greater than current price
+        if ($request->amount <= $currentPrice) {
+            return back()->with('error', 'Le montant de l\'enchère doit être supérieur au prix actuel de ' . number_format($currentPrice, 2) . ' €.');
+        }
+
+        // Check if user is not bidding on their own product
+        if ($product->user_id === $request->user()->id) {
+            return back()->with('error', 'Vous ne pouvez pas enchérir sur votre propre produit.');
+        }
+
+        // Create the bid
+        $bid = Bid::create([
+            'amount' => $request->amount,
+            'product_id' => $request->product_id,
+            'user_id' => $request->user()->id
+        ]);
+
+        return back()->with('success', 'Votre enchère de ' . number_format($request->amount, 2) . ' € a été placée avec succès.');
     }
 
     /**
