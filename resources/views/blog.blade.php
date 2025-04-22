@@ -138,12 +138,45 @@
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Tags</label>
-                            <select id="tagSelect" class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white">
-                                <option value="">Sélectionner un tag...</option>
-                                @foreach ($tags as $tag)
-                                    <option value="{{$tag->id}}">{{$tag->name}}</option>
-                                @endforeach
-                            </select>                        </div>
+                            <div class="mt-1">
+                                <!-- Selected Tags Display -->
+                                <div id="selectedTags" class="flex flex-wrap gap-2 mb-4"></div>
+
+                                <!-- Tag Library Container -->
+                                <div class="border-2 border-gray-300 rounded-lg overflow-hidden">
+                                    <!-- Search Bar -->
+                                    <div class="p-4 border-b border-gray-200">
+                                        <div class="relative">
+                                            <input type="text"
+                                                   id="tagSearch"
+                                                   placeholder="Rechercher des tags..."
+                                                   class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500">
+                                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                                <i class="fas fa-search text-gray-400"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Tags Grid -->
+                                    <div class="p-4 max-h-60 overflow-y-auto">
+                                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="tagsGrid">
+                                            @foreach ($tags as $tag)
+                                                <div class="tag-item">
+                                                    <button type="button"
+                                                            onclick="toggleTag('{{$tag->id}}', '{{$tag->name}}')"
+                                                            class="w-full p-3 text-left bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200 group">
+                                                        <div class="flex items-center justify-between">
+                                                            <span class="text-sm font-medium text-gray-900">{{$tag->name}}</span>
+                                                            <i class="fas fa-check text-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></i>
+                                                        </div>
+                                                    </button>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Image</label>
                             <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
@@ -196,6 +229,46 @@
                 reader.readAsDataURL(this.files[0]);
             }
         });
+
+        // Tag library functionality
+        const tagSearch = document.getElementById('tagSearch');
+        const tagsGrid = document.getElementById('tagsGrid');
+        const tagItems = document.querySelectorAll('.tag-item');
+        let selectedTagsSet = new Set();
+
+        // Search functionality
+        if (tagSearch) {
+            tagSearch.addEventListener('input', function(e) {
+                const searchTerm = e.target.value.toLowerCase();
+                tagItems.forEach(item => {
+                    const tagName = item.querySelector('span').textContent.toLowerCase();
+                    const shouldShow = tagName.includes(searchTerm);
+                    item.style.display = shouldShow ? 'block' : 'none';
+                });
+            });
+        }
+
+        function toggleTag(tagId, tagName) {
+            if (selectedTagsSet.has(tagId)) {
+                removeTag(tagId);
+            } else {
+                selectedTagsSet.add(tagId);
+                const tagElement = document.createElement('div');
+                tagElement.className = 'inline-flex items-center bg-purple-100 px-3 py-1 rounded-full text-sm font-medium text-purple-600';
+                tagElement.innerHTML = `
+                    ${tagName}
+                    <input type="hidden" name="tags[]" value="${tagId}">
+                    <button type="button" class="ml-2 text-purple-600 hover:text-purple-800" onclick="removeTag('${tagId}')">&times;</button>
+                `;
+                document.getElementById('selectedTags').appendChild(tagElement);
+            }
+        }
+
+        function removeTag(tagId) {
+            const tagElement = document.querySelector(`input[value="${tagId}"]`).parentElement;
+            tagElement.remove();
+            selectedTagsSet.delete(tagId);
+        }
     </script>
 </body>
 </html>
