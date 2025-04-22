@@ -138,8 +138,12 @@
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Tags</label>
-                            <input type="text" name="tags" placeholder="Add tags separated by commas" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500">
-                        </div>
+                            <select id="tagSelect" class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white">
+                                <option value="">Sélectionner un tag...</option>
+                                @foreach ($tags as $tag)
+                                    <option value="{{$tag->id}}">{{$tag->name}}</option>
+                                @endforeach
+                            </select>                        </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Image</label>
                             <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
