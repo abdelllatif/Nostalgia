@@ -27,7 +27,7 @@ class PublicProfileController extends Controller
         // Get user's public articles
         $articles = Article::where('user_id', $user->id)
             ->orderBy('created_at', 'desc')
-            ->take(6)
+            ->take(2)
             ->get();
 
         // Get user's active products
