@@ -230,45 +230,66 @@
                     </div>
                 @else
                 @foreach($products as $product)
-                        <div class="bg-white rounded-xl shadow-xl overflow-hidden h-[400px] flex flex-col border border-gray-200">
-                            <div class="relative h-48 overflow-hidden">
-                                <img src="{{ asset('storage/' . ($product->images->first()->path ?? 'https://i.pinimg.com/736x/8e/30/4a/8e304aac188acd1f61943e58752a2115.jpg')) }}"
-                                     class="w-full h-full object-cover"
-                                     alt="{{ $product->title }}">
-                                <div class="absolute inset-0 bg-black/30"></div>
-                                <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                                <div class="absolute bottom-4 left-4 right-4">
-                                    <h3 class="text-xl font-semibold text-white mb-2 line-clamp-2 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">{{ $product->title }}</h3>
-                                </div>
-                            </div>
-                            <div class="p-4 flex-grow">
-                                <p class="text-gray-600 line-clamp-3 text-sm">{{ $product->description }}</p>
-                            </div>
-                            <div class="p-4 bg-gray-50 border-t border-gray-200">
-                                <div class="flex items-center justify-between">
-                                    <div>
-                                        <span class="text-lg font-bold text-gray-600">{{ number_format($product->starting_price, 2) }}€</span>
-                                        <p class="text-sm text-gray-500">Prix de départ</p>
-                                    </div>
-                                    <a href="{{ route('product.details', ['id' => $product->id]) }}"
-                                       class="inline-block px-6 py-2.5 bg-gray-600 text-white rounded-full text-sm hover:bg-gray-700">
-                                        Voir plus
-                                    </a>
-                                </div>
+                <div class="relative flex flex-col bg-gray-50 dark:bg-gray-900 rounded-2xl shadow-lg overflow-hidden h-[500px] transition hover:scale-105">
+                    <!-- Product Image -->
+                    <div class="h-60 w-full overflow-hidden">
+                        <img src="{{ $product->images->first() ? asset('storage/' . $product->images->first()->image_path) : 'https://images.unsplash.com/photo-1741805190625-7386d2180e57?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw1M3x8fGVufDB8fHx8fA%3D%3D' }}"
+                            alt="{{ $product->title }}"
+                            class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                    </div>
+
+                    <!-- Product Content -->
+                    <div class="flex flex-col flex-1 p-4">
+
+                        <!-- User Info moved here -->
+                        <div class="flex items-center mb-4">
+                            <img src="{{ $product->user->profile_image ? asset('storage/' . $product->user->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode($product->user->first_name . ' ' . $product->user->last_name) }}"
+                                alt="{{ $product->user->first_name }} {{ $product->user->name }}"
+                                class="w-12 h-12 rounded-full object-cover border-2 border-white shadow-md">
+                            <div class="ml-3">
+                                <h5 class="text-gray-800 dark:text-white font-semibold text-sm">
+                                    {{ $product->user->first_name }} {{ $product->user->name }}
+                                </h5>
                             </div>
                         </div>
-                    @endforeach
-                @endif
+
+                        <!-- Product Title -->
+                        <h4 class="text-gray-700 dark:text-gray-400 text-md font-medium mb-4 line-clamp-2">
+                            {{ $product->title }}
+                        </h4>
+
+                        <!-- Info -->
+                        <div class="mt-auto">
+                            <div class="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400 mb-2">
+                                <span class="font-semibold">Prix: {{ number_format($product->starting_price, 2) }}€</span>
+                                <span>{{ $product->bids_count }} enchères</span>
+                            </div>
+
+                            <div class="flex justify-between text-xs text-gray-500 dark:text-gray-400 border-t pt-2">
+                                <span>Fin:</span>
+                                <span class="text-gray-900 dark:text-white font-medium">
+                                    {{ \Carbon\Carbon::parse($product->auction_end_date)->format('d F, H:i') }}
+                                </span>
+                            </div>
+
+                            <a href="{{ route('product.details', ['id' => $product->id]) }}"
+                               class="block w-full mt-4 text-center bg-gray-700 hover:bg-gray-800 dark:hover:bg-gray-600 text-white text-sm py-2 rounded-lg transition">
+                                Voir les détails
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            @endforeach
+            @endif
             </div>
             </div>
         </div>
     </section>
             <!-- Pagination -->
-            @if(isset($products) && method_exists($products, 'hasPages') && $products->hasPages())
                 <div class="mt-8 max-w-7xl mx-auto px-4">
                     {{ $products->links() }}
                 </div>
-            @endif
                 </div>
             @endif
         </div>
@@ -335,20 +356,17 @@
                             <label class="block text-sm font-medium text-gray-700">Images</label>
                             <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
                                 <div class="space-y-1 text-center">
-                                    <svg class="mx-auto h-6 w-6 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
-                                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m0-8z"></path>
-                                    </svg>
-                                    <div class="flex text-xs text-gray-600 justify-center">
-                                        <label for="images" class="cursor-pointer bg-white font-medium text-blue-600 hover:text-blue-500">
-                                            <span>Télécharger des images</span>
-                                            <input id="images" name="images[]" type="file" class="sr-only" multiple accept="image/*">
-                                        </label>
-                                    </div>
-                                    <p class="text-xs text-gray-500">PNG, JPG, GIF jusqu'à 10MB</p>
+                                    <label for="images" class="cursor-pointer bg-white font-medium text-blue-600 hover:text-blue-500">
+                                        <span>Upload Images</span>
+                                        <input id="images" name="images[]" type="file" class="sr-only" multiple accept="image/*">
+                                    </label>
+                                    <p class="text-xs text-gray-500">Max 4 images</p>
                                 </div>
                             </div>
                             <div id="imagePreview" class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4"></div>
                         </div>
+
+
 
                         <div class="col-span-2">
                             <label class="block text-sm font-medium text-gray-700">Tags</label>
@@ -388,7 +406,9 @@
         const closeModalBtn = document.getElementById('closeModalBtn');
         const cancelButton = document.getElementById('cancelButton');
         const imageInput = document.getElementById('images');
-        const imagePreview = document.getElementById('imagePreview');
+const imagePreview = document.getElementById('imagePreview');
+let images = [];
+
         const tagSelect = document.getElementById('tagSelect');
         const selectedTagsContainer = document.getElementById('selectedTags');
 
@@ -436,42 +456,42 @@
             }
         }
 
-        // Image preview functionality
-        if (imageInput) {
-            imageInput.addEventListener('change', function(e) {
-                if (!imagePreview) return;
 
-                const files = Array.from(e.target.files);
-                imagePreview.innerHTML = '';
+imageInput.addEventListener('change', e => {
+    const files = Array.from(e.target.files);
+    if (images.length + files.length > 4) return alert('Max 4 images');
 
-                files.forEach(file => {
-                    if (file.type.startsWith('image/')) {
-                        const reader = new FileReader();
-                        reader.onload = function(e) {
-                            const imgContainer = document.createElement('div');
-                            imgContainer.className = 'relative';
+    files.forEach(file => {
+        if (!file.type.startsWith('image/')) return;
+        const reader = new FileReader();
+        reader.onload = ev => {
+            images.push(ev.target.result);
+            displayImages();
+        };
+        reader.readAsDataURL(file);
+    });
+});
 
-                            const img = document.createElement('img');
-                            img.src = e.target.result;
-                            img.className = 'w-full h-24 object-cover rounded-lg';
+function displayImages() {
+    imagePreview.innerHTML = '';
+    images.forEach((src, i) => {
+        imagePreview.innerHTML += `
+            <div class="relative group">
+                <img src="${src}" class="w-full h-24 object-cover rounded-lg">
+                <button type="button"
+                        class=" group-hover:flex absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 items-center justify-center"
+                        onclick="removeImage(${i})">
+                    &times;
+                </button>
+            </div>
+        `;
+    });
+}
 
-                            const removeBtn = document.createElement('button');
-                            removeBtn.type = 'button';
-                            removeBtn.className = 'absolute top-1 right-1 bg-red-500 text-white rounded-full p-1';
-                            removeBtn.innerHTML = '&times;';
-                            removeBtn.onclick = function() {
-                                imgContainer.remove();
-                            };
-
-                            imgContainer.appendChild(img);
-                            imgContainer.appendChild(removeBtn);
-                            imagePreview.appendChild(imgContainer);
-                        };
-                        reader.readAsDataURL(file);
-                    }
-                });
-            });
-        }
+function removeImage(index) {
+    images.splice(index, 1); // إزالة الصورة من المصفوفة
+    displayImages(); // إعادة عرض الصور
+}
 
         // Tag selection functionality with simple select dropdown
         if (tagSelect) {
