@@ -59,6 +59,7 @@ class JWTMiddleware extends BaseMiddleware
                 'cookie_present' => $request->hasCookie('jwt_token'),
                 'all_cookies' => $request->cookies->all()
             ]);
+            session(['url.intended' => url()->full()]);
             return redirect()->route('login')->with('error', 'Please log in to access this page.');
         }
 

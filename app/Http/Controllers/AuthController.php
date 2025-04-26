@@ -65,12 +65,19 @@ public function login(Request $request)
     if (!$response) {
         return redirect()->route('login')->with('error', 'Login failed. Please try again.');
     }
+
     $token = $response['token'];
     $cookie = cookie('jwt_token', $token, 60*24, '/', null, config('app.env') === 'production', true, false, 'lax');
-    return redirect('/profile')
+
+    // Retrieve intended URL or fallback to profile
+    $intendedUrl = session('url.intended', '/profile');
+    session()->forget('url.intended'); // Clear after using it
+
+    return redirect($intendedUrl)
         ->withCookie($cookie)
         ->with('success', 'Login successful.');
 }
+
 
 public function logout(){
     $this->authService->logout();
