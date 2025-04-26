@@ -27,14 +27,14 @@ class PublicProfileController extends Controller
         // Get user's public articles
         $articles = Article::where('user_id', $user->id)
             ->orderBy('created_at', 'desc')
-            ->take(2)
+            ->take(4)
             ->get();
 
         // Get user's active products
         $products = Product::where('user_id', $user->id)
             ->where('status', '!=', 'finished')
             ->orderBy('created_at', 'desc')
-            ->take(6)
+            ->take(4)
             ->get();
 
         return view('public_profile', compact(
