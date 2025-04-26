@@ -285,12 +285,16 @@
             </div>
             </div>
         </div>
+        <!-- Pagination -->
+        <div class="mt-8 max-w-7xl mx-auto px-4 flex justify-center">
+            <div class="inline-flex space-x-2">
+                {{ $products->links() }}
+            </div>
+        </div>
+
+
     </section>
-            <!-- Pagination -->
-                <div class="mt-8 max-w-7xl mx-auto px-4">
-                    {{ $products->links() }}
-                </div>
-                </div>
+
             @endif
         </div>
     </section>
@@ -400,134 +404,167 @@
 
     <!-- Simple JavaScript for functionality -->
     <script>
-        // DOM Elements
-        const modal = document.getElementById('createProductModal');
-        const openModalBtn = document.getElementById('openCreateModal');
-        const closeModalBtn = document.getElementById('closeModalBtn');
-        const cancelButton = document.getElementById('cancelButton');
-        const imageInput = document.getElementById('images');
+       // DOM Elements
+const modal = document.getElementById('createProductModal');
+const openModalBtn = document.getElementById('openCreateModal');
+const closeModalBtn = document.getElementById('closeModalBtn');
+const cancelButton = document.getElementById('cancelButton');
+const imageInput = document.getElementById('images');
 const imagePreview = document.getElementById('imagePreview');
-let images = [];
+const tagSelect = document.getElementById('tagSelect');
+const selectedTagsContainer = document.getElementById('selectedTags');
 
-        const tagSelect = document.getElementById('tagSelect');
-        const selectedTagsContainer = document.getElementById('selectedTags');
+// Selected tags storage
+let selectedTags = new Set();
+let selectedFiles = new DataTransfer();
 
-        // Selected tags storage
-        let selectedTags = new Set();
+// Modal functions
+if (openModalBtn) {
+    openModalBtn.addEventListener('click', function() {
+        modal.classList.remove('hidden');
+    });
+}
 
-        // Modal functions
-        if (openModalBtn) {
-            openModalBtn.addEventListener('click', function() {
-                modal.classList.remove('hidden');
-            });
+if (closeModalBtn) {
+    closeModalBtn.addEventListener('click', closeModal);
+}
+
+if (cancelButton) {
+    cancelButton.addEventListener('click', closeModal);
+}
+
+// Close modal when clicking outside
+if (modal) {
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+}
+
+function closeModal() {
+    if (modal) {
+        modal.classList.add('hidden');
+
+        // Reset form if it exists
+        const form = document.getElementById('createProductForm');
+        if (form) form.reset();
+
+        // Clear image preview
+        if (imagePreview) imagePreview.innerHTML = '';
+        selectedFiles = new DataTransfer();
+
+        // Clear selected tags
+        selectedTags = new Set();
+        if (selectedTagsContainer) selectedTagsContainer.innerHTML = '';
+    }
+}
+
+// Image upload handling
+if (imageInput) {
+    imageInput.addEventListener('change', function(e) {
+        const files = Array.from(e.target.files);
+
+        // Check total number of files (existing + new)
+        if (selectedFiles.files.length + files.length > 4) {
+            alert('Maximum 4 images allowed');
+            return;
         }
 
-        if (closeModalBtn) {
-            closeModalBtn.addEventListener('click', closeModal);
-        }
-
-        if (cancelButton) {
-            cancelButton.addEventListener('click', closeModal);
-        }
-
-        // Close modal when clicking outside
-        if (modal) {
-            modal.addEventListener('click', function(e) {
-                if (e.target === modal) {
-                    closeModal();
-                }
-            });
-        }
-
-        function closeModal() {
-            if (modal) {
-                modal.classList.add('hidden');
-
-                // Reset form if it exists
-                const form = document.getElementById('createProductForm');
-                if (form) form.reset();
-
-                // Clear image preview
-                if (imagePreview) imagePreview.innerHTML = '';
-
-                // Clear selected tags
-                selectedTags = new Set();
-                if (selectedTagsContainer) selectedTagsContainer.innerHTML = '';
+        // Add new files to our collection
+        files.forEach(file => {
+            if (file.type.startsWith('image/')) {
+                selectedFiles.items.add(file);
             }
-        }
+        });
 
+        // Update input with all files
+        imageInput.files = selectedFiles.files;
 
-imageInput.addEventListener('change', e => {
-    const files = Array.from(e.target.files);
-    if (images.length + files.length > 4) return alert('Max 4 images');
+        // Update preview
+        updateImagePreview();
+    });
+}
 
-    files.forEach(file => {
-        if (!file.type.startsWith('image/')) return;
+function updateImagePreview() {
+    if (!imagePreview) return;
+
+    imagePreview.innerHTML = '';
+
+    Array.from(selectedFiles.files).forEach((file, index) => {
         const reader = new FileReader();
-        reader.onload = ev => {
-            images.push(ev.target.result);
-            displayImages();
+        reader.onload = function(e) {
+            const div = document.createElement('div');
+            div.className = 'relative group';
+            div.innerHTML = `
+                <img src="${e.target.result}" class="w-full h-24 object-cover rounded-lg">
+                <button type="button"
+                        class="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6
+                               flex items-center justify-center hidden group-hover:flex"
+                        data-index="${index}">
+                    &times;
+                </button>
+            `;
+
+            div.querySelector('button').addEventListener('click', function() {
+                removeImageFile(index);
+            });
+
+            imagePreview.appendChild(div);
         };
         reader.readAsDataURL(file);
     });
-});
+}
 
-function displayImages() {
-    imagePreview.innerHTML = '';
-    images.forEach((src, i) => {
-        imagePreview.innerHTML += `
-            <div class="relative group">
-                <img src="${src}" class="w-full h-24 object-cover rounded-lg">
-                <button type="button"
-                        class=" group-hover:flex absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 items-center justify-center"
-                        onclick="removeImage(${i})">
-                    &times;
-                </button>
-            </div>
-        `;
+function removeImageFile(index) {
+    const newFiles = new DataTransfer();
+
+    Array.from(selectedFiles.files).forEach((file, i) => {
+        if (i !== index) {
+            newFiles.items.add(file);
+        }
+    });
+
+    selectedFiles = newFiles;
+    imageInput.files = selectedFiles.files;
+    updateImagePreview();
+}
+
+// Tag selection functionality with simple select dropdown
+if (tagSelect) {
+    tagSelect.addEventListener('change', function() {
+        if (!selectedTagsContainer) return;
+
+        const tagId = this.value;
+        const tagName = this.options[this.selectedIndex].dataset.name;
+
+        if (tagId && !selectedTags.has(tagId)) {
+            // Add tag
+            selectedTags.add(tagId);
+
+            const tagElement = document.createElement('div');
+            tagElement.className = 'inline-flex items-center bg-blue-100 px-3 py-1 rounded-full text-sm font-medium text-blue-800';
+            tagElement.innerHTML = `
+                ${tagName}
+                <input type="hidden" name="tags[]" value="${tagId}">
+                <button type="button" class="ml-2 text-blue-600 hover:text-blue-800" onclick="removeTag('${tagId}')">&times;</button>
+            `;
+            selectedTagsContainer.appendChild(tagElement);
+
+            // Reset select to default option
+            this.selectedIndex = 0;
+        }
     });
 }
 
-function removeImage(index) {
-    images.splice(index, 1); // إزالة الصورة من المصفوفة
-    displayImages(); // إعادة عرض الصور
+// Function to remove a tag
+function removeTag(tagId) {
+    const tagElement = document.querySelector(`input[value="${tagId}"]`).parentElement;
+    if (tagElement) {
+        tagElement.remove();
+        selectedTags.delete(tagId);
+    }
 }
-
-        // Tag selection functionality with simple select dropdown
-        if (tagSelect) {
-            tagSelect.addEventListener('change', function() {
-                if (!selectedTagsContainer) return;
-
-                const tagId = this.value;
-                const tagName = this.options[this.selectedIndex].dataset.name;
-
-                if (tagId && !selectedTags.has(tagId)) {
-                    // Add tag
-                    selectedTags.add(tagId);
-
-                    const tagElement = document.createElement('div');
-                    tagElement.className = 'inline-flex items-center bg-blue-100 px-3 py-1 rounded-full text-sm font-medium text-blue-800';
-                    tagElement.innerHTML = `
-                        ${tagName}
-                        <input type="hidden" name="tags[]" value="${tagId}">
-                        <button type="button" class="ml-2 text-blue-600 hover:text-blue-800" onclick="removeTag('${tagId}')">&times;</button>
-                    `;
-                    selectedTagsContainer.appendChild(tagElement);
-
-                    // Reset select to default option
-                    this.selectedIndex = 0;
-                }
-            });
-        }
-
-        // Function to remove a tag
-        function removeTag(tagId) {
-            const tagElement = document.querySelector(`input[value="${tagId}"]`).parentElement;
-            if (tagElement) {
-                tagElement.remove();
-                selectedTags.delete(tagId);
-            }
-        }
     </script>
 </body>
 </html>

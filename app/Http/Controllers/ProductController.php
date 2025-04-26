@@ -69,7 +69,7 @@ class ProductController extends Controller
             $query->orderBy('created_at', 'desc');
         }
 
-        $products = $query->paginate(12);
+        $products = $query->paginate(9);
         $tags = $this->tagService->getAllTags();
         $categories = $this->categoryService->getAllCategories();
 

@@ -89,7 +89,7 @@
                 <!-- Authentification et Provenance -->
                 <div class="mt-8 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
                     <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Information sur le vendeur</h3>
-                    <div class="space-y-4 text-gray-700 dark:text-gray-300">
+                    <a href="{{route('users.show',['id'=>$product->user->id])}}" class="space-y-4 text-gray-700 dark:text-gray-300">
                         <div class="flex items-center">
                             <img src="{{ asset('storage/' . ($product->user->profile_image ?? 'anonymes_users/anonyme_user.jpg')) }}"
                                  alt="Profile"
@@ -99,7 +99,7 @@
                                 <p class="text-sm text-gray-500">Membre depuis {{ $product->user->created_at->format('M Y') }}</p>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
 
@@ -276,8 +276,8 @@
                 @foreach ( $product->simmilar_product as $simmillar)
                         <a href="{{route('product.details',['id'=>$simmillar->id])}}" class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
                             <div class="relative h-48">
-                                <img src="https://images.unsplash.com/photo-1516979187457-637abb4f9353?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fG9sZCUyMGJvb2t8ZW58MHx8MHx8fDA%3D"
-                                    alt="Psautier médiéval"
+                                <img src="{{ $simmillar->images->first() ? asset('storage/' . $simmillar->images->first()->image_path) : 'jdjnf' }}"
+                                alt="Psautier médiéval"
                                     class="w-full h-full object-cover">
                                 <div class="absolute top-2 right-2 bg-blue-600 text-white px-2 py-1 text-xs rounded-full">
                                     Enchère
@@ -299,23 +299,6 @@
             </div>
         </div>
 
-        <!-- Information de livraison et retours -->
-        <div class="mt-12 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-            <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">Informations </h2>
-            <div class="flex justify-center">
-                <div class=" p-4 text-center">
-                    <svg class="h-10 w-10 text-blue-600 dark:text-blue-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-                    </svg>
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Garanties</h3>
-                    <p class="text-gray-700 dark:text-gray-300">
-                        Certificat d'authenticité fourni<br>
-                        Garantie de satisfaction 14 jours<br>
-                        Transport assuré
-                    </p>
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- Footer -->
