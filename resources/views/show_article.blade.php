@@ -42,13 +42,13 @@
             <section class="flex-1 min-w-0">
                 <div class="bg-white rounded-2xl shadow-lg p-8 mb-10">
                     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-8">
-                        <div class="flex items-center gap-4">
-                            <img src="{{ $article->user->avatar_url }}" alt="{{ $article->user->name }}" class="w-14 h-14 rounded-full border-2 border-blue-200 shadow">
+                        <a href="{{route('users.show',['id'=> $article->user->id ])}}" class="flex items-center gap-4">
+                            <img src="{{ $article->user->avatar_url }}" alt="{{ $article->user->name  }}" class="w-14 h-14 rounded-full border-2 border-blue-200 shadow">
                             <div>
-                                <h3 class="font-semibold text-lg text-gray-900">{{ $article->user->name }}</h3>
+                                <h3 class="font-semibold text-lg text-gray-900">{{ $article->user->name }} {{ $article->user->first_name  }}</h3>
                                 <p class="text-xs text-gray-400">{{ $article->created_at->format('M d, Y') }}</p>
                             </div>
-                        </div>
+                        </a>
                         <div class="flex items-center gap-4">
                             <div class="flex flex-wrap gap-2">
                                 @if(!empty($article->categorie) && !empty($article->category_id))
