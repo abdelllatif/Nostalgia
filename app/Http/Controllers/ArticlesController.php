@@ -34,7 +34,7 @@ class ArticlesController extends Controller
             });
         }
 
-        $articles = $query->latest()->paginate(12);
+        $articles = $query->latest()->paginate(9);
         $categories = Categorie::all();
         $tags = Tag::all();
 
@@ -76,7 +76,7 @@ class ArticlesController extends Controller
         $article = Article::create($validated);
         $article->tags()->sync($request->tags);
 
-        return response()->json(['message' => 'Article created successfully', 'article' => $article]);
+        return back()->with('succsess','Article created succsessfully');
     }
 
     public function update(Request $request, Article $article)

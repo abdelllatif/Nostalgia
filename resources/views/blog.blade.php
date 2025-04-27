@@ -237,10 +237,12 @@
             @endforelse
         </div>
 
-        <!-- Pagination -->
-        <div class="mt-8">
-            {{ $articles->links() }}
-        </div>
+                <!-- Pagination -->
+                <div class="mt-8 max-w-7xl mx-auto px-4 flex justify-center">
+                    <div class="inline-flex space-x-2">
+                        {{ $articles->links() }}
+                    </div>
+                </div>
     </div>
 
     <!-- New Article Modal -->
