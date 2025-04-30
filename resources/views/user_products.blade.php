@@ -12,7 +12,7 @@
             color: #333;
         }
         .page-header {
-            background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%);
+            background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
             padding: 2rem 0;
             color: white;
             margin-bottom: 2rem;
@@ -71,13 +71,13 @@
             color: white;
         }
         .btn-primary {
-            background: #1a237e;
+            background: #4a5568;
             border: none;
             padding: 0.5rem 1.5rem;
             border-radius: 0.5rem;
         }
         .btn-primary:hover {
-            background: #0d47a1;
+            background: #2d3748;
         }
         .empty-state {
             text-align: center;
@@ -88,25 +88,25 @@
         }
         .empty-state i {
             font-size: 3rem;
-            color: #1a237e;
+            color: #4a5568;
             margin-bottom: 1rem;
         }
         .pagination {
             margin-top: 2rem;
         }
         .page-link {
-            color: #1a237e;
+            color: #4a5568;
             border: none;
             padding: 0.5rem 1rem;
             margin: 0 0.2rem;
             border-radius: 0.5rem;
         }
         .page-link:hover {
-            background: #1a237e;
+            background: #4a5568;
             color: white;
         }
         .page-item.active .page-link {
-            background: #1a237e;
+            background: #4a5568;
             border: none;
         }
     </style>
@@ -151,7 +151,7 @@
                                 <p class="card-text text-muted">{{ Str::limit($product->description, 100) }}</p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="product-price">${{ number_format($product->price, 2) }}</span>
-                                    <a href="{{ route('product.details', $product->id) }}" class="btn btn-primary">
+                                    <a href="{{ route('product.details', ['product' => $product->id]) }}" class="btn btn-primary">
                                         View Details
                                     </a>
                                 </div>

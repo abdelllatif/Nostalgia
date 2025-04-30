@@ -14,11 +14,12 @@ class BidController extends Controller
     protected $bidservice;
     protected $productController;
 
-    public function __construct(BidService $bidService,ProductController $productController)
+    public function __construct(BidService $bidService, ProductController $productController)
     {
-    $this->bidservice=$bidService;
-    $this->productController=$productController;
+        $this->bidservice = $bidService;
+        $this->productController = $productController;
     }
+
     /**
      * Display a listing of the resource.
      */
@@ -38,12 +39,13 @@ class BidController extends Controller
         ]);
 
         $product = Product::findOrFail($request->product_id);
-        $currentPrice = $product->bids->isNotEmpty() ? $product->bids->max('amount') : $product->starting_price;
 
         // Check if auction has ended
         if ($product->auction_end_date->isPast()) {
             return back()->with('error', 'Cette enchère est terminée.');
         }
+
+        $currentPrice = $product->bids->isNotEmpty() ? $product->bids->max('amount') : $product->starting_price;
 
         // Check if bid amount is greater than current price
         if ($request->amount <= $currentPrice) {
@@ -61,6 +63,12 @@ class BidController extends Controller
             'product_id' => $request->product_id,
             'user_id' => $request->user()->id
         ]);
+
+        // Update product status if needed
+        if ($product->status === 'active') {
+            $product->status = 'active';
+            $product->save();
+        }
 
         return back()->with('success', 'Votre enchère de ' . number_format($request->amount, 2) . ' € a été placée avec succès.');
     }

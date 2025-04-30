@@ -13,17 +13,13 @@ class DashboardArticleController extends Controller
     {
         $query = Article::with(['user', 'categorie']);
 
-        // Filter by status
         if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
-
-        // Filter by category
         if ($request->filled('category')) {
             $query->where('category_id', $request->category);
         }
 
-        // Search by title
         if ($request->filled('search')) {
             $query->where('title', 'like', '%' . $request->search . '%');
         }

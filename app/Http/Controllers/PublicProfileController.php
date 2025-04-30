@@ -9,14 +9,11 @@ use Illuminate\Http\Request;
 
 class PublicProfileController extends Controller
 {
-    /**
-     * Display a public profile for a specific user
-     */
+
     public function show($id)
     {
         $user = User::findOrFail($id);
 
-        // Get user statistics
         $statistics = [
             'articles_count' => Article::where('user_id', $user->id)->count(),
             'products_count' => Product::where('user_id', $user->id)
@@ -24,13 +21,11 @@ class PublicProfileController extends Controller
                 ->count(),
         ];
 
-        // Get user's public articles
         $articles = Article::where('user_id', $user->id)
             ->orderBy('created_at', 'desc')
             ->take(4)
             ->get();
 
-        // Get user's active products
         $products = Product::where('user_id', $user->id)
             ->where('status', '!=', 'finished')
             ->orderBy('created_at', 'desc')
@@ -45,9 +40,6 @@ class PublicProfileController extends Controller
         ));
     }
 
-    /**
-     * Display a user's articles
-     */
     public function articles($id)
     {
         $user = User::findOrFail($id);
@@ -59,9 +51,7 @@ class PublicProfileController extends Controller
         return view('user_articles', compact('user', 'articles'));
     }
 
-    /**
-     * Display a user's products
-     */
+  
     public function products($id)
     {
         $user = User::findOrFail($id);

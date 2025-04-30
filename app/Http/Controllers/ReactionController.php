@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Comment;
 use App\Models\Rating;
+use App\Models\Article;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use App\Models\ArticleReaction;
 
 class ReactionController extends Controller
 {
@@ -47,9 +48,18 @@ class ReactionController extends Controller
                 return response()->json(['message' => 'Failed to add comment or rating'], 500);
             }
 
+            $article = $comment->article;
+            if ($article->user_id !== Auth::id()) {
+                Notification::create([
+                    'user_id' => $article->user_id,
+                    'type' => 'new_comment',
+                    'message' => Auth::user()->name . ' commented on your article "' . $article->title . '"',
+                    'is_read' => false,
+                ]);
+            }
+
             DB::commit();
 
-            // Return the data needed for UI update
             return response()->json([
                 'success' => true,
                 'message' => 'Comment and rating added successfully!',
@@ -67,35 +77,18 @@ class ReactionController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function destroy(Request $request)
     {
-        $reaction = ArticleReaction::findOrFail($id);
-
-        // Check if the user owns this reaction
-        if ($reaction->user_id !== auth()->id()) {
-            return back()->with('error', 'You are not authorized to edit this reaction.');
-        }
-
-        $validated = $request->validate([
-            'comment' => 'nullable|string|max:1000',
-            'rating' => 'nullable|integer|min:1|max:5'
-        ]);
-
-        $reaction->update($validated);
-
-        return back()->with('success', 'Reaction updated successfully.');
-    }
-
-    public function destroy($id)
-    {
-        $reaction = ArticleReaction::findOrFail($id);
-
-        // Check if the user owns this reaction
-        if ($reaction->user_id !== auth()->id()) {
+        $ratingId = $request->input('rating');
+        $commentId = $request->input('comment');
+        $rating = Rating::findOrFail($ratingId);
+        $comment = Comment::findOrFail($commentId);
+        if ($comment->user_id !== Auth::id()) {
             return back()->with('error', 'You are not authorized to delete this reaction.');
         }
 
-        $reaction->delete();
+        $comment->delete();
+        $rating->delete();
 
         return back()->with('success', 'Reaction deleted successfully.');
     }

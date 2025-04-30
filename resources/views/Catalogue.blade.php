@@ -60,7 +60,7 @@
                         <div class="text-sm text-gray-300">Objets disponibles</div>
                     </div>
                     <div class="p-4 rounded-2xl bg-white/10 backdrop-blur-lg">
-                        <div class="text-3xl font-bold text-white mb-1">{{ $categories->count() }}</div>
+                        <div class="text-3xl font-bold text-white mb-1">{{ isset($categories) ? $categories->count() : 0 }}</div>
                         <div class="text-sm text-gray-300">Catégories</div>
                     </div>
                     <div class="p-4 rounded-2xl bg-white/10 backdrop-blur-lg">
@@ -89,7 +89,6 @@
     </div>
     @endif
 
-    <!-- Add Product Button - Only show if user is authenticated -->
     @if(auth()->check() || request()->has('auth_user'))
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div class="flex items-center justify-between bg-gradient-to-r from-gray-100 to-gray-200 p-6 rounded-xl shadow-lg border border-gray-200">
@@ -128,90 +127,90 @@
     </div>
     @endif
 
-    <!-- Filter Section -->
-    <section class="bg-gradient-to-b from-gray-50 to-white shadow-lg py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6">
-            <form action="{{ route('catalogue.show') }}" method="GET" class="bg-white rounded-2xl shadow-xl p-6 space-y-6">
-                <!-- Search Bar -->
-                <div class="mb-6">
+   <!-- Filter Section -->
+   <section class="bg-gradient-to-b from-gray-50 to-white shadow-lg py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+        <form action="{{ route('catalogue') }}" method="GET" class="bg-white rounded-2xl shadow-xl p-6 space-y-6">
+            <!-- Search Bar -->
+            <div class="mb-6">
+                <div class="relative">
+                    <input type="text"
+                           name="search"
+                           placeholder="Rechercher un objet historique..."
+                           value="{{ request('search') }}"
+                           class="w-full pl-12 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-gray-500 focus:ring-gray-500"
+                    >
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="h-6 w-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Category Filter -->
+                <div class="space-y-2">
+                    <label for="category" class="block text-sm font-semibold text-gray-700">Catégorie</label>
                     <div class="relative">
-                        <input type="text"
-                               name="search"
-                               placeholder="Rechercher un objet historique..."
-                               value="{{ request('search') }}"
-                               class="w-full pl-12 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-gray-500 focus:ring-gray-500"
-                        >
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <svg class="h-6 w-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        <select name="category" id="category"
+                                class="w-full rounded-xl border-gray-300 pl-3 pr-10 py-2.5 text-base focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                            <option value="">Toutes les catégories</option>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
+                                    {{ $category->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                            <svg class="w-5 h-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                             </svg>
                         </div>
                     </div>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <!-- Category Filter -->
-                    <div class="space-y-2">
-                        <label for="category" class="block text-sm font-semibold text-gray-700">Catégorie</label>
-                        <div class="relative">
-                            <select name="category" id="category"
-                                    class="w-full rounded-xl border-gray-300 pl-3 pr-10 py-2.5 text-base focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
-                                <option value="">Toutes les catégories</option>
-                                @foreach($categories as $category)
-                                    <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
-                                        {{ $category->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                                <svg class="w-5 h-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
+
+                <!-- Sort Filter -->
+                <div class="space-y-2">
+                    <label for="sort" class="block text-sm font-semibold text-gray-700">Trier par</label>
+                    <div class="relative">
+                        <select name="sort" id="sort"
+                                class="w-full rounded-xl border-gray-300 pl-3 pr-10 py-2.5 text-base focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                            <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Plus récents</option>
+                            <option value="ending_soon" {{ request('sort') == 'ending_soon' ? 'selected' : '' }}>Fin bientôt</option>
+                            <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Prix (élevé à bas)</option>
+                            <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Prix (bas à élevé)</option>
+                        </select>
+                        <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                            <svg class="w-5 h-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Sort Filter -->
-                    <div class="space-y-2">
-                        <label for="sort" class="block text-sm font-semibold text-gray-700">Trier par</label>
-                        <div class="relative">
-                            <select name="sort" id="sort"
-                                    class="w-full rounded-xl border-gray-300 pl-3 pr-10 py-2.5 text-base focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
-                                <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Plus récents</option>
-                                <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>Plus anciens</option>
-                                <option value="price_high" {{ request('sort') == 'price_high' ? 'selected' : '' }}>Prix (élevé à bas)</option>
-                                <option value="price_low" {{ request('sort') == 'price_low' ? 'selected' : '' }}>Prix (bas à élevé)</option>
-                            </select>
-                            <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                                <svg class="w-5 h-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Action Buttons -->
-                    <div class="flex items-end space-x-4">
-                        <button type="submit"
-                        class="flex-1 bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white px-6 py-2.5 rounded-xl font-medium shadow-lg">
-                            <span class="flex items-center justify-center">
-                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-                                </svg>
-                                Filtrer
-                            </span>
-                        </button>
-                        <a href="{{ route('catalogue.show') }}"
-                           class="flex items-center justify-center px-4 py-2.5 border border-gray-300 rounded-xl text-gray-700 hover:bg-gray-50">
+                <!-- Action Buttons -->
+                <div class="flex items-end space-x-4">
+                    <button type="submit"
+                    class="flex-1 bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white px-6 py-2.5 rounded-xl font-medium shadow-lg">
+                        <span class="flex items-center justify-center">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
                             </svg>
-                            Réinitialiser
-                        </a>
-                    </div>
+                            Filtrer
+                        </span>
+                    </button>
+                    <a href="{{ route('catalogue') }}"
+                       class="flex items-center justify-center px-4 py-2.5 border border-gray-300 rounded-xl text-gray-700 hover:bg-gray-50">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                        Réinitialiser
+                    </a>
                 </div>
-            </form>
-        </div>
-    </section>
+            </div>
+        </form>
+    </div>
+</section>
 
     <!-- Catalogue Items -->
     <section class="py-12 bg-gradient-to-b from-gray-50 to-white">
@@ -272,7 +271,7 @@
                                 </span>
                             </div>
 
-                            <a href="{{ route('product.details', ['id' => $product->id]) }}"
+                            <a href="{{ route('product.details', ['product' => $product->id]) }}"
                                class="block w-full mt-4 text-center bg-gray-700 hover:bg-gray-800 dark:hover:bg-gray-600 text-white text-sm py-2 rounded-lg transition">
                                 Voir les détails
                             </a>

@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class UserProfileController extends Controller
 {
@@ -19,31 +21,21 @@ class UserProfileController extends Controller
     public function index()
     {
         $user = Auth::user();
-
-        // Get user statistics
         $statistics = [
             'articles_count' => Article::where('user_id', $user->id)->count(),
             'products_count' => Product::where('user_id', $user->id)->count(),
             'bids_count' => Bid::where('user_id', $user->id)->count(),
         ];
-
-        // Get user's articles
         $articles = Article::where('user_id', $user->id)
             ->orderBy('created_at', 'desc')
             ->take(6)
             ->get();
-
-        // Get user's products
         $products = Product::where('user_id', $user->id)
             ->where('status', '!=', 'finished')
             ->orderBy('created_at', 'desc')
             ->take(6)
             ->get();
-
-        // Get user's recent activity
         $recentActivity = $this->getRecentActivity($user->id);
-
-        // Get user's reactions (comments and ratings)
         $comments = DB::table('comments')
             ->join('articles', 'comments.article_id', '=', 'articles.id')
             ->where('comments.user_id', $user->id)
@@ -68,7 +60,6 @@ class UserProfileController extends Controller
                 'ratings.rating'
             );
 
-        // Combine comments and ratings, grouping by article_id
         $reactions = DB::query()
             ->fromSub(
                 $comments->union($ratings),
@@ -100,48 +91,59 @@ class UserProfileController extends Controller
         ));
     }
 
-    /**
-     * Update the user's profile information
-     */
+
     public function update(Request $request)
     {
         $user = Auth::user();
 
         $validated = $request->validate([
-            'education' => 'nullable|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
+            'phone' => 'nullable|string|max:20',
+            'address' => 'nullable|string|max:255',
             'work' => 'nullable|string|max:255',
+            'education' => 'nullable|string|max:255',
             'bio' => 'nullable|string|max:1000',
-            'last_active_section' => 'nullable|string|max:255',
-            'profile_image' => 'nullable|image|max:2048',
-            'first_name' => 'nullable|string|max:255',
-            'name' => 'nullable|string|max:255',
+            'profile_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ]);
 
-        // Handle profile image upload
-        if ($request->hasFile('profile_image')) {
-            // Delete old image if exists
-            if ($user->profile_image) {
-                Storage::disk('public')->delete($user->profile_image);
+        try {
+            $validated['phone'] = $validated['phone'] ?: null;
+            $validated['address'] = $validated['address'] ?: null;
+            $validated['work'] = $validated['work'] ?: null;
+            $validated['education'] = $validated['education'] ?: null;
+            $validated['bio'] = $validated['bio'] ?: null;
+
+            if ($request->hasFile('profile_image')) {
+                if ($user->profile_image) {
+                    Storage::disk('public')->delete($user->profile_image);
+                }
+
+                $path = $request->file('profile_image')->store('profile_images', 'public');
+                $validated['profile_image'] = $path;
             }
 
-            $path = $request->file('profile_image')->store('profile-images', 'public');
-            $user->profile_image = $path;
+            $user->update($validated);
+
+            return back()->with('success', 'Profile updated successfully');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to update profile. Please try again.');
         }
+    }
 
-        // Update user fields individually
-        $user->education = $validated['education'] ?? $user->education;
-        $user->work = $validated['work'] ?? $user->work;
-        $user->bio = $validated['bio'] ?? $user->bio;
-        $user->last_active_section = $validated['last_active_section'] ?? $user->last_active_section;
-        $user->first_name = $validated['first_name'] ?? $user->first_name;
-        $user->name = $validated['name'] ?? $user->name;
-        $user->save();
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Profile updated successfully',
-            'image_url' => $user->profile_image ? Storage::url($user->profile_image) : null
+    public function updatePassword(Request $request)
+    {
+        $validated = $request->validate([
+            'current_password' => 'required|current_password',
+            'password' => 'required|string|min:8|confirmed',
         ]);
+
+        $user = auth()->user();
+        $user->update([
+            'password' => Hash::make($validated['password'])
+        ]);
+
+        return back()->with('success', 'Password updated successfully');
     }
 
     /**
@@ -150,16 +152,13 @@ class UserProfileController extends Controller
     public function updateLastActiveSection(Request $request)
     {
         $validated = $request->validate([
-            'section' => 'required|string|max:255'
+            'last_active_section' => 'required|string'
         ]);
 
-        $user = Auth::user();
-        $user->last_active_section = $validated['section'];
-        $user->save();
+        $user = auth()->user();
+        $user->update($validated);
 
-        return response()->json([
-            'success' => true
-        ]);
+        return response()->json(['success' => true]);
     }
 
     /**
@@ -167,25 +166,21 @@ class UserProfileController extends Controller
      */
     private function getRecentActivity($userId)
     {
-        // Get recent articles
         $recentArticles = Article::where('user_id', $userId)
             ->orderBy('created_at', 'desc')
             ->take(3)
             ->get();
 
-        // Get recent products
         $recentProducts = Product::where('user_id', $userId)
             ->orderBy('created_at', 'desc')
             ->take(3)
             ->get();
 
-        // Get recent bids
         $recentBids = Bid::where('user_id', $userId)
             ->orderBy('created_at', 'desc')
             ->take(3)
             ->get();
 
-        // Get recent comments and ratings combined
         $reactions = DB::query()
             ->fromSub(
                 DB::table('comments')

@@ -13,7 +13,9 @@ use Illuminate\Support\Facades\Log;
 use DateTime;
 use GrahamCampbell\ResultType\Success;
 use App\Http\Controllers\BidController;
+use App\Models\Bid;
 use App\Services\BidService;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ProductController extends Controller
 {
@@ -29,72 +31,72 @@ class ProductController extends Controller
         $this->bidService = $bidService;
 
     }
+//->where('products.status','=','active')
+public function index(Request $request)
+{
+    $query = Product::with(['category', 'user', 'images', 'tags:id,name']);
 
-    public function index(Request $request)
-    {
-        $query = Product::with(['category', 'user', 'images', 'tags:id,name']);
-
-        // Filter by category
-        if ($request->filled('category')) {
-            $query->where('category_id', $request->category);
-        }
-
-        // Search by title or description
-        if ($request->filled('search')) {
-            $searchTerm = $request->search;
-            $query->where(function($q) use ($searchTerm) {
-                $q->where('title', 'like', "%{$searchTerm}%")
-                  ->orWhere('description', 'like', "%{$searchTerm}%");
-            });
-        }
-
-        // Sort products
-        if ($request->filled('sort')) {
-            switch ($request->sort) {
-                case 'price_asc':
-                    $query->orderBy('starting_price', 'asc');
-                    break;
-                case 'price_desc':
-                    $query->orderBy('starting_price', 'desc');
-                    break;
-                case 'ending_soon':
-                    $query->orderBy('auction_end_date', 'asc');
-                    break;
-                case 'newest':
-                default:
-                    $query->orderBy('created_at', 'desc');
-                    break;
-            }
-        } else {
-            $query->orderBy('created_at', 'desc');
-        }
-
-        $products = $query->paginate(9);
-        $tags = $this->tagService->getAllTags();
-        $categories = $this->categoryService->getAllCategories();
-
-        // Check for JWT authentication even on public routes
-        $user = null;
-        if ($request->hasCookie('jwt_token')) {
-            try {
-                $token = $request->cookie('jwt_token');
-                \Tymon\JWTAuth\Facades\JWTAuth::setToken($token);
-                $user = \Tymon\JWTAuth\Facades\JWTAuth::authenticate();
-            } catch (\Exception $e) {
-                // Log the error but continue without authentication
-                \Log::error('JWT Authentication error in public route:', [
-                    'error' => $e->getMessage()
-                ]);
-            }
-        }
-
-        // Add the authenticated user to the request for the view
-        if ($user) {
-            $request->merge(['auth_user' => $user]);
-        }
-
-        return view('catalogue', compact('products', 'tags', 'categories', 'user'));
+    // Filter by category
+    if ($request->filled('category')) {
+        $query->where('category_id', $request->category);
     }
+
+    // Search by title or description
+    if ($request->filled('search')) {
+        $searchTerm = $request->search;
+        $query->where(function($q) use ($searchTerm) {
+            $q->where('title', 'like', "%{$searchTerm}%")
+              ->orWhere('description', 'like', "%{$searchTerm}%");
+        });
+    }
+
+    // Sort products
+    if ($request->filled('sort')) {
+        switch ($request->sort) {
+            case 'price_asc':
+                $query->orderBy('starting_price', 'asc');
+                break;
+            case 'price_desc':
+                $query->orderBy('starting_price', 'desc');
+                break;
+            case 'ending_soon':
+                $query->orderBy('auction_end_date', 'asc');
+                break;
+            case 'newest':
+            default:
+                $query->orderBy('created_at', 'desc');
+                break;
+        }
+    } else {
+        $query->orderBy('created_at', 'desc');
+    }
+
+    $products = $query->paginate(9);
+    $tags = $this->tagService->getAllTags();
+    $categories = $this->categoryService->getAllCategories();
+
+    // Check for JWT authentication even on public routes
+    $user = null;
+    if ($request->hasCookie('jwt_token')) {
+        try {
+            $token = $request->cookie('jwt_token');
+            \Tymon\JWTAuth\Facades\JWTAuth::setToken($token);
+            $user = \Tymon\JWTAuth\Facades\JWTAuth::authenticate();
+        } catch (\Exception $e) {
+            // Log the error but continue without authentication
+            \Log::error('JWT Authentication error in public route:', [
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+
+    // Add the authenticated user to the request for the view
+    if ($user) {
+        $request->merge(['auth_user' => $user]);
+    }
+
+    return view('catalogue', compact('products', 'tags', 'categories', 'user'));
+}
     public function show($id)
     {
         $product = $this->productService->getProductById($id);
@@ -105,7 +107,6 @@ class ProductController extends Controller
             return response('Product not found', 404);
         }
 
-        // Get the first 5 bids
         $firstBids = $product->bids->slice(0, 5);
 
         return view('product_details', compact('product', 'firstBids'));
@@ -173,13 +174,17 @@ class ProductController extends Controller
             return redirect()->route('catalogue.show')->with('success', 'Product added successfully');
 
         } catch (\Exception $e) {
-            return redirect()->route('catalogue.show')->with('error', 'Error adding product: ' . $e->getMessage());
+            return redirect()->route('catalogue')->with('error', 'Error adding product: ' . $e->getMessage());
         }
     }
 
 
     public function update(Request $request, $id)
     {
+        $isbids=Bid::where('product_id',$id)->exists();
+        if(!$isbids){
+            return back()->with('error','you cant update this product because he alredy has bids');
+        }
         $data = $request->validate([
             'title' => 'sometimes|string|max:255',
             'description' => 'sometimes',
@@ -189,8 +194,19 @@ class ProductController extends Controller
             'category_id' => 'sometimes|exists:categories,id',
             'image' => 'sometimes|string'
         ]);
-
-        return response()->json($this->productService->updateProduct($id, $data));
+        $product=Product::find($id);
+        if(!$product){
+            return back()->with('error','product not found');
+        }
+        $product->update($data);
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('product_images', 'public');
+            $product->images()->update(['image_path' => $path]);
+        }
+        if ($request->has('tags')) {
+            $product->tags()->sync($request->tags);
+        }
+        return back()->with('sucsess','product updated suucssfully');
     }
 
     public function destroy($id)

@@ -1,107 +1,9 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $user->first_name }}'s Profile</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-<body class="bg-gray-50">
-    <!-- Navigation Bar -->
-    <nav class="bg-white shadow-md">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6">
-            <div class="flex justify-between h-16">
-                <div class="flex">
-                    <div class="flex-shrink-0 flex items-center">
-                        <a href="{{ route('home') }}" class="text-2xl font-bold text-gray-600">Nostalgia</a>
-                    </div>
-                    <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
-                        <a href="{{ route('home') }}" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                            Home
-                        </a>
-                        <a href="{{ route('blog.index') }}" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                            Blog
-                        </a>
-                        <a href="{{ route('products.index') }}" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                            Catalogue
-                        </a>
-                        <a href="/about" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                            About
-                        </a>
-                    </div>
-                </div>
-                <div class="hidden sm:ml-6 sm:flex sm:items-center">
-                    <div class="ml-3 relative">
-                        <div class="flex items-center">
-                            <a href="{{ route('profile', auth()->id()) }}" class="flex items-center">
-                                <img src="{{ auth()->user()->profile_image ? Storage::url(auth()->user()->profile_image) : Storage::url('anonymes_users/anonyme_user.jpg') }}"
-                                     alt="{{ auth()->user()->first_name }}"
-                                     class="h-8 w-8 rounded-full object-cover">
-                                <span class="ml-2 text-sm font-medium text-gray-700">{{ auth()->user()->first_name }}</span>
-                            </a>
-                            <form method="POST" action="" class="ml-4">
-                                @csrf
-                                <button type="submit" class="text-sm text-gray-500 hover:text-gray-700">
-                                    Logout
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="-mr-2 flex items-center sm:hidden">
-                    <button type="button" class="mobile-menu-button inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-500" aria-expanded="false">
-                        <span class="sr-only">Open main menu</span>
-                        <i class="fas fa-bars"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <!-- Mobile menu -->
-        <div class="sm:hidden mobile-menu hidden">
-            <div class="pt-2 pb-3 space-y-1">
-                <a href="{{ route('home') }}" class="bg-gray-50 border-gray-500 text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
-                    Home
-                </a>
-                <a href="{{ route('blog.index') }}" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
-                    Blog
-                </a>
-                <a href="" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
-                    Catalogue
-                </a>
-                <a href="/about" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
-                    About
-                </a>
-            </div>
-            <div class="pt-4 pb-3 border-t border-gray-200">
-                <div class="flex items-center px-4">
-                    <div class="flex-shrink-0">
-                        <img src="{{ auth()->user()->profile_image ? Storage::url(auth()->user()->profile_image) : Storage::url('anonymes_users/anonyme_user.jpg') }}"
-                             alt="{{ auth()->user()->first_name }}"
-                             class="h-10 w-10 rounded-full object-cover">
-                    </div>
-                    <div class="ml-3">
-                        <div class="text-base font-medium text-gray-800">{{ auth()->user()->first_name }} {{ auth()->user()->name }}</div>
-                        <div class="text-sm font-medium text-gray-500">{{ auth()->user()->email }}</div>
-                    </div>
-                </div>
-                <div class="mt-3 space-y-1">
-                    <a href="{{ route('profile', auth()->id()) }}" class="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100">
-                        Your Profile
-                    </a>
-                    <form method="POST" action="">
-                        @csrf
-                        <button type="submit" class="block w-full text-left px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100">
-                            Logout
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </nav>
+﻿@extends('components.layout')
 
-    <!-- Profile Header -->
+@section('title', $user->first_name . "'s Profile")
+
+@section('content')
+<!-- Profile Header -->
     <section class="relative bg-gradient-to-r from-gray-900 via-gray-800 to-indigo-900 py-16">
         <div class="absolute inset-0 bg-black opacity-50"></div>
         <div class="relative max-w-7xl mx-auto px-4 sm:px-6">
@@ -115,7 +17,7 @@
                         <label for="profileImageInput" class="absolute bottom-0 right-0 bg-white rounded-full p-2 shadow-lg cursor-pointer">
                             <i class="fas fa-camera text-gray-600"></i>
                         </label>
-                        <input type="file" id="profileImageInput" class="hidden" accept="image/*">
+                        <input type="file" id="profileImageInput" class="hidden" accept="image/*" name="profile_image">
                     </div>
                 </div>
                 <div class="md:w-2/3 text-white">
@@ -145,6 +47,37 @@
             </div>
         </div>
     </section>
+
+    <!-- Flash Messages -->
+    @if(session('success'))
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 mt-4">
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+            <span class="block sm:inline">{{ session('success') }}</span>
+        </div>
+    </div>
+    @endif
+
+    @if(session('error'))
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 mt-4">
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <span class="block sm:inline">{{ session('error') }}</span>
+        </div>
+    </div>
+    @endif
+
+    <!-- Image Preview Modal -->
+    <div id="imagePreviewModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-lg p-6 max-w-md w-full">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Preview Profile Image</h3>
+            <div class="mb-4">
+                <img id="imagePreview" src="" alt="Preview" class="w-full h-auto rounded-lg">
+            </div>
+            <div class="flex justify-end space-x-3">
+                <button id="cancelImageBtn" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400">Cancel</button>
+                <button id="confirmImageBtn" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Use This Image</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Statistics Cards -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
@@ -200,36 +133,100 @@
                 <div class="section-content active" id="about">
                     <div class="bg-white rounded-xl shadow-lg p-6">
                         <h2 class="text-2xl font-bold text-gray-900 mb-6">About Me</h2>
-                        <form id="profileForm" class="space-y-6">
+                        <form id="profileForm" action="{{ route('profile.update') }}" method="POST" class="space-y-6" enctype="multipart/form-data">
+                            @csrf
+                            <!-- Name Fields -->
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700">First Name</label>
-                                    <input type="text" name="first_name" value="{{ $user->first_name }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                                    <input type="text" name="first_name" value="{{ $user->first_name }}"
+                                        placeholder="Enter your first name"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-md focus:border-gray-500 focus:ring-gray-500 h-10 px-3 bg-white">
+                                    @error('first_name')
+                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700">Last Name</label>
-                                    <input type="text" name="name" value="{{ $user->name }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                                    <input type="text" name="name" value="{{ $user->name }}"
+                                        placeholder="Enter your last name"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-md focus:border-gray-500 focus:ring-gray-500 h-10 px-3 bg-white">
+                                    @error('name')
+                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
                                 </div>
                             </div>
+
+                            <!-- Email Field -->
                             <div>
-                                <label class="block text-sm font-medium text-gray-700">Email</label>
-                                <input type="email" value="{{ $user->email }}" disabled class="mt-1 block w-full rounded-md border-gray-300 bg-gray-50 shadow-sm">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                                <input type="email" name="email" value="{{ $user->email }}" disabled
+                                    class="mt-1 block w-full rounded-md border-gray-300 bg-gray-50 shadow-md focus:border-gray-500 focus:ring-gray-500 h-10 px-3">
                                 <p class="mt-1 text-sm text-gray-500">Email cannot be changed</p>
+                                @error('email')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
                             </div>
+
+                            <!-- Contact Information -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                                    <input type="text" name="phone" value="{{ $user->phone }}"
+                                        placeholder="Enter your phone number"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-md focus:border-gray-500 focus:ring-gray-500 h-10 px-3 bg-white">
+                                    @error('phone')
+                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Address</label>
+                                    <input type="text" name="address" value="{{ $user->address }}"
+                                        placeholder="Enter your address"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-md focus:border-gray-500 focus:ring-gray-500 h-10 px-3 bg-white">
+                                    @error('address')
+                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <!-- Professional Information -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Work</label>
+                                    <input type="text" name="work" value="{{ $user->work }}"
+                                        placeholder="Enter your work information"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-md focus:border-gray-500 focus:ring-gray-500 h-10 px-3 bg-white">
+                                    @error('work')
+                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Education</label>
+                                    <input type="text" name="education" value="{{ $user->education }}"
+                                        placeholder="Enter your education"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-md focus:border-gray-500 focus:ring-gray-500 h-10 px-3 bg-white">
+                                    @error('education')
+                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <!-- Bio -->
                             <div>
-                                <label class="block text-sm font-medium text-gray-700">Work</label>
-                                <input type="text" name="work" value="{{ $user->work }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Bio</label>
+                                <textarea name="bio" rows="4"
+                                    placeholder="Tell us about yourself..."
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-md focus:border-gray-500 focus:ring-gray-500 px-3 py-2 bg-white">{{ $user->bio }}</textarea>
+                                @error('bio')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
                             </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Education</label>
-                                <input type="text" name="education" value="{{ $user->education }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Bio</label>
-                                <textarea name="bio" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500">{{ $user->bio }}</textarea>
-                            </div>
-                            <div class="flex justify-end">
-                                <button type="submit" class="bg-gray-600 text-white px-6 py-2 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+
+                            <!-- Submit Button -->
+                            <div class="flex justify-end pt-4">
+                                <button type="submit"
+                                    class="bg-gray-600 text-white px-6 py-2 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors duration-200">
                                     Save Changes
                                 </button>
                             </div>
@@ -253,7 +250,7 @@
                                     <p class="text-gray-600 mb-4">{{ Str::limit($article->content, 100) }}</p>
                                     <div class="flex justify-between items-center">
                                         <span class="text-sm text-gray-500">{{ $article->created_at->format('M d, Y') }}</span>
-                                        <a href="{{ route('Article.show', $article->id) }}" class="text-gray-600 hover:text-gray-700 font-medium">
+                                        <a href="{{ route('blog.show', $article->id) }}" class="text-gray-600 hover:text-gray-700 font-medium">
                                             Read More
                                             <i class="fas fa-arrow-right ml-1"></i>
                                         </a>
@@ -317,7 +314,7 @@
                                         </span>
                                     </div>
 
-                                    <a href="{{ route('product.details', ['id' => $product->id]) }}"
+                                    <a href="{{ route('product.details', ['product' => $product->id]) }}"
                                        class="block w-full mt-4 text-center bg-gray-700 hover:bg-gray-800 dark:hover:bg-gray-600 text-white text-sm py-2 rounded-lg transition">
                                         Voir les détails
                                     </a>
@@ -337,43 +334,65 @@
             </div>
         </div>
     </div>
-      <!-- Reactions Section -->
-      <div class="section-content hidden" id="reactions">
-        <div class="bg-white rounded-xl shadow-lg p-6">
-            <h2 class="text-2xl font-bold text-gray-900 mb-6">My Reactions</h2>
-            <div class="space-y-6">
-                @forelse($reactions as $reaction)
-                    <div class="border-b border-gray-200 pb-4">
-                        <h3 class="text-lg font-medium text-gray-900">{{ $reaction->article_title }}</h3>
-                        <div class="mt-2 text-gray-600">
-                            @if($reaction->comment)
-                                <p class="mb-2">{{ $reaction->comment }}</p>
-                            @endif
-                            @if($reaction->rating)
-                                <div class="flex items-center">
-                                    <span class="mr-2">Rating:</span>
-                                    <div class="flex">
-                                        @for($i = 1; $i <= 5; $i++)
-                                            <i class="fas fa-star {{ $i <= $reaction->rating ? 'text-yellow-400' : 'text-gray-300' }}"></i>
-                                        @endfor
+    <!-- Reactions Section -->
+<div class="section-content hidden" id="reactions">
+    <div class="bg-white rounded-xl shadow-lg p-6">
+        <h2 class="text-2xl font-bold text-gray-900 mb-6">My Reactions</h2>
+        <div class="space-y-6">
+            @forelse($reactions as $reaction)
+                <div class="border-b border-gray-200 pb-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="text-lg font-medium text-gray-900">{{ $reaction->article_title }}</h3>
+                            <div class="mt-2 text-gray-600">
+                                @if($reaction->comment)
+                                    <p class="mb-2">{{ $reaction->comment }}</p>
+                                @endif
+                                @if($reaction->rating)
+                                    <div class="flex items-center">
+                                        <span class="mr-2">Rating:</span>
+                                        <div class="flex">
+                                            @for($i = 1; $i <= 5; $i++)
+                                                <i class="fas fa-star {{ $i <= $reaction->rating ? 'text-yellow-400' : 'text-gray-300' }}"></i>
+                                            @endfor
+                                        </div>
                                     </div>
-                                </div>
-                            @endif
+                                @endif
+                            </div>
+                            <div class="mt-2 text-sm text-gray-500">
+                                {{ $reaction->created_at->format('M d, Y H:i') }}
+                            </div>
                         </div>
-                        <div class="mt-2 text-sm text-gray-500">
-                            {{ $reaction->created_at->format('M d, Y H:i') }}
+
+                        <!-- Actions (Show and Delete) -->
+                        <div class="flex space-x-2 mt-2">
+                            <!-- Show Button -->
+                            <a href="{{ route('blog.show', $reaction->article_id) }}" class="text-gray-500 hover:text-gray-700">
+                                <i class="fas fa-eye text-xl"></i>
+                            </a>
+                            <form action="{{ route('reaction.destroy') }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this reaction?');">
+                                @csrf
+                                @method('DELETE')
+                                <input type="hidden" name="rating" value="{{ $reaction->rating }}">
+                                <input type="hidden" name="comment" value="{{ $reaction->comment}}">
+                                <button type="submit" class="text-red-500 hover:text-red-700">
+                                    <i class="fas fa-trash text-xl"></i>
+                                </button>
+                            </form>
                         </div>
                     </div>
-                @empty
-                    <div class="text-center py-8">
-                        <i class="fas fa-comment text-4xl text-gray-400 mb-4"></i>
-                        <h3 class="text-lg font-medium text-gray-900">No Reactions Yet</h3>
-                        <p class="text-gray-500">Start commenting on articles!</p>
-                    </div>
-                @endforelse
-            </div>
+                </div>
+            @empty
+                <div class="text-center py-8">
+                    <i class="fas fa-comment text-4xl text-gray-400 mb-4"></i>
+                    <h3 class="text-lg font-medium text-gray-900">No Reactions Yet</h3>
+                    <p class="text-gray-500">Start commenting on articles!</p>
+                </div>
+            @endforelse
         </div>
     </div>
+</div>
+
 
     <!-- Recent Activity Section -->
     <div class="section-content hidden" id="activity">
@@ -485,6 +504,47 @@
         document.querySelector('.mobile-menu-button').addEventListener('click', function() {
             document.querySelector('.mobile-menu').classList.toggle('hidden');
         });
+
+        // Image upload preview functionality
+        const profileImageInput = document.getElementById('profileImageInput');
+        const imagePreviewModal = document.getElementById('imagePreviewModal');
+        const imagePreview = document.getElementById('imagePreview');
+        const cancelImageBtn = document.getElementById('cancelImageBtn');
+        const confirmImageBtn = document.getElementById('confirmImageBtn');
+        const profileImage = document.getElementById('profileImage');
+        let selectedFile = null;
+
+        profileImageInput.addEventListener('change', function(e) {
+            if (this.files && this.files[0]) {
+                selectedFile = this.files[0];
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    imagePreviewModal.classList.remove('hidden');
+                }
+
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+
+        cancelImageBtn.addEventListener('click', function() {
+            imagePreviewModal.classList.add('hidden');
+            profileImageInput.value = '';
+            selectedFile = null;
+        });
+
+        confirmImageBtn.addEventListener('click', function() {
+            if (selectedFile) {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    profileImage.src = e.target.result;
+                }
+
+                reader.readAsDataURL(selectedFile);
+                imagePreviewModal.classList.add('hidden');
+            }
+        });
     </script>
-</body>
-</html>
+    @endsection

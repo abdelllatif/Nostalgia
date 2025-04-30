@@ -1,90 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog - Enchères de Patrimoine Culturel</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-</head>
-<body class="bg-gray-50">
-     <!-- Navigation Bar -->
-<nav class="bg-white shadow-md">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6">
-        <div class="flex justify-between h-16 items-center">
-            <!-- Logo -->
-            <div class="flex items-center space-x-2">
-                <img src="https://img.icons8.com/ios-filled/50/000000/retro-tv.png" alt="Logo Nostalgia" class="w-8 h-8">
-                <span class="text-xl font-bold text-gray-800">Nostalgia</span>
-            </div>
+@extends('components.layout')
 
-            <!-- Menu desktop -->
-            <ul class="hidden md:flex space-x-6 text-gray-700 font-medium">
-                <li><a href="/" class="hover:text-blue-600">Accueil</a></li>
-                <li><a href="/catalogue" class="hover:text-blue-600">Catalogue</a></li>
-                <li><a href="/blog" class="hover:text-blue-600">Blog</a></li>
-                <li><a href="/about" class="hover:text-blue-600">About</a></li>
-                <li><a href="/contact" class="hover:text-blue-600">Contact</a></li>
-            </ul>
+@section('title', "blog of articles")
 
-            <!-- Profile -->
-            @auth
-            <div class="hidden sm:flex items-center space-x-4">
-                <a href="{{ route('profile', auth()->id()) }}" class="flex items-center space-x-2">
-                    <img src="{{ auth()->user()->profile_image ? Storage::url(auth()->user()->profile_image) : Storage::url('anonymes_users/anonyme_user.jpg') }}"
-                         alt="{{ auth()->user()->first_name }}"
-                         class="h-8 w-8 rounded-full object-cover">
-                    <span class="text-sm text-gray-700">{{ auth()->user()->first_name }}</span>
-                </a>
-                <form method="POST" action="">
-                    @csrf
-                    <button type="submit" class="text-sm text-gray-500 hover:text-gray-700">Logout</button>
-                </form>
-            </div>
-            @endauth
-
-            <!-- Hamburger -->
-            <div class="md:hidden">
-                <button id="mobile-menu-toggle" class="p-2 text-gray-600 hover:text-gray-800 focus:outline-none">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Mobile menu -->
-    <div id="mobile-menu" class="sm:hidden hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            <a href="/" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Accueil</a>
-            <a href="/catalogue" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Catalogue</a>
-            <a href="/blog" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Blog</a>
-            <a href="/about" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">About</a>
-            <a href="/contact" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Contact</a>
-        </div>
-
-        @auth
-        <div class="border-t border-gray-200 pt-4 pb-3">
-            <div class="flex items-center px-4">
-                <img class="h-10 w-10 rounded-full object-cover" src="{{ auth()->user()->profile_image ? Storage::url(auth()->user()->profile_image) : Storage::url('anonymes_users/anonyme_user.jpg') }}" alt="{{ auth()->user()->first_name }}">
-                <div class="ml-3">
-                    <div class="text-base font-medium text-gray-800">{{ auth()->user()->first_name }}</div>
-                    <div class="text-sm font-medium text-gray-500">{{ auth()->user()->email }}</div>
-                </div>
-            </div>
-            <div class="mt-3 space-y-1">
-                <a href="{{ route('profile', auth()->id()) }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Your Profile</a>
-                <form method="POST" action="">
-                    @csrf
-                    <button type="submit" class="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">Logout</button>
-                </form>
-            </div>
-        </div>
-        @endauth
-    </div>
-</nav>
+@section('content')
     <!-- Hero Section -->
     <section class="bg-gradient-to-b from-gray-900 to-gray-800 py-32 relative overflow-hidden">
         <div class="absolute inset-0 bg-pattern opacity-10"></div>
@@ -221,7 +139,7 @@
                                 <i class="fas fa-clock mr-2"></i>
                                 {{ $article->created_at->diffForHumans() }}
                             </div>
-                            <a href="{{ route('Article.show', $article->id) }}" class="inline-flex items-center text-blue-600 dark:text-blue-400 font-medium hover:text-blue-700 dark:hover:text-blue-300 transition-colors duration-200">
+                            <a href="{{ route('blog.show', $article->id) }}" class="inline-flex items-center text-blue-600 dark:text-blue-400 font-medium hover:text-blue-700 dark:hover:text-blue-300 transition-colors duration-200">
                                 Lire l'article
                                 <i class="fas fa-arrow-right ml-2"></i>
                             </a>
@@ -423,5 +341,4 @@
             document.getElementById('image-preview').classList.add('hidden');
         }
     </script>
-</body>
-</html>
+    @endsection
