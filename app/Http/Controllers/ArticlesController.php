@@ -9,50 +9,53 @@ use Dom\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Services\ArticleService;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Cookie;
 
 class ArticlesController extends Controller
 {
+    protected $articleService;
+
+    public function __construct(ArticleService $articleService)
+    {
+        $this->articleService = $articleService;
+    }
+
     public function index(Request $request)
     {
-        $query = Article::with(['user', 'categorie', 'tags'])
-            ->where('status', 'posted');
-
-        if ($request->category) {
-            $query->where('category_id', $request->category);
-        }
-
-        if ($request->search) {
-            $query->where(function($q) use ($request) {
-                $q->where('title', 'like', "%{$request->search}%")
-                ->orWhere('content', 'like', "%{$request->search}%");
-            });
-        }
-
-        if ($request->tag) {
-            $query->whereHas('tags', function($q) use ($request) {
-                $q->where('tags.id', $request->tag);
-            });
-        }
-
-        $articles = $query->latest()->paginate(9);
+        $articles = $this->articleService->getArticles($request);
         $categories = Categorie::all();
         $tags = Tag::all();
 
         return view('blog', compact('articles', 'categories', 'tags'));
     }
 
-    public function show(Article $article)
+    public function show($id)
     {
-        $article->load(['user', 'categorie', 'tags']);
-        $article->load(['comments.user', 'ratings.user']);
+        $article = $this->articleService->getArticleWithRelations($id);
+        $similarArticles = $this->articleService->getSimilarArticles($article->id);
+        $categories = Categorie::all();
+        $tags = Tag::all();
 
-        $similarArticles = Article::where('id', '!=', $article->id)
-            ->with(['user', 'categorie', 'tags'])
-            ->take(4)
-            ->get();
-            $categories = Categorie::all();
-            $tags = Tag::all();
-        return view('show_article', compact('article', 'similarArticles','categories','tags'));
+        $owner = false;
+        $user = null;
+        if (request()->hasCookie('jwt_token')) {
+            try {
+                $token = request()->cookie('jwt_token');
+                JWTAuth::setToken($token);
+                $user = JWTAuth::authenticate();
+                if ($user && $user->id === $article->user_id) {
+                    $owner = true;
+                }
+            } catch (\Exception $e) {
+                \Log::error('JWT Authentication error in article show:', [
+                    'error' => $e->getMessage()
+                ]);
+            }
+        }
+
+        return view('show_article', compact('article', 'similarArticles', 'categories', 'tags', 'owner'));
     }
 
     public function store(Request $request)
@@ -66,18 +69,13 @@ class ArticlesController extends Controller
             'image' => 'nullable|image|max:2048'
         ]);
 
-        if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('articles', 'public');
-        }
-
         $validated['user_id'] = Auth::id();
-        $article = Article::create($validated);
-        $article->tags()->sync($request->tags);
+        $this->articleService->createArticle($validated);
 
-        return back()->with('succsess','Article created succsessfully');
+        return back()->with('success', 'Article created successfully');
     }
 
-    public function update(Request $request, Article $article)
+    public function update(Request $request, $id)
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
@@ -88,27 +86,14 @@ class ArticlesController extends Controller
             'image' => 'nullable|image|max:2048'
         ]);
 
-        if ($request->hasFile('image')) {
-            if ($article->image) {
-                Storage::disk('public')->delete($article->image);
-            }
-            $validated['image'] = $request->file('image')->store('articles', 'public');
-        }
+        $this->articleService->updateArticle($id, $validated);
 
-        $article->update($validated);
-        $article->tags()->sync($request->tags);
-
-        return response()->json(['message' => 'Article updated successfully', 'article' => $article]);
+        return response()->json(['message' => 'Article updated successfully']);
     }
 
-    public function destroy(Article $article)
+    public function destroy($id)
     {
-
-        if ($article->image) {
-            Storage::disk('public')->delete($article->image);
-        }
-
-        $article->delete();
+        $this->articleService->deleteArticle($id);
 
         return response()->json(['message' => 'Article deleted successfully']);
     }

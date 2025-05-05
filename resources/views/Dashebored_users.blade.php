@@ -7,7 +7,6 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-50 dark:bg-gray-900 flex min-h-screen">
-    <!-- Sidebar -->
     <aside class="bg-gray-800 text-white w-64 flex-shrink-0 hidden md:block">
         <div class="p-6 flex items-center space-x-2">
             <img src="https://img.icons8.com/ios-filled/50/ffffff/retro-tv.png" alt="Logo Nostalgia" class="w-8 h-8">
@@ -21,37 +20,37 @@
                     </svg>
                     Tableau de bord
                 </a>
-                <a href="admin-users" class="block py-3 px-6 bg-gray-700 text-white flex items-center">
+                <a href="{{route('admin.users.index')}}" class="block py-3 px-6 text-gray-300 hover:bg-gray-700 hover:text-white flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                     </svg>
                     Utilisateurs
                 </a>
-                <a href="admin-products" class="block py-3 px-6 text-gray-300 hover:bg-gray-700 hover:text-white flex items-center">
+                <a href="{{route('dashboard.products')}}" class="block py-3 px-6  text-white bg-gray-700  hover:text-white flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                     </svg>
                     Produits
                 </a>
-                <a href="admin-categories" class="block py-3 px-6 text-gray-300 hover:bg-gray-700 hover:text-white flex items-center">
+                <a href="{{ route('categories.show') }}" class="block py-3 px-6 text-gray-300 hover:bg-gray-700 flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                     </svg>
                     Catégories
                 </a>
-                <a href="{{route('tags.show')}}" class="block py-3 px-6 text-gray-300 hover:bg-gray-700 hover:text-white flex items-center">
+                <a href="{{route('tags.index')}}" class="block py-3 px-6 text-gray-300 hover:bg-gray-700 hover:text-white flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
                     </svg>
                     Tags
                 </a>
-                <a href="admin-blog" class="block py-3 px-6 text-gray-300 hover:bg-gray-700 hover:text-white flex items-center">
+                <a href="{{ route('dashboard.articles') }}" class="block py-3 px-6 text-gray-300 hover:bg-gray-700 hover:text-white flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
                     </svg>
                     Articles Blog
                 </a>
-                <a href="admin-stats" class="block py-3 px-6 text-gray-300 hover:bg-gray-700 hover:text-white flex items-center">
+                <a href="{{route('dashboard.statistics')}}" class="block py-3 px-6 text-gray-300 hover:bg-gray-700 hover:text-white flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                     </svg>
@@ -74,7 +73,6 @@
             </a>
         </div>
     </aside>
-
     <!-- Mobile menu button -->
     <div class="md:hidden absolute top-4 left-4 z-50">
         <button class="flex items-center px-3 py-2 border rounded text-gray-500 border-gray-600 hover:text-white hover:border-white">
@@ -91,10 +89,10 @@
                 <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Gestion des Utilisateurs</h1>
                 <div class="flex items-center">
                     <div class="mr-4 text-right">
-                        <p class="text-sm font-medium text-gray-900 dark:text-white">Admin: Jean Dupont</p>
+                        <p class="text-sm font-medium text-gray-900 dark:text-white">{{ Auth::user()->name }}</p>
                         <p class="text-xs text-gray-500 dark:text-gray-400">Administrateur</p>
                     </div>
-                    <img class="h-10 w-10 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Profile picture">
+                    <img class="h-10 w-10 rounded-full" src="{{ Auth::user()->profile_photo_url }}" alt="Profile picture">
                 </div>
             </div>
         </header>
@@ -117,7 +115,7 @@
                                             Total Utilisateurs
                                         </dt>
                                         <dd>
-                                            <div class="text-lg font-bold text-gray-900 dark:text-white">127</div>
+                                            <div class="text-lg font-bold text-gray-900 dark:text-white">{{ $totalUsers }}</div>
                                         </dd>
                                     </dl>
                                 </div>
@@ -139,7 +137,7 @@
                                             Utilisateurs Actifs
                                         </dt>
                                         <dd>
-                                            <div class="text-lg font-bold text-gray-900 dark:text-white">98</div>
+                                            <div class="text-lg font-bold text-gray-900 dark:text-white">{{ $activeUsers }}</div>
                                         </dd>
                                     </dl>
                                 </div>
@@ -161,7 +159,7 @@
                                             En attente d'approbation
                                         </dt>
                                         <dd>
-                                            <div class="text-lg font-bold text-gray-900 dark:text-white">12</div>
+                                            <div class="text-lg font-bold text-gray-900 dark:text-white">{{ $pendingUsers->count() }}</div>
                                         </dd>
                                     </dl>
                                 </div>
@@ -183,12 +181,26 @@
                                             Utilisateurs Suspendus
                                         </dt>
                                         <dd>
-                                            <div class="text-lg font-bold text-gray-900 dark:text-white">17</div>
+                                            <div class="text-lg font-bold text-gray-900 dark:text-white">{{ $suspendedUsers }}</div>
                                         </dd>
                                     </dl>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Section Tabs -->
+                <div class="mb-6">
+                    <div class="border-b border-gray-200">
+                        <nav class="-mb-px flex space-x-8">
+                            <button onclick="switchSection('pending')" class="section-tab whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm active-tab">
+                                Demandes d'inscription
+                            </button>
+                            <button onclick="switchSection('active')" class="section-tab whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                                Gestion des utilisateurs
+                            </button>
+                        </nav>
                     </div>
                 </div>
 
@@ -207,18 +219,7 @@
                 @endif
 
                 <!-- Pending Users Section -->
-                <div class="bg-white dark:bg-gray-800 shadow overflow-hidden sm:rounded-lg mb-8">
-                    <div class="px-4 py-5 sm:px-6 flex justify-between items-center">
-                        <div>
-                            <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white">
-                                Demandes d'inscription en attente
-                            </h3>
-                            <p class="mt-1 max-w-2xl text-sm text-gray-500 dark:text-gray-400">
-                                Approuver ou rejeter les demandes d'inscription des nouveaux utilisateurs
-                            </p>
-                        </div>
-                    </div>
-
+                <div id="pending-section" class="section-content">
                     <!-- Search and Filter -->
                     <div class="px-4 py-5 bg-gray-50 dark:bg-gray-700 sm:px-6">
                         <div class="flex flex-col md:flex-row md:items-center md:justify-between">
@@ -322,7 +323,6 @@
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                                     </svg>
                                                 </button>
-                                            </form>
                                         </div>
                                     </td>
                                 </tr>
@@ -335,18 +335,7 @@
                 </div>
 
                 <!-- Active Users Section -->
-                <div class="bg-white dark:bg-gray-800 shadow overflow-hidden sm:rounded-lg mb-8">
-                    <div class="px-4 py-5 sm:px-6 flex justify-between items-center">
-                        <div>
-                            <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white">
-                                Gestion des utilisateurs
-                            </h3>
-                            <p class="mt-1 max-w-2xl text-sm text-gray-500 dark:text-gray-400">
-                                Gérer les comptes utilisateurs (activer, suspendre)
-                            </p>
-                        </div>
-                    </div>
-
+                <div id="active-section" class="section-content hidden">
                     <!-- Search and Filter -->
                     <div class="px-4 py-5 bg-gray-50 dark:bg-gray-700 sm:px-6">
                         <div class="flex flex-col md:flex-row md:items-center md:justify-between">
@@ -364,7 +353,7 @@
                             <div class="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4">
                                 <select id="statusFilter" class="block w-full md:w-auto py-2 px-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm">
                                     <option value="all">Tous les statuts</option>
-                                    <option value="active">Actifs</option>
+                                    <option value="avtive">Actifs</option>
                                     <option value="suspended">Suspendus</option>
                                 </select>
                                 <select id="perPage" class="block w-full md:w-auto py-2 px-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm">
@@ -406,7 +395,7 @@
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
-                                            <div class="h-10 w-10 flex-shrink-0">
+                                            <div class="h-10 w-10 flex-shrink-0 cursor-pointer" onclick="showProfileImage('{{ $user->user_image ? asset('storage/' . $user->user_image) : '' }}')">
                                                 @if($user->user_image)
                                                     <img class="h-10 w-10 rounded-full" src="{{ asset('storage/' . $user->user_image) }}" alt="{{ $user->name }}">
                                                 @else
@@ -430,7 +419,7 @@
                                         <div class="text-sm text-gray-500 dark:text-gray-400">{{ $user->phone_number }}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        @if($user->status == 'active')
+                                        @if($user->status == 'avtive')
                                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100">
                                                 Actif
                                             </span>
@@ -448,25 +437,27 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                                         <div class="flex justify-center space-x-3">
-                                            <a href="{{ route('admin.users.index', $user->id) }}" class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300">
+                                            <a href="{{ route('admin.users.view', $user->id) }}" class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300" title="Voir le profil">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                                 </svg>
                                             </a>
-                                            @if($user->status == 'active')
-                                                <form action="{{ route('users.suspend', $user->id) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir suspendre cet utilisateur?');">
+                                            @if($user->status == 'avtive')
+                                                <form action="{{ route('admin.users.suspend', $user->id) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir suspendre cet utilisateur?');">
                                                     @csrf
-                                                    <button type="submit" class="text-yellow-600 hover:text-yellow-900 dark:text-yellow-400 dark:hover:text-yellow-300">
+                                                    @method('POST')
+                                                    <button type="submit" class="text-yellow-600 hover:text-yellow-900 dark:text-yellow-400 dark:hover:text-yellow-300" title="Suspendre l'utilisateur">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                                                         </svg>
                                                     </button>
                                                 </form>
-                                            @else
-                                                <form action="{{ route('users.activate', $user->id) }}" method="POST">
+                                            @elseif($user->status == 'suspended')
+                                                <form action="{{ route('admin.users.activate', $user->id) }}" method="POST">
                                                     @csrf
-                                                    <button type="submit" class="text-green-600 hover:text-green-900 dark:text-green-400 dark:hover:text-green-300">
+                                                    @method('POST')
+                                                    <button type="submit" class="text-green-600 hover:text-green-900 dark:text-green-400 dark:hover:text-green-300" title="Réactiver l'utilisateur">
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                                                         </svg>
@@ -516,7 +507,78 @@
         </div>
     </div>
 
+    <!-- Profile Image Modal -->
+    <div id="profileImageModal" class="fixed z-10 inset-0 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true" id="profileModalOverlay"></div>
+
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+            <div class="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white" id="modal-title">
+                                Photo de profil
+                            </h3>
+                            <div class="mt-4 flex justify-center">
+                                <img id="profileImageDisplay" src="" alt="Photo de profil" class="max-w-full h-auto rounded-lg">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 dark:bg-gray-700 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button type="button" id="closeProfileModal" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 dark:border-gray-600 shadow-sm px-4 py-2 bg-white dark:bg-gray-800 text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                        Fermer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // Section switching functionality
+        function switchSection(section) {
+            // Hide all sections
+            document.querySelectorAll('.section-content').forEach(el => {
+                el.classList.add('hidden');
+            });
+
+            // Show selected section
+            document.getElementById(section + '-section').classList.remove('hidden');
+
+            // Update tab styles
+            document.querySelectorAll('.section-tab').forEach(tab => {
+                tab.classList.remove('border-indigo-500', 'text-indigo-600');
+                tab.classList.add('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
+            });
+
+            // Style active tab
+            const activeTab = document.querySelector(`[onclick="switchSection('${section}')"]`);
+            if (activeTab) {
+                activeTab.classList.remove('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
+                activeTab.classList.add('border-indigo-500', 'text-indigo-600');
+            }
+
+            // Store the current section
+            fetch('{{ route("profile.last-active-section") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    last_active_section: section
+                })
+            });
+        }
+
+        // Initialize with stored section
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentSection = '{{ $currentSection }}';
+            switchSection(currentSection);
+        });
+
         // Modal functionality for identity image
         function showIdentityImage(imgSrc) {
             // Set the image source
@@ -570,7 +632,7 @@
 
                 let statusMatch = true;
 
-                if (statusFilter === 'active') {
+                if (statusFilter === 'avtive') {
                     statusMatch = status === 'actif';
                 } else if (statusFilter === 'suspended') {
                     statusMatch = status === 'suspendu';
@@ -589,6 +651,27 @@
             sidebar.classList.toggle('w-full');
             sidebar.classList.toggle('md:relative');
             sidebar.classList.toggle('md:block');
+        });
+
+        // Profile image modal functionality
+        function showProfileImage(imgSrc) {
+            if (!imgSrc) return;
+
+            // Set the image source
+            document.getElementById('profileImageDisplay').src = imgSrc;
+
+            // Show the modal
+            document.getElementById('profileImageModal').classList.remove('hidden');
+        }
+
+        // Close profile modal when clicking close button
+        document.getElementById('closeProfileModal').addEventListener('click', function() {
+            document.getElementById('profileImageModal').classList.add('hidden');
+        });
+
+        // Close profile modal when clicking outside the modal
+        document.getElementById('profileModalOverlay').addEventListener('click', function() {
+            document.getElementById('profileImageModal').classList.add('hidden');
         });
     </script>
 </body>

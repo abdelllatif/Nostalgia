@@ -3,8 +3,8 @@
 @section('title', "blog of articles")
 
 @section('content')
-    <!-- Hero Section -->
-    <section class="bg-gradient-to-b from-gray-900 to-gray-800 py-32 relative overflow-hidden">
+     <!-- Hero Section -->
+     <section class="bg-gradient-to-b from-gray-900 to-gray-800 py-32 relative overflow-hidden">
         <div class="absolute inset-0 bg-pattern opacity-10"></div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 relative">
             <div class="text-center max-w-4xl mx-auto">

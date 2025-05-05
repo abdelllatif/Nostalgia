@@ -105,6 +105,159 @@
             </div>
         </div>
 
+        <!-- Unpaid Winners Button -->
+        @if($unpaidWinners->isNotEmpty())
+            <div class="mt-6 text-center">
+                <button onclick="showUnpaidWinnersModal()" class="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition-colors">
+                    <i class="fas fa-exclamation-circle mr-2"></i>
+                    Voir les gagnants non payés ({{ $unpaidWinners->count() }})
+                </button>
+            </div>
+        @endif
+
+        <!-- Unpaid Winners Modal -->
+        <div id="unpaidWinnersModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+            <div class="bg-white rounded-lg p-6 max-w-2xl w-full">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-gray-900">Gagnants Non Payés</h3>
+                    <button onclick="closeUnpaidWinnersModal()" class="text-gray-500 hover:text-gray-700">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Produit</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Gagnant</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Montant</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date de Fin</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            @forelse($unpaidWinners as $product)
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <a href="{{ route('product.details', ['product' => $product->id]) }}" class="text-blue-600 hover:text-blue-800">
+                                            {{ $product->title }}
+                                        </a>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <a href="{{ route('users.show', ['id' => $product->winner->id]) }}" class="text-blue-600 hover:text-blue-800">
+                                            {{ $product->winner->name }} {{ $product->winner->first_name }}
+                                        </a>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ number_format($product->winning_amount, 2) }} €</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $product->auction_end_date->format('d/m/Y H:i') }}</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="4" class="px-6 py-4 text-center text-gray-500">
+                                        Aucun gagnant non payé
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Advanced Statistics with Charts -->
+        <div class="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Auction Statistics -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h3 class="text-xl font-bold text-gray-900 mb-4">Performance des Enchères</h3>
+                <canvas id="auctionChart" class="w-full h-64"></canvas>
+                <div class="mt-4 grid grid-cols-3 gap-4 text-center">
+                    <div>
+                        <p class="text-2xl font-bold text-green-600">{{ $statistics['auctions_won'] }}</p>
+                        <p class="text-sm text-gray-600">Enchères Gagnées</p>
+                    </div>
+                    <div>
+                        <p class="text-2xl font-bold text-red-600">{{ $statistics['auctions_lost'] }}</p>
+                        <p class="text-sm text-gray-600">Enchères Perdues</p>
+                    </div>
+                    <div>
+                        <p class="text-2xl font-bold text-blue-600">{{ $statistics['auctions_active'] }}</p>
+                        <p class="text-sm text-gray-600">Enchères Actives</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Statistics -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h3 class="text-xl font-bold text-gray-900 mb-4">Performance des Produits</h3>
+                <canvas id="productChart" class="w-full h-64"></canvas>
+                <div class="mt-4 grid grid-cols-3 gap-4 text-center">
+                    <div>
+                        <p class="text-2xl font-bold text-blue-600">{{ $statistics['products_listed'] }}</p>
+                        <p class="text-sm text-gray-600">Produits Listés</p>
+                    </div>
+                    <div>
+                        <p class="text-2xl font-bold text-green-600">{{ $statistics['products_sold'] }}</p>
+                        <p class="text-sm text-gray-600">Produits Vendus</p>
+                    </div>
+                    <div>
+                        <p class="text-2xl font-bold text-red-600">{{ $statistics['products_unsold'] }}</p>
+                        <p class="text-sm text-gray-600">Produits Non Vendus</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Won Products Section -->
+        <div class="mt-8 bg-white rounded-xl shadow-lg p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-gray-900">Enchères Gagnées</h3>
+                @if($unpaidWinners->isNotEmpty())
+                    <button onclick="showUnpaidWinnersModal()" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700">
+                        Voir les gagnants non payés ({{ $unpaidWinners->count() }})
+                    </button>
+                @endif
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                @forelse($wonProducts as $product)
+                    <div class="bg-white border rounded-lg overflow-hidden shadow-sm">
+                        <img src="{{ $product->images->first() ? asset('storage/' . $product->images->first()->image_path) : 'https://via.placeholder.com/400x200' }}"
+                             class="w-full h-48 object-cover" alt="{{ $product->title }}">
+                        <div class="p-4">
+                            <h4 class="font-bold text-lg mb-2">{{ $product->title }}</h4>
+                            <p class="text-gray-600 text-sm mb-4">Gagné le {{ $product->auction_end_date->format('d/m/Y') }}</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-lg font-bold text-gray-900">€{{ number_format($product->bids->max('amount'), 2) }}</span>
+                                <div class="flex space-x-2">
+                                    <a href="{{ route('product.details', ['product' => $product->id]) }}"
+                                       class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                                        <i class="fas fa-eye mr-2"></i>Voir
+                                    </a>
+                                    @if($product->payment_status === 'paid')
+                                        <a href="{{ route('payment.download-ticket', ['product' => $product->id]) }}"
+                                           class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-green-600 hover:bg-green-700">
+                                            <i class="fas fa-ticket-alt mr-2"></i>Ticket
+                                        </a>
+                                    @else
+                                        <a href="{{ route('payment.checkout', ['product' => $product->id]) }}"
+                                           class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+                                            <i class="fas fa-credit-card mr-2"></i>Payer
+                                        </a>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @empty
+                    <div class="col-span-3 text-center py-8">
+                        <i class="fas fa-trophy text-4xl text-gray-400 mb-4"></i>
+                        <h3 class="text-lg font-medium text-gray-900">Aucune enchère gagnée</h3>
+                        <p class="text-gray-500">Continuez à enchérir pour gagner des objets incroyables!</p>
+                    </div>
+                @endforelse
+            </div>
+        </div>
+
         <!-- Navigation Tabs -->
         <div class="mt-8">
             <div class="border-b border-gray-200">
@@ -438,6 +591,34 @@
                                     <div class="mt-1 text-sm text-gray-500">
                                         {{ $activity['date']->format('M d, Y H:i') }}
                                     </div>
+                                    <div class="mt-2">
+                                        <a href="{{ route('product.details', ['product' => $activity['item']->product->id]) }}" class="text-blue-600 hover:text-blue-800">
+                                            <i class="fas fa-eye mr-1"></i>View Details
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        @elseif($activity['type'] == 'won_auction')
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-trophy text-yellow-500 text-xl"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <h3 class="text-lg font-medium text-gray-900">Won an Auction!</h3>
+                                    <p class="text-gray-600">{{ $activity['item']->title }}</p>
+                                    <div class="mt-1 text-sm text-gray-500">
+                                        {{ $activity['date']->format('M d, Y H:i') }}
+                                    </div>
+                                    <div class="mt-2 flex items-center space-x-4">
+                                        <a href="{{ route('product.details', ['product' => $activity['item']->id]) }}" class="text-blue-600 hover:text-blue-800">
+                                            <i class="fas fa-eye mr-1"></i>View Details
+                                        </a>
+                                        @if(!$activity['item']->payment_completed)
+                                            <a href="{{ route('payment.checkout', ['product' => $activity['item']->id]) }}" class="text-green-600 hover:text-green-800">
+                                                <i class="fas fa-credit-card mr-1"></i>Pay Now
+                                            </a>
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
                         @elseif($activity['type'] == 'reaction')
@@ -546,5 +727,100 @@
                 imagePreviewModal.classList.add('hidden');
             }
         });
+
+        // Chart.js Initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load Chart.js from CDN
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+            script.onload = initializeCharts;
+            document.head.appendChild(script);
+        });
+
+        function initializeCharts() {
+            // Auction Performance Chart
+            const auctionCtx = document.getElementById('auctionChart').getContext('2d');
+            new Chart(auctionCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Gagnées', 'Perdues', 'Actives'],
+                    datasets: [{
+                        data: [
+                            {{ $statistics['auctions_won'] }},
+                            {{ $statistics['auctions_lost'] }},
+                            {{ $statistics['auctions_active'] }}
+                        ],
+                        backgroundColor: [
+                            'rgba(72, 187, 120, 0.8)',  // green for won
+                            'rgba(237, 100, 100, 0.8)', // red for lost
+                            'rgba(66, 153, 225, 0.8)'   // blue for active
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Participation aux Enchères'
+                        }
+                    }
+                }
+            });
+
+            // Product Performance Chart
+            const productCtx = document.getElementById('productChart').getContext('2d');
+            new Chart(productCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Listés', 'Vendus', 'Non Vendus'],
+                    datasets: [{
+                        label: 'Produits',
+                        data: [
+                            {{ $statistics['products_listed'] }},
+                            {{ $statistics['products_sold'] }},
+                            {{ $statistics['products_unsold'] }}
+                        ],
+                        backgroundColor: [
+                            'rgba(66, 153, 225, 0.8)',  // blue for listed
+                            'rgba(72, 187, 120, 0.8)',  // green for sold
+                            'rgba(237, 100, 100, 0.8)'  // red for unsold
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'Statut des Produits'
+                        }
+                    }
+                }
+            });
+        }
+
+        // Unpaid Winners Modal Functions
+        function showUnpaidWinnersModal() {
+            document.getElementById('unpaidWinnersModal').classList.remove('hidden');
+        }
+
+        function closeUnpaidWinnersModal() {
+            document.getElementById('unpaidWinnersModal').classList.add('hidden');
+        }
     </script>
     @endsection

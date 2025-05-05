@@ -7,7 +7,6 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-50 dark:bg-gray-900 flex min-h-screen">
-    <!-- Sidebar -->
     <aside class="bg-gray-800 text-white w-64 flex-shrink-0 hidden md:block">
         <div class="p-6 flex items-center space-x-2">
             <img src="https://img.icons8.com/ios-filled/50/ffffff/retro-tv.png" alt="Logo Nostalgia" class="w-8 h-8">
@@ -21,19 +20,19 @@
                     </svg>
                     Tableau de bord
                 </a>
-                <a href="admin-users" class="block py-3 px-6 text-gray-300 hover:bg-gray-700 hover:text-white flex items-center">
+                <a href="{{route('admin.users.index')}}" class="block py-3 px-6 text-gray-300 hover:bg-gray-700 hover:text-white flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                     </svg>
                     Utilisateurs
                 </a>
-                <a href="admin-products" class="block py-3 px-6 text-gray-300 hover:bg-gray-700 hover:text-white flex items-center">
+                <a href="{{route('dashboard.products')}}" class="block py-3 px-6  text-white bg-gray-700  hover:text-white flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                     </svg>
                     Produits
                 </a>
-                <a href="admin-categories" class="block py-3 px-6 bg-gray-700 text-white flex items-center">
+                <a href="{{ route('categories.show') }}" class="block py-3 px-6 text-gray-300 hover:bg-gray-700 flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                     </svg>
@@ -45,13 +44,13 @@
                     </svg>
                     Tags
                 </a>
-                <a href="admin-blog" class="block py-3 px-6 text-gray-300 hover:bg-gray-700 hover:text-white flex items-center">
+                <a href="{{ route('dashboard.articles') }}" class="block py-3 px-6 text-gray-300 hover:bg-gray-700 hover:text-white flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
                     </svg>
                     Articles Blog
                 </a>
-                <a href="admin-stats" class="block py-3 px-6 text-gray-300 hover:bg-gray-700 hover:text-white flex items-center">
+                <a href="{{route('dashboard.statistics')}}" class="block py-3 px-6 text-gray-300 hover:bg-gray-700 hover:text-white flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                     </svg>
@@ -74,7 +73,6 @@
             </a>
         </div>
     </aside>
-
     <!-- Mobile menu button -->
     <div class="md:hidden absolute top-4 left-4 z-50">
         <button class="flex items-center px-3 py-2 border rounded text-gray-500 border-gray-600 hover:text-white hover:border-white">
@@ -322,12 +320,74 @@
                                 </h3>
                                 <div class="mt-4">
                                     <!-- Form starts here -->
-                                    <form action="{{ route('categorie.edit',['id'=>$categorie->id] )}}" method="POST" enctype="multipart/form-data">
+                                    <form id="editCategoryForm" action="" method="POST" enctype="multipart/form-data">
                                         @csrf
                                         @method('PUT')
+                                        <input type="hidden" name="category_id" id="editCategoryId">
                                         <div class="mb-4">
                                             <label for="categoryName" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nom de la catégorie</label>
-                                            <input type="text" name="name" id="EditcategoryName" class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full py-2 shadow-sm sm:text-sm border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white" placeholder="Ex:ancien Art">
+                                            <input type="text" name="name" id="EditcategoryName" class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full py-2 shadow-sm sm:text-sm border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white" placeholder="Ex: ancien Art">
+                                        </div>
+                                        <div class="mb-4">
+                                            <label for="EditcategoryImage" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Image</label>
+                                            <div class="mt-1 flex items-center">
+                                                <span class="inline-block h-12 w-12 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-700">
+                                                    <img id="editImagePreview" class="h-full w-full object-cover" alt="Preview" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" />
+                                                </span>
+                                                <input type="file" name="categoryImage" id="EditcategoryImage" accept="image/*" class="hidden" onchange="previewEditImage(event)">
+                                                <button type="button" onclick="document.getElementById('EditcategoryImage').click()" class="ml-5 bg-white dark:bg-gray-700 py-2 px-3 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                                    Changer
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <!-- Buttons -->
+                                        <div class="flex justify-end space-x-4">
+                                            <button type="button" class="inline-flex justify-center rounded-md border border-gray-300 dark:border-gray-600 shadow-sm px-4 py-2 bg-white dark:bg-gray-800 text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500" onclick="document.getElementById('EditcategoryFormModal').classList.add('hidden')">
+                                                Annuler
+                                            </button>
+                                            <button type="submit" class="inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                                Modifier
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        {{ $categories->links() }}
+        <!-- Create Category Form Modal -->
+        <div class="fixed z-10 inset-0 overflow-y-auto hidden" id="categoryFormModal">
+            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                <!-- Background overlay -->
+                <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                    <div class="absolute inset-0 bg-gray-500 dark:bg-gray-900 opacity-75"></div>
+                </div>
+
+                <!-- Modal panel -->
+                <div class="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                    <div class="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                        <div class="sm:flex sm:items-start">
+                            <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 dark:bg-blue-900 sm:mx-0 sm:h-10 sm:w-10">
+                                <svg class="h-6 w-6 text-blue-600 dark:text-blue-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                </svg>
+                            </div>
+                            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                                <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white" id="modal-title">
+                                    Créer une nouvelle catégorie
+                                </h3>
+                                <div class="mt-4">
+                                    <!-- Form starts here -->
+                                    <form action="{{ route('categories.store') }}" method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                        <div class="mb-4">
+                                            <label for="categoryName" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nom de la catégorie</label>
+                                            <input type="text" name="name" id="categoryName" class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full py-2 shadow-sm sm:text-sm border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white" placeholder="Ex:ancien Art">
                                         </div>
                                         <div class="mb-4">
                                             <label for="categoryImage" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Image</label>
@@ -335,7 +395,7 @@
                                                 <span class="inline-block h-12 w-12 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-700">
                                                     <img id="imagePreview" class="h-full w-full object-cover" alt="Preview" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" />
                                                 </span>
-                                                <input type="file" name="categoryImage" id="EditcategoryImage" accept="image/*" class="hidden" onchange="previewImage(event)">
+                                                <input type="file" name="categoryImage" id="categoryImage" accept="image/*" class="hidden" onchange="previewImage(event)">
                                                 <button type="button" onclick="document.getElementById('categoryImage').click()" class="ml-5 bg-white dark:bg-gray-700 py-2 px-3 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                                                     Changer
                                                 </button>
@@ -349,127 +409,80 @@
                                             <button type="submit" class="inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                                                 Créer
                                             </button>
-                                            </div>
-                                            </form>
-                                                </div>
-                                                </div>
-                                                </div>
-                                                </div>
-                                                </div>
-                                            </div>
                                         </div>
-                                    <!-- Pagination -->
-                                    {{ $categories->links() }}
-                                    <!-- Create Category Form Modal -->
-                                    <div class="fixed z-10 inset-0 overflow-y-auto hidden" id="categoryFormModal">
-                                        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                                            <!-- Background overlay -->
-                                            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
-                                                <div class="absolute inset-0 bg-gray-500 dark:bg-gray-900 opacity-75"></div>
-                                            </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</div>
 
-                                            <!-- Modal panel -->
-                                            <div class="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                                                <div class="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                                                    <div class="sm:flex sm:items-start">
-                                                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 dark:bg-blue-900 sm:mx-0 sm:h-10 sm:w-10">
-                                                            <svg class="h-6 w-6 text-blue-600 dark:text-blue-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                                            </svg>
-                                                        </div>
-                                                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                                                            <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white" id="modal-title">
-                                                                Créer une nouvelle catégorie
-                                                            </h3>
-                                                            <div class="mt-4">
-                                                                <!-- Form starts here -->
-                                                                <form action="{{ route('categories.store') }}" method="POST" enctype="multipart/form-data">
-                                                                    @csrf
-                                                                    <div class="mb-4">
-                                                                        <label for="categoryName" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nom de la catégorie</label>
-                                                                        <input type="text" name="name" id="categoryName" class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full py-2 shadow-sm sm:text-sm border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white" placeholder="Ex:ancien Art">
-                                                                    </div>
-                                                                    <div class="mb-4">
-                                                                        <label for="categoryImage" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Image</label>
-                                                                        <div class="mt-1 flex items-center">
-                                                                            <span class="inline-block h-12 w-12 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-700">
-                                                                                <img id="imagePreview" class="h-full w-full object-cover" alt="Preview" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" />
-                                                                            </span>
-                                                                            <input type="file" name="categoryImage" id="categoryImage" accept="image/*" class="hidden" onchange="previewImage(event)">
-                                                                            <button type="button" onclick="document.getElementById('categoryImage').click()" class="ml-5 bg-white dark:bg-gray-700 py-2 px-3 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                                                                Changer
-                                                                            </button>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!-- Buttons -->
-                                                                    <div class="flex justify-end space-x-4">
-                                                                        <button type="button" class="inline-flex justify-center rounded-md border border-gray-300 dark:border-gray-600 shadow-sm px-4 py-2 bg-white dark:bg-gray-800 text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500" onclick="document.getElementById('categoryFormModal').classList.add('hidden')">
-                                                                            Annuler
-                                                                        </button>
-                                                                        <button type="submit" class="inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                                                            Créer
-                                                                        </button>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+const newCategoryButton = document.querySelector('button:nth-of-type(2)');
+if (newCategoryButton) {
+    newCategoryButton.addEventListener('click', function() {
+        document.getElementById('categoryFormModal').classList.remove('hidden');
+    });
+}
+const mobileMenuButton = document.querySelector('.md\\:hidden button');
+const sidebar = document.querySelector('aside');
+if (mobileMenuButton && sidebar) {
+    mobileMenuButton.addEventListener('click', function() {
+        sidebar.classList.toggle('hidden');
+        sidebar.classList.toggle('fixed');
+        sidebar.classList.toggle('inset-0');
+        sidebar.classList.toggle('z-40');
+    });
+}
+});
 
-                                    <!-- End of your content -->
-                                    </div>
-                                    </div>
-                                    </main>
-                                    </div>
+function openEditForm(button) {
+    const modalEdit = document.getElementById('EditcategoryFormModal');
+    modalEdit.classList.remove('hidden');
 
-                                    <script>
-                                    document.addEventListener('DOMContentLoaded', function() {
-                                    const newCategoryButton = document.querySelector('button:nth-of-type(2)');
-                                    if (newCategoryButton) {
-                                        newCategoryButton.addEventListener('click', function() {
-                                            document.getElementById('categoryFormModal').classList.remove('hidden');
-                                        });
-                                    }
-                                    const mobileMenuButton = document.querySelector('.md\\:hidden button');
-                                    const sidebar = document.querySelector('aside');
-                                    if (mobileMenuButton && sidebar) {
-                                        mobileMenuButton.addEventListener('click', function() {
-                                            sidebar.classList.toggle('hidden');
-                                            sidebar.classList.toggle('fixed');
-                                            sidebar.classList.toggle('inset-0');
-                                            sidebar.classList.toggle('z-40');
-                                        });
-                                    }
-                                    });
+    const categoryId = button.getAttribute('data-id');
+    const name = button.getAttribute('data-name');
+    const image = button.getAttribute('data-img');
 
+    // Set the form action URL with the category ID
+    const form = document.getElementById('editCategoryForm');
+    form.action = `/Dashebored/categories/${categoryId}`;
 
-                                    function openEditForm(data){
-                                    modalEdit=document.getElementById('EditcategoryFormModal');
-                                    modalEdit.classList.remove('hidden');
-                                   let name =data.getAttribute('data-name');
-                                    let image=data.getAttribute('data-img');
-                                    document.getElementById('EditcategoryName').value=name;
-                                    const imagePreview = document.getElementById('imagePreview');
-                                    if (categoryImage) {
-                                        imagePreview.src = image;
-                                    }
-                                   }
+    document.getElementById('editCategoryId').value = categoryId;
+    document.getElementById('EditcategoryName').value = name;
+    document.getElementById('editImagePreview').src = image;
+}
 
-                                   function previewImage(event) {
-                                        const input = event.target;
-                                        const reader = new FileReader();
-                                        reader.onload = function () {
-                                            const preview = document.getElementById('imagePreview');
-                                            preview.src = reader.result;
-                                        };
-                                        if (input.files && input.files[0]) {
-                                            reader.readAsDataURL(input.files[0]);
-                                        }
-                                    }
-                                    </script>
+function previewEditImage(event) {
+    const input = event.target;
+    const reader = new FileReader();
+    reader.onload = function() {
+        const preview = document.getElementById('editImagePreview');
+        preview.src = reader.result;
+    };
+    if (input.files && input.files[0]) {
+        reader.readAsDataURL(input.files[0]);
+    }
+}
 
-                                    </body>
-                                    </html>
+function previewImage(event) {
+    const input = event.target;
+    const reader = new FileReader();
+    reader.onload = function() {
+        const preview = document.getElementById('imagePreview');
+        preview.src = reader.result;
+    };
+    if (input.files && input.files[0]) {
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+</script>
+
+</body>
+</html>

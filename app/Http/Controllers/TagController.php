@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Services\TagService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use App\Models\Tag;
 
 class TagController extends Controller
 {
@@ -30,7 +32,7 @@ class TagController extends Controller
         if (!$tag) {
             return response()->json(['message' => 'Tag not found'], 404);
         }
-        return response()->json($tag);
+        return back()->with('success','Tag created successfully');
     }
 
     public function store(Request $request)
@@ -40,7 +42,7 @@ class TagController extends Controller
         ]);
 
         $tag = $this->tagService->createTag($validated);
-        return response()->json($tag, 201);
+        return back()->with('success','Tag created successfully');
     }
 
     public function destroy($id)
@@ -49,6 +51,37 @@ class TagController extends Controller
         if (!$deleted) {
             return response()->json(['message' => 'Tag not found'], 404);
         }
-        return response()->json(['message' => 'Tag deleted successfully']);
+        return back()->with('success','Tag deleted successfully');
+    }
+
+    public function update(Request $request, $id)
+    {
+        try {
+            $tag = Tag::findOrFail($id);
+
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+            ]);
+
+            $tag->name = $request->name;
+
+            if ($request->hasFile('image')) {
+                // Delete old image if exists
+                if ($tag->image) {
+                    Storage::delete('public/' . $tag->image);
+                }
+
+                // Store new image
+                $imagePath = $request->file('image')->store('tags', 'public');
+                $tag->image = $imagePath;
+            }
+
+            $tag->save();
+
+            return redirect()->back()->with('success', 'Tag mis à jour avec succès');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Erreur lors de la mise à jour du tag: ' . $e->getMessage());
+        }
     }
 }

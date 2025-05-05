@@ -1,149 +1,416 @@
-@extends('components.layout')
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manuscrit Médiéval Enluminé - Détail du produit</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 dark:bg-gray-900">
+    <nav class="bg-white shadow-md px-6 py-4 flex items-center justify-between">
+        <!-- Logo -->
+        <div class="flex items-center space-x-2">
+          <img src="https://img.icons8.com/ios-filled/50/000000/retro-tv.png" alt="Logo Nostalgia" class="w-8 h-8">
+          <span class="text-xl font-bold text-gray-800">Nostalgia</span>
+        </div>
 
-@section('title', $product->title . ' - Enchères de Patrimoine Culturel')
+        <!-- Menu -->
+        <ul class="hidden md:flex space-x-6 text-gray-700 font-medium">
+          <li><a href="\" class="hover:text-blue-600">Accueil</a></li>
+          <li><a href="catalogue" class="text-blue-600 font-bold">Catalogue</a></li>
+          <li><a href="blog" class="hover:text-blue-600">Blog</a></li>
+          <li><a href="about" class="hover:text-blue-600">À propos</a></li>
+          <li><a href="#" class="hover:text-blue-600">Contact</a></li>
+        </ul>
 
-@section('content')
-    <!-- Product Details Header -->
-    <div class="bg-gray-100 py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 class="text-3xl font-extrabold text-gray-900">{{ $product->title }}</h1>
-            <p class="mt-2 text-lg text-gray-600">{{ $product->description }}</p>
+        <!-- Boutons Connexion / Inscription -->
+        <div class="hidden md:flex space-x-4">
+          <a href="login" class="px-4 py-2 border rounded-full text-sm hover:bg-gray-100">Connexion</a>
+          <a href="register" class="px-4 py-2 bg-blue-600 text-white rounded-full text-sm hover:bg-blue-700">Inscription</a>
+        </div>
+
+        <!-- Menu burger mobile -->
+        <div class="md:hidden">
+          <button>
+            <svg class="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+          </button>
+        </div>
+    </nav>
+
+    <!-- Fil d'Ariane -->
+    <div class="bg-gray-100 dark:bg-gray-800 py-3">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                <a href="/" class="hover:text-gray-900 dark:hover:text-white">Accueil</a>
+                <svg class="mx-2 h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                </svg>
+                <a href="/catalogue" class="hover:text-gray-900 dark:hover:text-white">Catalogue</a>
+                <svg class="mx-2 h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                </svg>
+                <a href="/catalogue?category=manuscrits" class="hover:text-gray-900 dark:hover:text-white">Manuscrits</a>
+                <svg class="mx-2 h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                </svg>
+                <span class="text-gray-800 dark:text-gray-200">Manuscrit Médiéval Enluminé</span>
+            </div>
         </div>
     </div>
 
-    <!-- Product Details Content -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <!-- Product Images -->
-            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+    <!-- Contenu Principal -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="lg:grid lg:grid-cols-2 lg:gap-12">
+            <!-- Galerie d'Images -->
+            <div class="mb-8 lg:mb-0">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
                     <div class="relative h-96">
-                    <img src="{{ $product->images->first() ? asset('storage/' . $product->images->first()->image_path) : 'https://via.placeholder.com/600x400?text=No+Image' }}"
-                         alt="{{ $product->title }}"
-                         class="w-full h-full object-cover">
-                </div>
-                @if($product->images->count() > 1)
-                <div class="grid grid-cols-4 gap-2 p-4">
-                    @foreach($product->images->skip(1) as $image)
-                    <div class="h-24 overflow-hidden rounded-lg">
-                        <img src="{{ asset('storage/' . $image->image_path) }}"
+                        <img id="mainImage" src="{{ $product->images->isNotEmpty() ? asset('storage/' . $product->images->first()->image_path) : 'https://via.placeholder.com/400x300' }}"
                              alt="{{ $product->title }}"
                              class="w-full h-full object-cover">
                     </div>
-                    @endforeach
-                </div>
-                @endif
+
+                    <!-- Thumbnails -->
+                    <div class="grid grid-cols-4 gap-2 p-4">
+                        @foreach($product->images as $index => $image)
+                            <div class="cursor-pointer border-2 {{ $index === 0 ? 'border-blue-500' : 'border-gray-200 dark:border-gray-700' }} rounded-md overflow-hidden hover:border-blue-500"
+                                 onclick="changeMainImage('{{ asset('storage/' . $image->image_path) }}', this)">
+                                <img src="{{ asset('storage/' . $image->image_path) }}"
+                                     alt="Image {{ $index + 1 }}"
+                                     class="w-full h-20 object-cover">
                             </div>
-
-            <!-- Product Info -->
-            <div class="bg-white rounded-lg shadow-md p-6">
-                <div class="mb-6">
-                    <h2 class="text-2xl font-bold text-gray-900 mb-2">Informations sur l'enchère</h2>
-                    <div class="flex justify-between items-center">
-                        <span class="text-3xl font-bold text-gray-900">{{ number_format($product->current_price, 2) }}€</span>
-                        <span class="text-sm text-gray-500">{{ $product->bids_count }} enchères</span>
+                        @endforeach
                     </div>
                 </div>
 
-                <div class="border-t border-gray-200 pt-6 mb-6">
-                    <div class="flex justify-between text-sm mb-2">
-                        <span class="text-gray-500">Prix de départ:</span>
-                        <span class="font-medium">{{ number_format($product->starting_price, 2) }}€</span>
+                <!-- Authentification et Provenance -->
+                <div class="mt-8 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Information sur le vendeur</h3>
+                    <div class="space-y-4 text-gray-700 dark:text-gray-300">
+                        <div class="flex items-center">
+                            <img src="{{ asset('storage/' . ($product->user->profile_image ?? 'anonymes_users/anonyme_user.jpg')) }}"
+                                 alt="Profile"
+                                 class="w-10 h-10 rounded-full object-cover">
+                            <div class="ml-4">
+                                <h4 class="font-medium">{{ $product->user->name }} {{ $product->user->first_name }}</h4>
+                                <p class="text-sm text-gray-500">Membre depuis {{ $product->user->created_at->format('M Y') }}</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="flex justify-between text-sm mb-2">
-                        <span class="text-gray-500">Fin de l'enchère:</span>
-                        <span class="font-medium">{{ \Carbon\Carbon::parse($product->auction_end_date)->format('d/m/Y H:i') }}</span>
-                    </div>
-                    <div class="flex justify-between text-sm">
-                        <span class="text-gray-500">Catégorie:</span>
-                        <span class="font-medium">{{ $product->category->name }}</span>
+                </div>
+            </div>
+
+            <!-- Informations Produit et Enchères -->
+            <div>
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+                    <span class="inline-block bg-gray-100 dark:bg-gray-700 rounded-full px-3 py-1 text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2">{{ $product->category->name }}</span>
+                    <h1 class="text-3xl font-bold text-gray-900 dark:text-white">{{ $product->title }}</h1>
+                    <p class="text-gray-500 dark:text-gray-400">Listé le {{ $product->created_at->format('d/m/Y') }}</p>
+
+                    <!-- État de l'enchère -->
+                    <div class="mt-6 bg-gray-50 dark:bg-gray-900 p-4 rounded-lg">
+                        <div class="flex justify-between mb-2">
+                            <span class="text-gray-700 dark:text-gray-300">Prix actuel:</span>
+                            <span class="text-2xl font-bold text-gray-900 dark:text-white">
+                                {{ number_format($product->bids->isNotEmpty() ? $product->bids->max('amount') : $product->starting_price, 2) }} €
+                            </span>
+                        </div>
+                        <div class="flex justify-between text-sm text-gray-600 dark:text-gray-400 mb-4">
+                            <span>Prix de départ: {{ number_format($product->starting_price, 2) }} €</span>
+                            <span>{{ $product->bids->count() }} enchères</span>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600 dark:text-gray-400">Fin de l'enchère:</span>
+                                <span class="text-gray-900 dark:text-white font-medium">{{ \Carbon\Carbon::parse($product->auction_end_date)->format('d/m/Y H:i') }}</span>
+                            </div>
+                            <div class="flex justify-between text-sm mt-1">
+                                <span class="text-gray-600 dark:text-gray-400">Temps restant:</span>
+                                <span class="text-red-600 dark:text-red-400 font-medium auction-timer" data-end-date="{{ $product->auction_end_date }}">
+                                    @if(!$product->auction_end_date->isFuture())
+                                        Terminée
+                                    @endif
+                                </span>
                             </div>
                         </div>
 
-                @if(auth()->check() && !$product->hasEnded())
-                <form action="{{ route('bids.store') }}" method="POST" class="mb-6">
-                    @csrf
-                    <input type="hidden" name="product_id" value="{{ $product->id }}">
-                    <div class="mb-4">
-                        <label for="amount" class="block text-sm font-medium text-gray-700 mb-1">Votre enchère (€)</label>
-                        <input type="number" id="amount" name="amount" min="{{ $product->current_price + 1 }}" step="0.01" required
-                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                    </div>
-                    <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                        Placer une enchère
-                    </button>
-                </form>
-                @elseif(!auth()->check())
-                <div class="mb-6">
-                    <a href="{{ route('login') }}" class="block w-full text-center bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                        Connectez-vous pour enchérir
-                    </a>
+                        <!-- Status Messages -->
+                        @if($isWinner)
+                            @if($hasPaid)
+                                @if($ticketStatus['ticket_generated'])
+                                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
+                                        <strong class="font-bold">Félicitations!</strong>
+                                        <span class="block sm:inline"> Vous avez gagné cette enchère et votre paiement a été effectué. Votre ticket a été généré.</span>
+                                    </div>
+                                @else
+                                    <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative mb-4">
+                                        <strong class="font-bold">Paiement effectué!</strong>
+                                        <span class="block sm:inline"> Votre ticket est en cours de génération.</span>
+                                    </div>
+                                @endif
+                            @else
+                                <div class="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative mb-4">
+                                    <strong class="font-bold">Félicitations!</strong>
+                                    <span class="block sm:inline"> Vous avez gagné cette enchère! Veuillez procéder au paiement.</span>
+                                </div>
+                                <a href="{{ route('payment.checkout', ['product' => $product->id]) }}"
+                                   class="block w-full text-center bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700 font-medium mb-4">
+                                    Payer maintenant
+                                </a>
+                            @endif
+                        @endif
+
+                        @if($isOwner && !$product->auction_end_date->isFuture())
+                            @if($winner)
+                                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
+                                    <strong class="font-bold">Félicitations!</strong>
+                                    <span class="block sm:inline"> Vous avez un gagnant pour votre enchère!</span>
+                                    <div class="mt-2">
+                                        <span>Gagnant: {{ $winner->name }} {{ $winner->first_name }}</span>
+                                        <a href="{{ route('users.show', ['id' => $winner->id]) }}"
+                                           class="ml-2 text-blue-600 hover:text-blue-800">
+                                            Voir le profil
+                                        </a>
+                                    </div>
+                                </div>
+                            @else
+                                <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative mb-4">
+                                    <strong class="font-bold">Malheureusement</strong>
+                                    <span class="block sm:inline"> Vous n'avez pas eu de gagnant pour cette enchère. Bonne chance pour la prochaine fois!</span>
+                                    <div class="mt-4">
+                                        <a href="{{ route('catalogue') }}"
+                                           class="inline-block bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+                                            Retour au catalogue
+                                        </a>
+                                    </div>
+                                </div>
+                            @endif
+                        @endif
+
+                        <!-- Enchérir -->
+                        @if($product->auction_end_date->isFuture() && !$isWinner)
+                            <div>
+                                <div class="flex space-x-4 mb-4">
+                                    @php
+                                        $currentPrice = $product->bids->isNotEmpty() ? $product->bids->max('amount') : $product->starting_price;
+                                        $suggestedBids = [
+                                            $currentPrice + 100,
+                                            $currentPrice + 200,
+                                            $currentPrice + 500
+                                        ];
+                                    @endphp
+                                    @foreach($suggestedBids as $bid)
+                                        <button onclick="setBidAmount({{ $bid }})" class="flex-1 py-2 px-3 border rounded text-sm bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600">
+                                            {{ number_format($bid, 2) }} €
+                                        </button>
+                                    @endforeach
+                                </div>
+                                <div>
+                                    @if (session('success'))
+                                        <div class="alert alert-success bg-green-200 text-green-700 border py-2 border-green-700 rounded-xl text-center mb-4">
+                                            {{ session('success') }}
                                         </div>
                                     @endif
 
-                <!-- Seller Info -->
-                <div class="border-t border-gray-200 pt-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Vendeur</h3>
-                    <div class="flex items-center">
-                        <img src="{{ $product->user->profile_image ? asset('storage/' . $product->user->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode($product->user->name) }}"
-                             alt="{{ $product->user->name }}"
-                             class="w-12 h-12 rounded-full object-cover">
-                        <div class="ml-4">
-                            <h4 class="text-sm font-medium text-gray-900">{{ $product->user->name }}</h4>
-                            <a href="{{ route('users.show', $product->user->id) }}" class="text-sm text-blue-600 hover:text-blue-800">
-                                Voir le profil
-                            </a>
+                                    @if (session('error'))
+                                        <div class="alert alert-danger bg-red-200 text-red-700 border border-red-700 rounded-xl text-center mb-4">
+                                            {{ session('error') }}
+                                        </div>
+                                    @endif
+
+                                    <form action="{{ route('bids.store') }}" method="post" class="flex items-center space-x-4">
+                                        @csrf
+                                        <input name="amount" id="bidAmount" type="number" min="{{ $currentPrice + 1 }}" step="0.01" placeholder="Autre montant (€)"
+                                               class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white">
+                                        <input name="product_id" type="hidden" value="{{ $product->id }}">
+                                        <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 font-medium">Enchérir</button>
+                                    </form>
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+
+                    <!-- Description -->
+                    <div class="mt-8">
+                        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Description</h2>
+                        <div class="prose dark:prose-invert max-w-none text-gray-700 dark:text-gray-300">
+                            {{ $product->description }}
+                        </div>
+                    </div>
+
+                    <!-- Contexte Historique -->
+                    <div class="mt-8">
+                        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Contexte Historique</h2>
+                        <div class="prose dark:prose-invert max-w-none text-gray-700 dark:text-gray-300">
+                            {{ $product->historical_context }}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Product Description -->
-        <div class="mt-8 bg-white rounded-lg shadow-md p-6">
-            <h2 class="text-2xl font-bold text-gray-900 mb-4">Description</h2>
-            <div class="prose max-w-none">
-                {!! nl2br(e($product->description)) !!}
-            </div>
-        </div>
-
-        <!-- Bids History -->
-        <div class="mt-8 bg-white rounded-lg shadow-md p-6">
-            <h2 class="text-2xl font-bold text-gray-900 mb-4">Historique des enchères</h2>
-            @if($product->bids->count() > 0)
+        <!-- Historique des enchères -->
+        <div class="mt-8 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+            <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">Historique des enchères</h2>
             <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
+                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                    <thead class="bg-gray-50 dark:bg-gray-900">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Enchérisseur</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Montant</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Enchérisseur</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Montant</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Date</th>
                         </tr>
                     </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                        @foreach($product->bids->sortByDesc('created_at') as $bid)
+                    <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                        @foreach($product->bids->sortByDesc('amount')->take(5) as $bid)
                             <tr>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
-                                    <img src="{{ $bid->user->profile_image ? asset('storage/' . $bid->user->profile_image) : 'https://ui-avatars.com/api/?name=' . urlencode($bid->user->name) }}"
-                                         alt="{{ $bid->user->name }}"
-                                         class="w-8 h-8 rounded-full object-cover">
-                                    <span class="ml-2 text-sm text-gray-900">{{ $bid->user->name }}</span>
+                                        <div class="h-8 w-8 flex-shrink-0 rounded-full bg-gray-200 overflow-hidden">
+                                            <img src="{{ asset('storage/' . ($bid->user->profile_image ?? 'anonymes_users/anonyme_user.jpg')) }}"
+                                                 alt="Avatar"
+                                                 class="h-full w-full object-cover">
+                                        </div>
+                                        <div class="ml-3">
+                                            <p class="text-sm font-medium text-gray-900 dark:text-white">{{ $bid->user->name }}</p>
+                                        </div>
                                     </div>
                                 </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                {{ number_format($bid->amount, 2) }}€
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                {{ $bid->created_at->format('d/m/Y H:i') }}
-                            </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white font-medium">{{ number_format($bid->amount, 2) }} €</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ $bid->created_at->format('d/m/Y H:i') }}</td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
-            @else
-            <p class="text-gray-500">Aucune enchère pour le moment.</p>
+
+            @if($product->bids->count() > 5)
+                <div class="mt-4 text-center">
+                    <button id="see-more" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium">
+                        Voir toutes les enchères ({{ $product->bids->count() }})
+                    </button>
+                </div>
+
+                <div id="extra-bids" class="hidden mt-4">
+                    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                        <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                            @foreach($product->bids->sortByDesc('amount')->slice(5) as $bid)
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="h-8 w-8 flex-shrink-0 rounded-full bg-gray-200 overflow-hidden">
+                                                <img src="{{ asset('storage/' . ($bid->user->profile_image ?? 'anonymes_users/anonyme_user.jpg')) }}"
+                                                     alt="Avatar"
+                                                     class="h-full w-full object-cover">
+                                            </div>
+                                            <div class="ml-3">
+                                                <p class="text-sm font-medium text-gray-900 dark:text-white">{{ $bid->user->name }}</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white font-medium">{{ number_format($bid->amount, 2) }} €</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ $bid->created_at->format('d/m/Y H:i') }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             @endif
         </div>
+
+        <!-- Objets similaires -->
+        <div class="mt-12">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Objets similaires</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                @foreach ( $product->simmilar_product as $simmillar)
+                        <a href="{{route('product.details',['product'=>$simmillar->id])}}" class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                            <div class="relative h-48">
+                                <img src="https://images.unsplash.com/photo-1516979187457-637abb4f9353?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fG9sZCUyMGJvb2t8ZW58MHx8MHx8fDA%3D"
+                                    alt="Psautier médiéval"
+                                    class="w-full h-full object-cover">
+                                <div class="absolute top-2 right-2 bg-blue-600 text-white px-2 py-1 text-xs rounded-full">
+                                    Enchère
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="text-lg font-medium text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400">{{ $simmillar->title}}</h3>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">{{ $simmillar->category->name}}</p>
+                                <div class="mt-2 flex justify-between items-center">
+                                    <span class="text-lg font-bold text-gray-900 dark:text-white">{{ $simmillar->starting_price}} €</span>
+                                    <span class="text-sm text-gray-600 dark:text-gray-400">5 enchères</span>
+                                </div>
+                                <div class="mt-2 text-sm text-red-600 dark:text-red-400">
+                                    <span class="font-medium auction-timer" data-end-date="{{ $simmillar->auction_end_date }}"></span>
+                                </div>
+                            </div>
+                        </a>
+                @endforeach
+            </div>
+        </div>
+
+        <!-- Information de livraison et retours -->
+        <div class="mt-12 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+            <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">Informations </h2>
+            <div class="flex justify-center">
+                <div class=" p-4 text-center">
+                    <svg class="h-10 w-10 text-blue-600 dark:text-blue-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                    </svg>
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Garanties</h3>
+                    <p class="text-gray-700 dark:text-gray-300">
+                        Certificat d'authenticité fourni<br>
+                        Garantie de satisfaction 14 jours<br>
+                        Transport assuré
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
-@endsection
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-gray-900 mt-16 border-t border-gray-200 dark:border-gray-800">
+
+    </footer>
+    <script>
+    function changeMainImage(src, element) {
+        document.getElementById('mainImage').src = src;
+        // Update border of selected thumbnail
+        document.querySelectorAll('.grid > div').forEach(div => {
+            div.classList.remove('border-blue-500');
+            div.classList.add('border-gray-200', 'dark:border-gray-700');
+        });
+        element.classList.remove('border-gray-200', 'dark:border-gray-700');
+        element.classList.add('border-blue-500');
+    }
+
+    function setBidAmount(amount) {
+        document.getElementById('bidAmount').value = amount;
+    }
+
+
+    // Update timers every second
+    setInterval(updateAuctionTimers, 1000);
+    updateAuctionTimers();
+
+    // See more/less functionality for bids
+    const seeMoreBtn = document.getElementById('see-more');
+    const extraBids = document.getElementById('extra-bids');
+
+    if (seeMoreBtn && extraBids) {
+        seeMoreBtn.addEventListener('click', () => {
+            if (extraBids.classList.contains('hidden')) {
+                extraBids.classList.remove('hidden');
+                seeMoreBtn.innerText = 'Voir moins';
+            } else {
+                extraBids.classList.add('hidden');
+                seeMoreBtn.innerText = 'Voir toutes les enchères';
+            }
+        });
+    }
+    </script>
+</body>
+</html>

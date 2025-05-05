@@ -18,6 +18,7 @@ class StripeController extends Controller
     {
         $product = Product::findOrFail($productId);
 
+        // Verify that the current user is the winner
         if (!$product->isWinner(auth()->id())) {
             return redirect()->route('product.details', $product->id)
                 ->with('error', 'Vous n\'êtes pas autorisé à effectuer ce paiement.');
@@ -28,7 +29,7 @@ class StripeController extends Controller
             'line_items' => [[
                 'price_data' => [
                     'currency' => 'eur',
-                    'unit_amount' => $product->current_price * 100,
+                    'unit_amount' => $product->current_price * 100, // Convert to cents
                     'product_data' => [
                         'name' => $product->name,
                         'description' => $product->description,
@@ -51,6 +52,8 @@ class StripeController extends Controller
     public function success(Request $request, $productId)
     {
         $product = Product::findOrFail($productId);
+
+        // Update product status to paid
         $product->update([
             'status' => 'paid',
             'paid_at' => now(),

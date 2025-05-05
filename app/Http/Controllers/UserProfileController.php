@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\JWT;
 
 class UserProfileController extends Controller
 {
@@ -20,78 +22,113 @@ class UserProfileController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
+        $user = auth()->user();
+
+        // Get unpaid winners for user's products
+        $unpaidWinners = Product::where('user_id', $user->id)
+            ->where('auction_end_date', '<', now())
+            ->whereHas('bids')
+            ->whereDoesntHave('payments', function($query) {
+                $query->where('status', 'completed');
+            })
+            ->with(['bids' => function($query) {
+                $query->orderBy('amount', 'desc')->take(1);
+            }, 'bids.user'])
+            ->get()
+            ->map(function($product) {
+                $highestBid = $product->bids->first();
+                if ($highestBid) {
+                    $product->winner = $highestBid->user;
+                    $product->winning_amount = $highestBid->amount;
+                }
+                return $product;
+            })
+            ->filter(function($product) {
+                return isset($product->winner);
+            });
+
+        // Get statistics
         $statistics = [
-            'articles_count' => Article::where('user_id', $user->id)->count(),
-            'products_count' => Product::where('user_id', $user->id)->count(),
-            'bids_count' => Bid::where('user_id', $user->id)->count(),
+            'auctions_won' => Product::whereHas('bids', function($query) use ($user) {
+                $query->where('user_id', $user->id)
+                    ->whereRaw('amount = (SELECT MAX(amount) FROM bids WHERE product_id = products.id)');
+            })->where('auction_end_date', '<', now())->count(),
+
+            'auctions_lost' => Product::whereHas('bids', function($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })->where('auction_end_date', '<', now())
+            ->whereDoesntHave('bids', function($query) use ($user) {
+                $query->where('user_id', $user->id)
+                    ->whereRaw('amount = (SELECT MAX(amount) FROM bids WHERE product_id = products.id)');
+            })->count(),
+
+            'auctions_active' => Product::whereHas('bids', function($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })->where('auction_end_date', '>', now())->count(),
+
+            'products_listed' => Product::where('user_id', $user->id)->count(),
+            'products_sold' => Product::where('user_id', $user->id)
+                ->where('auction_end_date', '<', now())
+                ->whereHas('payments', function($query) {
+                    $query->where('status', 'completed');
+                })->count(),
+            'products_unsold' => Product::where('user_id', $user->id)
+                ->where('auction_end_date', '<', now())
+                ->whereDoesntHave('payments', function($query) {
+                    $query->where('status', 'completed');
+                })->count(),
         ];
+
+        // Get won products
+        $wonProducts = Product::whereHas('bids', function($query) use ($user) {
+            $query->where('user_id', $user->id)
+                ->whereRaw('amount = (SELECT MAX(amount) FROM bids WHERE product_id = products.id)');
+        })->where('auction_end_date', '<', now())
+        ->with(['bids' => function($query) {
+            $query->orderBy('amount', 'desc')->take(1);
+        }])
+        ->get()
+        ->map(function($product) {
+            $product->payment_status = $product->payments()
+                ->where('status', 'completed')
+                ->exists() ? 'paid' : 'unpaid';
+            return $product;
+        });
+
+        // Get user's articles
         $articles = Article::where('user_id', $user->id)
             ->orderBy('created_at', 'desc')
             ->take(6)
             ->get();
+
+        // Get user's products
         $products = Product::where('user_id', $user->id)
             ->where('status', '!=', 'finished')
             ->orderBy('created_at', 'desc')
             ->take(6)
             ->get();
+
+        // Get user's recent activity
         $recentActivity = $this->getRecentActivity($user->id);
-        $comments = DB::table('comments')
-            ->join('articles', 'comments.article_id', '=', 'articles.id')
-            ->where('comments.user_id', $user->id)
-            ->select(
-                'comments.id',
-                'comments.content as comment',
-                'comments.created_at',
-                'comments.article_id',
-                'articles.title as article_title',
-                DB::raw('NULL as rating')
-            );
 
-        $ratings = DB::table('ratings')
-            ->join('articles', 'ratings.article_id', '=', 'articles.id')
-            ->where('ratings.user_id', $user->id)
-            ->select(
-                'ratings.id',
-                DB::raw('NULL as comment'),
-                'ratings.created_at',
-                'ratings.article_id',
-                'articles.title as article_title',
-                'ratings.rating'
-            );
-
-        $reactions = DB::query()
-            ->fromSub(
-                $comments->union($ratings),
-                'combined_reactions'
-            )
-            ->select(
-                'article_id',
-                'article_title',
-                DB::raw('MAX(comment) as comment'),
-                DB::raw('MAX(rating) as rating'),
-                DB::raw('MAX(created_at) as created_at')
-            )
-            ->groupBy('article_id', 'article_title')
-            ->orderBy('created_at', 'desc')
-            ->take(5)
-            ->get()
-            ->map(function ($reaction) {
-                $reaction->created_at = \Carbon\Carbon::parse($reaction->created_at);
-                return $reaction;
-            });
+        // Get user's reactions (comments and ratings)
+        $reactions = $this->getUserReactions($user->id);
 
         return view('profile', compact(
             'user',
             'statistics',
             'articles',
             'products',
+            'wonProducts',
             'recentActivity',
-            'reactions'
+            'reactions',
+            'unpaidWinners'
         ));
     }
 
-
+    /**
+     * Update the user's profile information
+     */
     public function update(Request $request)
     {
         $user = Auth::user();
@@ -108,6 +145,7 @@ class UserProfileController extends Controller
         ]);
 
         try {
+            // Convert empty strings to null for optional fields
             $validated['phone'] = $validated['phone'] ?: null;
             $validated['address'] = $validated['address'] ?: null;
             $validated['work'] = $validated['work'] ?: null;
@@ -115,6 +153,7 @@ class UserProfileController extends Controller
             $validated['bio'] = $validated['bio'] ?: null;
 
             if ($request->hasFile('profile_image')) {
+                // Delete old image if exists
                 if ($user->profile_image) {
                     Storage::disk('public')->delete($user->profile_image);
                 }
@@ -166,21 +205,85 @@ class UserProfileController extends Controller
      */
     private function getRecentActivity($userId)
     {
+        // Get recent articles
         $recentArticles = Article::where('user_id', $userId)
             ->orderBy('created_at', 'desc')
             ->take(3)
-            ->get();
+            ->get()
+            ->map(function($item) {
+                return [
+                    'type' => 'article',
+                    'item' => $item,
+                    'date' => $item->created_at
+                ];
+            });
 
+        // Get recent products
         $recentProducts = Product::where('user_id', $userId)
             ->orderBy('created_at', 'desc')
             ->take(3)
-            ->get();
+            ->get()
+            ->map(function($item) {
+                return [
+                    'type' => 'product',
+                    'item' => $item,
+                    'date' => $item->created_at
+                ];
+            });
 
+        // Get recent bids
         $recentBids = Bid::where('user_id', $userId)
             ->orderBy('created_at', 'desc')
             ->take(3)
-            ->get();
+            ->get()
+            ->map(function($item) {
+                return [
+                    'type' => 'bid',
+                    'item' => $item,
+                    'date' => $item->created_at
+                ];
+            });
 
+        // Get won auctions - modified to use max bid amount instead of winning_bid
+        $wonAuctions = Product::whereHas('bids', function($query) use ($userId) {
+            $query->where('user_id', $userId)
+                ->whereRaw('amount = (SELECT MAX(amount) FROM bids WHERE product_id = products.id)');
+        })->where('auction_end_date', '<', now())
+        ->orderBy('auction_end_date', 'desc')
+        ->take(3)
+        ->get()
+        ->map(function($item) {
+            return [
+                'type' => 'won_auction',
+                'item' => $item,
+                'date' => $item->auction_end_date
+            ];
+        });
+
+        // Get recent reactions
+        $reactions = $this->getUserReactions($userId, 3)
+            ->map(function($item) {
+                return [
+                    'type' => 'reaction',
+                    'item' => $item,
+                    'date' => $item->created_at
+                ];
+            });
+
+        // Combine and sort all activities
+        return collect()
+            ->concat($recentArticles)
+            ->concat($recentProducts)
+            ->concat($recentBids)
+            ->concat($wonAuctions)
+            ->concat($reactions)
+            ->sortByDesc('date')
+            ->take(10);
+    }
+
+    private function getUserReactions($userId, $limit = 5)
+    {
+        // Get combined reactions (comments and ratings) for the same article
         $reactions = DB::query()
             ->fromSub(
                 DB::table('comments')
@@ -216,49 +319,14 @@ class UserProfileController extends Controller
             )
             ->groupBy('article_id', 'article_title')
             ->orderBy('created_at', 'desc')
-            ->take(3)
+            ->take($limit)
             ->get()
             ->map(function ($reaction) {
                 $reaction->created_at = \Carbon\Carbon::parse($reaction->created_at);
                 return $reaction;
             });
 
-        // Combine and sort by date
-        $activities = collect();
-
-        foreach ($recentArticles as $article) {
-            $activities->push([
-                'type' => 'article',
-                'item' => $article,
-                'date' => $article->created_at
-            ]);
-        }
-
-        foreach ($recentProducts as $product) {
-            $activities->push([
-                'type' => 'product',
-                'item' => $product,
-                'date' => $product->created_at
-            ]);
-        }
-
-        foreach ($recentBids as $bid) {
-            $activities->push([
-                'type' => 'bid',
-                'item' => $bid,
-                'date' => $bid->created_at
-            ]);
-        }
-
-        foreach ($reactions as $reaction) {
-            $activities->push([
-                'type' => 'reaction',
-                'item' => $reaction,
-                'date' => $reaction->created_at
-            ]);
-        }
-
-        return $activities->sortByDesc('date')->take(5);
+        return $reactions;
     }
 
     public function reactions($id)

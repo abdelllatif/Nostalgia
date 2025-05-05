@@ -7,6 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-50 dark:bg-gray-900 flex min-h-screen">
+    <!-- Sidebar -->
     <aside class="bg-gray-800 text-white w-64 flex-shrink-0 hidden md:block">
         <div class="p-6 flex items-center space-x-2">
             <img src="https://img.icons8.com/ios-filled/50/ffffff/retro-tv.png" alt="Logo Nostalgia" class="w-8 h-8">
@@ -20,19 +21,19 @@
                     </svg>
                     Tableau de bord
                 </a>
-                <a href="{{route('admin.users.index')}}" class="block py-3 px-6 text-gray-300 hover:bg-gray-700 hover:text-white flex items-center">
+                <a href="admin-users" class="block py-3 px-6 text-gray-300 hover:bg-gray-700 hover:text-white flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                     </svg>
                     Utilisateurs
                 </a>
-                <a href="{{route('dashboard.products')}}" class="block py-3 px-6  text-white bg-gray-700  hover:text-white flex items-center">
+                <a href="admin-products" class="block py-3 px-6 text-gray-300 hover:bg-gray-700 hover:text-white flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                     </svg>
                     Produits
                 </a>
-                <a href="{{ route('categories.show') }}" class="block py-3 px-6 text-gray-300 hover:bg-gray-700 flex items-center">
+                <a href="admin-categories" class="block py-3 px-6 bg-gray-700 text-white flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                     </svg>
@@ -44,13 +45,13 @@
                     </svg>
                     Tags
                 </a>
-                <a href="{{ route('dashboard.articles') }}" class="block py-3 px-6 text-gray-300 hover:bg-gray-700 hover:text-white flex items-center">
+                <a href="admin-blog" class="block py-3 px-6 text-gray-300 hover:bg-gray-700 hover:text-white flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
                     </svg>
                     Articles Blog
                 </a>
-                <a href="{{route('dashboard.statistics')}}" class="block py-3 px-6 text-gray-300 hover:bg-gray-700 hover:text-white flex items-center">
+                <a href="admin-stats" class="block py-3 px-6 text-gray-300 hover:bg-gray-700 hover:text-white flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                     </svg>
@@ -73,6 +74,7 @@
             </a>
         </div>
     </aside>
+
     <!-- Mobile menu button -->
     <div class="md:hidden absolute top-4 left-4 z-50">
         <button class="flex items-center px-3 py-2 border rounded text-gray-500 border-gray-600 hover:text-white hover:border-white">
@@ -86,7 +88,7 @@
     <div class="flex-1 overflow-auto">
         <header class="bg-white dark:bg-gray-800 shadow">
             <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-                <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Gestion des Tags</h1>
+                <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Gestion des Catégories</h1>
                 <div class="flex items-center">
                     <div class="mr-4 text-right">
                         <p class="text-sm font-medium text-gray-900 dark:text-white">Admin: Jean Dupont</p>
@@ -108,16 +110,16 @@
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0 bg-gray-600 rounded-md p-3">
                                         <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
                                         </svg>
                                     </div>
                                     <div class="ml-5 w-0 flex-1">
                                         <dl>
                                             <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
-                                                Total des tags
+                                                Total des catégories
                                             </dt>
                                             <dd>
-                                                <div class="text-lg font-bold text-gray-900 dark:text-white">42</div>
+                                                <div class="text-lg font-bold text-gray-900 dark:text-white">28</div>
                                             </dd>
                                         </dl>
                                     </div>
@@ -136,10 +138,10 @@
                                     <div class="ml-5 w-0 flex-1">
                                         <dl>
                                             <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
-                                                Tags actifs
+                                                Catégories actives
                                             </dt>
                                             <dd>
-                                                <div class="text-lg font-bold text-gray-900 dark:text-white">38</div>
+                                                <div class="text-lg font-bold text-gray-900 dark:text-white">24</div>
                                             </dd>
                                         </dl>
                                     </div>
@@ -152,16 +154,16 @@
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0 bg-gray-600 rounded-md p-3">
                                         <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
                                         </svg>
                                     </div>
                                     <div class="ml-5 w-0 flex-1">
                                         <dl>
                                             <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
-                                                Produits avec tags
+                                                Produits classés
                                             </dt>
                                             <dd>
-                                                <div class="text-lg font-bold text-gray-900 dark:text-white">156</div>
+                                                <div class="text-lg font-bold text-gray-900 dark:text-white">184</div>
                                             </dd>
                                         </dl>
                                     </div>
@@ -182,15 +184,15 @@
                         <span class="block sm:inline">{{ session('success') }}</span>
                     </div>
                     @endif
-                    <!-- Tags Actions -->
+                    <!-- Categories Actions -->
                     <div class="bg-white dark:bg-gray-800 shadow overflow-hidden sm:rounded-lg mb-8">
                         <div class="px-4 py-5 sm:px-6 flex justify-between items-center">
                             <div>
                                 <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white">
-                                    Gestion des tags
+                                    Gestion des catégories
                                 </h3>
                                 <p class="mt-1 max-w-2xl text-sm text-gray-500 dark:text-gray-400">
-                                    Créez et gérez les tags pour vos produits
+                                    Créez et gérez les catégories de produits
                                 </p>
                             </div>
                             <div class="flex space-x-3">
@@ -204,7 +206,7 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                                     </svg>
-                                    Nouveau tag
+                                    Nouvelle catégorie
                                 </button>
                             </div>
                         </div>
@@ -220,7 +222,7 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                             </svg>
                                         </div>
-                                        <input id="search" name="search" type="search" class="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md leading-5 bg-white dark:bg-gray-800 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-gray-500 focus:border-gray-500 sm:text-sm" placeholder="Rechercher un tag...">
+                                        <input id="search" name="search" type="search" class="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md leading-5 bg-white dark:bg-gray-800 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-gray-500 focus:border-gray-500 sm:text-sm" placeholder="Rechercher une catégorie...">
                                     </div>
                                 </div>
                                 <div class="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4">
@@ -238,7 +240,7 @@
                             </div>
                         </div>
 
-                        <!-- Tags Table -->
+                        <!-- Categories Table -->
                         <div class="overflow-x-auto">
                             <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                                 <thead class="bg-gray-50 dark:bg-gray-700">
@@ -247,10 +249,10 @@
                                             {{" "}}
                                         </th>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                            Nom du tag
+                                            categorie
                                         </th>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                            Produits associés
+                                            Produits
                                         </th>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                             Date de création
@@ -261,235 +263,228 @@
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                                    @foreach ($tags as $tag)
+                                    @foreach ($categories as $categorie)
                                     <tr>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                                             {{ $loop->iteration }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center">
-                                                <div class="h-10 w-10 flex-shrink-0 rounded-full flex items-center justify-center bg-gray-200 dark:bg-gray-700">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-                                                    </svg>
-                                                </div>
+                                                <div class="h-10 w-10 flex-shrink-0  rounded-full flex items-center justify-center">
+                                                    <img src="{{ asset('storage/' . $categorie->image) }}" class="h-6 w-6 text-gray-600 dark:text-gray-300">                                                </div>
                                                 <div class="ml-4">
                                                     <div class="text-sm font-medium text-gray-900 dark:text-white">
-                                                        {{$tag->name}}
+                                                        {{$categorie->name}}
                                                     </div>
                                                 </div>
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                                            {{ $tag->total_count }}
+                                            42
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                                            {{ $tag->created_at }}
+                                            {{ $categorie->created_at}}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <button onclick="openEditForm(this)" class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300" data-id="{{ $tag->id }}" data-name="{{ $tag->name }}" data-img="{{ $tag->image }}">Modifier</button>
+                                            <button onclick="openEditForm(this)" class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300" data-id="{{ $categorie->id}}" data-name="{{ $categorie->name}}" data-img="{{ asset('storage/' . $categorie->image) }}">"Modifier</button>
                                             <span class="text-gray-500 dark:text-gray-400 px-2">|</span>
-                                            {{--<form action="{{ route('tag.destroy', ['id' => $tag->id]) }}" method="POST">
+                                            {{--<form action="{{ route('categorie.destroy', ['id' => $categorie->id]) }}"  method="POST">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300">Supprimer</button>
-                                            </form>--}}
-                                        </td>
+
+                                            <button type="submit" class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300">Supprimer</button>
+                                        </form>--}}
+                                    </td>
                                     </tr>
                                     @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <!-- Edit Tag Form Modal -->
-                        <div class="fixed z-10 inset-0 overflow-y-auto hidden" id="EditTagFormModal">
-                            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                                <!-- Background overlay -->
-                                <div class="fixed inset-0 transition-opacity" aria-hidden="true">
-                                    <div class="absolute inset-0 bg-gray-500 dark:bg-gray-900 opacity-75"></div>
-                                </div>
-                                <!-- Modal panel -->
-                                <div class="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                                    <div class="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                                        <div class="sm:flex sm:items-start">
-                                            <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 dark:bg-blue-900 sm:mx-0 sm:h-10 sm:w-10">
-                                                <svg class="h-6 w-6 text-blue-600 dark:text-blue-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                                </svg>
-                                            </div>
-                                            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                                                <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white" id="modal-title">
-                                                    Modifier le tag
-                                                </h3>
-                                                <div class="mt-4">
-                                                    <form id="editTagForm" action="" method="POST" enctype="multipart/form-data">
-                                                        @csrf
-                                                        @method('PUT')
-                                                        <input type="hidden" name="tag_id" id="editTagId">
-                                                        <div>
-                                                            <label for="EditTagName" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nom du tag</label>
-                                                            <input type="text" name="name" id="EditTagName" class="mt-1 block w-full py-2 px-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm" required>
-                                                        </div>
-                                                        <div class="mt-4">
-                                                            <label for="editImagePreview" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Image</label>
-                                                            <img id="editImagePreview" src="" alt="Preview" class="mt-2 w-20 h-20">
-                                                        </div>
-                                                    </form>
-                                                </div>
+                                    </tbody>
+                                    </table>
+                                    </div>
+        <!-- edit Category Form Modal -->
+        <div class="fixed z-10 inset-0 overflow-y-auto hidden" id="EditcategoryFormModal">
+            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                <!-- Background overlay -->
+                <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                    <div class="absolute inset-0 bg-gray-500 dark:bg-gray-900 opacity-75"></div>
+                </div>
+                <!-- Modal panel -->
+                <div class="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                    <div class="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                        <div class="sm:flex sm:items-start">
+                            <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 dark:bg-blue-900 sm:mx-0 sm:h-10 sm:w-10">
+                                <svg class="h-6 w-6 text-blue-600 dark:text-blue-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                </svg>
+                            </div>
+                            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                                <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white" id="modal-title">
+                                    changer une catégorie
+                                </h3>
+                                <div class="mt-4">
+                                    <!-- Form starts here -->
+                                    <form id="editCategoryForm" action="" method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                        @method('PUT')
+                                        <input type="hidden" name="category_id" id="editCategoryId">
+                                        <div class="mb-4">
+                                            <label for="categoryName" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nom de la catégorie</label>
+                                            <input type="text" name="name" id="EditcategoryName" class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full py-2 shadow-sm sm:text-sm border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white" placeholder="Ex: ancien Art">
+                                        </div>
+                                        <div class="mb-4">
+                                            <label for="EditcategoryImage" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Image</label>
+                                            <div class="mt-1 flex items-center">
+                                                <span class="inline-block h-12 w-12 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-700">
+                                                    <img id="editImagePreview" class="h-full w-full object-cover" alt="Preview" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" />
+                                                </span>
+                                                <input type="file" name="categoryImage" id="EditcategoryImage" accept="image/*" class="hidden" onchange="previewEditImage(event)">
+                                                <button type="button" onclick="document.getElementById('EditcategoryImage').click()" class="ml-5 bg-white dark:bg-gray-700 py-2 px-3 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                                    Changer
+                                                </button>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="bg-gray-50 dark:bg-gray-700 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                                        <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm" id="saveTagButton">
-                                            Enregistrer
-                                        </button>
-                                        <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 dark:border-gray-600 shadow-sm px-4 py-2 bg-white dark:bg-gray-800 text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" id="cancelEditButton">
-                                            Annuler
-                                        </button>
-                                    </div>
+                                        <!-- Buttons -->
+                                        <div class="flex justify-end space-x-4">
+                                            <button type="button" class="inline-flex justify-center rounded-md border border-gray-300 dark:border-gray-600 shadow-sm px-4 py-2 bg-white dark:bg-gray-800 text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500" onclick="document.getElementById('EditcategoryFormModal').classList.add('hidden')">
+                                                Annuler
+                                            </button>
+                                            <button type="submit" class="inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                                Modifier
+                                            </button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Create Tag Form Modal -->
-                        <div class="fixed z-10 inset-0 overflow-y-auto hidden" id="createTagFormModal">
-                            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                                <!-- Background overlay -->
-                                <div class="fixed inset-0 transition-opacity" aria-hidden="true">
-                                    <div class="absolute inset-0 bg-gray-500 dark:bg-gray-900 opacity-75"></div>
-                                </div>
-                                <!-- Modal panel -->
-                                <div class="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                                    <div class="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                                        <div class="sm:flex sm:items-start">
-                                            <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 dark:bg-green-900 sm:mx-0 sm:h-10 sm:w-10">
-                                                <svg class="h-6 w-6 text-green-600 dark:text-green-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                                </svg>
-                                            </div>
-                                            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                                                <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white" id="modal-title">
-                                                    Créer un nouveau tag
-                                                </h3>
-                                                <div class="mt-4">
-                                                    <form id="createTagForm" method="POST" action="{{ route('tags.store') }}">
-                                                        @csrf
-                                                        <div>
-                                                            <label for="createTagName" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nom du tag</label>
-                                                            <input type="text" name="name" id="createTagName" class="mt-1 block w-full py-2 px-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm" required>
-                                                        </div>
-                                                        <div class="mt-4">
-                                                            <label for="createTagStatus" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Statut</label>
-                                                            <select id="createTagStatus" name="status" class="mt-1 block w-full py-2 px-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm">
-                                                                <option value="active">Actif</option>
-                                                                <option value="inactive">Inactif</option>
-                                                            </select>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="bg-gray-50 dark:bg-gray-700 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                                        <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm" id="createTagButton">
-                                            Créer
-                                        </button>
-                                        <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 dark:border-gray-600 shadow-sm px-4 py-2 bg-white dark:bg-gray-800 text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" id="cancelCreateButton">
-                                            Annuler
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Pagination -->
-                        {{ $tags->links() }}
                     </div>
                 </div>
             </div>
-        </main>
+        </div>
+
+        <!-- Pagination -->
+        {{ $categories->links() }}
+        <!-- Create Category Form Modal -->
+        <div class="fixed z-10 inset-0 overflow-y-auto hidden" id="categoryFormModal">
+            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                <!-- Background overlay -->
+                <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                    <div class="absolute inset-0 bg-gray-500 dark:bg-gray-900 opacity-75"></div>
+                </div>
+
+                <!-- Modal panel -->
+                <div class="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                    <div class="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                        <div class="sm:flex sm:items-start">
+                            <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 dark:bg-blue-900 sm:mx-0 sm:h-10 sm:w-10">
+                                <svg class="h-6 w-6 text-blue-600 dark:text-blue-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                </svg>
+                            </div>
+                            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                                <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white" id="modal-title">
+                                    Créer une nouvelle catégorie
+                                </h3>
+                                <div class="mt-4">
+                                    <!-- Form starts here -->
+                                    <form action="{{ route('categories.store') }}" method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                        <div class="mb-4">
+                                            <label for="categoryName" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nom de la catégorie</label>
+                                            <input type="text" name="name" id="categoryName" class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full py-2 shadow-sm sm:text-sm border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white" placeholder="Ex:ancien Art">
+                                        </div>
+                                        <div class="mb-4">
+                                            <label for="categoryImage" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Image</label>
+                                            <div class="mt-1 flex items-center">
+                                                <span class="inline-block h-12 w-12 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-700">
+                                                    <img id="imagePreview" class="h-full w-full object-cover" alt="Preview" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" />
+                                                </span>
+                                                <input type="file" name="categoryImage" id="categoryImage" accept="image/*" class="hidden" onchange="previewImage(event)">
+                                                <button type="button" onclick="document.getElementById('categoryImage').click()" class="ml-5 bg-white dark:bg-gray-700 py-2 px-3 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                                    Changer
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <!-- Buttons -->
+                                        <div class="flex justify-end space-x-4">
+                                            <button type="button" class="inline-flex justify-center rounded-md border border-gray-300 dark:border-gray-600 shadow-sm px-4 py-2 bg-white dark:bg-gray-800 text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500" onclick="document.getElementById('categoryFormModal').classList.add('hidden')">
+                                                Annuler
+                                            </button>
+                                            <button type="submit" class="inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                                Créer
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+</main>
+</div>
 
-    <!-- JavaScript pour les modals et les formulaires -->
-    <script>
-        // Variables pour les modals
-        const editTagFormModal = document.getElementById('EditTagFormModal');
-        const createTagFormModal = document.getElementById('createTagFormModal');
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+const newCategoryButton = document.querySelector('button:nth-of-type(2)');
+if (newCategoryButton) {
+    newCategoryButton.addEventListener('click', function() {
+        document.getElementById('categoryFormModal').classList.remove('hidden');
+    });
+}
+const mobileMenuButton = document.querySelector('.md\\:hidden button');
+const sidebar = document.querySelector('aside');
+if (mobileMenuButton && sidebar) {
+    mobileMenuButton.addEventListener('click', function() {
+        sidebar.classList.toggle('hidden');
+        sidebar.classList.toggle('fixed');
+        sidebar.classList.toggle('inset-0');
+        sidebar.classList.toggle('z-40');
+    });
+}
+});
 
-        // Variables pour les formulaires d'édition
-        const editTagForm = document.getElementById('editTagForm');
-        const editTagId = document.getElementById('editTagId');
-        const editTagName = document.getElementById('EditTagName');
-        const saveTagButton = document.getElementById('saveTagButton');
-        const cancelEditButton = document.getElementById('cancelEditButton');
+function openEditForm(button) {
+    const modalEdit = document.getElementById('EditcategoryFormModal');
+    modalEdit.classList.remove('hidden');
 
-        // Variables pour les formulaires de création
-        const newTagButton = document.querySelector('button[class*="bg-blue-600"]');
-        const createTagForm = document.getElementById('createTagForm');
-        const createTagButton = document.getElementById('createTagButton');
-        const cancelCreateButton = document.getElementById('cancelCreateButton');
+    const categoryId = button.getAttribute('data-id');
+    const name = button.getAttribute('data-name');
+    const image = button.getAttribute('data-img');
 
-        // Fonction pour ouvrir le formulaire d'édition de tag
-        function openEditForm(button) {
-            const modalEdit = document.getElementById('EditTagFormModal');
-            modalEdit.classList.remove('hidden');
+    // Set the form action URL with the category ID
+    const form = document.getElementById('editCategoryForm');
+    form.action = `/Dashebored/categories/${categoryId}`;
 
-            const tagId = button.getAttribute('data-id');
-            const name = button.getAttribute('data-name');
-            const image = button.getAttribute('data-img');
+    document.getElementById('editCategoryId').value = categoryId;
+    document.getElementById('EditcategoryName').value = name;
+    document.getElementById('editImagePreview').src = image;
+}
 
-            // Set the form action URL with the tag ID
-            const form = document.getElementById('editTagForm');
-            form.action = `/Dashebored/tags/${tagId}`;
+function previewEditImage(event) {
+    const input = event.target;
+    const reader = new FileReader();
+    reader.onload = function() {
+        const preview = document.getElementById('editImagePreview');
+        preview.src = reader.result;
+    };
+    if (input.files && input.files[0]) {
+        reader.readAsDataURL(input.files[0]);
+    }
+}
 
-            document.getElementById('editTagId').value = tagId;
-            document.getElementById('EditTagName').value = name;
-            document.getElementById('editImagePreview').src = image;
-        }
+function previewImage(event) {
+    const input = event.target;
+    const reader = new FileReader();
+    reader.onload = function() {
+        const preview = document.getElementById('imagePreview');
+        preview.src = reader.result;
+    };
+    if (input.files && input.files[0]) {
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+</script>
 
-        // Gestionnaire d'événement pour le bouton Annuler (édition)
-        cancelEditButton.addEventListener('click', function() {
-            editTagFormModal.classList.add('hidden');
-        });
-
-        // Gestionnaire d'événement pour le bouton Enregistrer
-        saveTagButton.addEventListener('click', function() {
-            editTagForm.submit();
-        });
-
-        // Gestionnaire d'événement pour le bouton Nouveau tag
-        newTagButton.addEventListener('click', function() {
-            createTagFormModal.classList.remove('hidden');
-        });
-
-        // Gestionnaire d'événement pour le bouton Annuler (création)
-        cancelCreateButton.addEventListener('click', function() {
-            createTagFormModal.classList.add('hidden');
-        });
-
-        // Gestionnaire d'événement pour le bouton Créer
-        createTagButton.addEventListener('click', function() {
-            createTagForm.submit();
-        });
-
-        // Gestion de la fermeture des modals en cliquant à l'extérieur
-        window.addEventListener('click', function(event) {
-            if (event.target === editTagFormModal) {
-                editTagFormModal.classList.add('hidden');
-            }
-            if (event.target === createTagFormModal) {
-                createTagFormModal.classList.add('hidden');
-            }
-        });
-
-        // Gestion du menu mobile
-        const mobileMenuButton = document.querySelector('.md\\:hidden button');
-        const sidebar = document.querySelector('aside');
-
-        mobileMenuButton.addEventListener('click', function() {
-            sidebar.classList.toggle('hidden');
-            sidebar.classList.toggle('fixed');
-            sidebar.classList.toggle('inset-0');
-            sidebar.classList.toggle('z-40');
-        });
-    </script>
+</body>
+</html>

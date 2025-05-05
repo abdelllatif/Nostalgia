@@ -16,6 +16,9 @@ use App\Repositories\Interfaces\CategorieRepositoryInterface;
 use App\Repositories\CategorieRepository;
 use App\Repositories\Interfaces\TagRepositoryInterface;
 use App\Repositories\TagRepository;
+use App\Repositories\Interfaces\HomeRepositoryInterface;
+use App\Repositories\HomeRepository;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -30,7 +33,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(TagRepositoryInterface::class, TagRepository::class);
         $this->app->bind(ArticleRepositoryInterface::class, ArticleRepository::class);
         $this->app->bind(ProfileRepositoryInterface::class, ProfileRepository::class);
-
+        $this->app->bind(HomeRepositoryInterface::class, HomeRepository::class);
     }
 
 

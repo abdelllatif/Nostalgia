@@ -16,17 +16,25 @@ class AdminUserController extends Controller
      */
     public function index()
     {
-        // Récupérer les utilisateurs en attente d'approbation
-        $pendingUsers = User::where('status', 'waiting_to_approved')
-            ->orderBy('created_at', 'desc')
-            ->paginate(10, ['*'], 'pending_page');
-
-        // Récupérer les utilisateurs actifs et suspendus
-        $users = User::whereIn('status', ['avtive', 'suspended'])
+        $users = User::where('role', '!=', 'admin')
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
-        return view('Dashebored_users', compact('pendingUsers', 'users'));
+        $totalUsers = User::where('role', '!=', 'admin')->count();
+        $activeUsers = User::where('role', '!=', 'admin')
+            ->where('status', 'avtive')
+            ->count();
+        $suspendedUsers = User::where('role', '!=', 'admin')
+            ->where('status', 'suspended')
+            ->count();
+        $pendingUsers = User::where('role', '!=', 'admin')
+            ->where('status', 'waiting_to_approved')
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        $currentSection = session('current_section', 'pending');
+
+        return view('Dashebored_users', compact('users', 'totalUsers', 'activeUsers', 'suspendedUsers', 'pendingUsers', 'currentSection'));
     }
 
     /**
@@ -44,12 +52,8 @@ class AdminUserController extends Controller
                 ->with('error', 'Cet utilisateur n\'est pas en attente d\'approbation.');
         }
 
-        // Mettre à jour le statut de l'utilisateur
         $user->status = 'avtive';
         $user->save();
-
-        // Envoi d'un email de confirmation (à implémenter)
-        // Mail::to($user->email)->send(new AccountApproved($user));
 
         return redirect()->route('admin.users.index')
             ->with('success', 'L\'utilisateur a été approuvé avec succès.');
@@ -70,13 +74,14 @@ class AdminUserController extends Controller
                 ->with('error', 'Cet utilisateur n\'est pas en attente d\'approbation.');
         }
 
-        // Supprimer les images associées au compte si elles existent
+        if ($user->user_image) {
+            Storage::disk('public')->delete($user->user_image);
+        }
+        if ($user->identity_image) {
+            Storage::disk('public')->delete($user->identity_image);
+        }
 
-
-
-
-        // Envoi d'un email de rejet (à implémenter)
-        // Mail::to($user->email)->send(new AccountRejected($user));
+        $user->delete();
 
         return redirect()->route('admin.users.index')
             ->with('success', 'La demande d\'inscription a été rejetée.');
@@ -91,21 +96,19 @@ class AdminUserController extends Controller
     public function suspend($id)
     {
         $user = User::findOrFail($id);
-
-        if ($user->status !== 'avtive') {
-            return redirect()->route('admin.users.index')
-                ->with('error', 'Cet utilisateur n\'est pas actif.');
+        if ($user->role === 'admin') {
+            return redirect()->back()->with('error', 'Vous ne pouvez pas suspendre un administrateur.');
         }
 
-        // Mettre à jour le statut de l'utilisateur
+        if ($user->status !== 'avtive') {
+            return redirect()->back()->with('error', 'Seuls les utilisateurs actifs peuvent être suspendus.');
+        }
+
         $user->status = 'suspended';
         $user->save();
 
-        // Envoi d'un email de suspension (à implémenter)
-        // Mail::to($user->email)->send(new AccountSuspended($user));
-
-        return redirect()->route('admin.users.index')
-            ->with('success', 'L\'utilisateur a été suspendu avec succès.');
+        session()->put('current_section', 'active');
+        return redirect()->back()->with('success', 'Utilisateur suspendu avec succès.');
     }
 
     /**
@@ -117,21 +120,19 @@ class AdminUserController extends Controller
     public function activate($id)
     {
         $user = User::findOrFail($id);
-
-        if ($user->status !== 'suspended') {
-            return redirect()->route('admin.users.index')
-                ->with('error', 'Cet utilisateur n\'est pas suspendu.');
+        if ($user->role === 'admin') {
+            return redirect()->back()->with('error', 'Vous ne pouvez pas modifier le statut d\'un administrateur.');
         }
 
-        // Mettre à jour le statut de l'utilisateur
+        if ($user->status !== 'suspended') {
+            return redirect()->back()->with('error', 'Seuls les utilisateurs suspendus peuvent être réactivés.');
+        }
+
         $user->status = 'avtive';
         $user->save();
 
-        // Envoi d'un email d'activation (à implémenter)
-        // Mail::to($user->email)->send(new AccountActivated($user));
-
-        return redirect()->route('admin.users.index')
-            ->with('success', 'L\'utilisateur a été réactivé avec succès.');
+        session()->put('current_section', 'active');
+        return redirect()->back()->with('success', 'Utilisateur réactivé avec succès.');
     }
 
     /**

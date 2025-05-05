@@ -68,4 +68,12 @@ class Product extends Model
     {
         return $this->hasMany(Bid::class);
     }
+
+    /**
+     * The payments associated with the product.
+     */
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
 }

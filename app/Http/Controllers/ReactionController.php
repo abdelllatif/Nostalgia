@@ -48,8 +48,9 @@ class ReactionController extends Controller
                 return response()->json(['message' => 'Failed to add comment or rating'], 500);
             }
 
+            // Create notification for the article owner
             $article = $comment->article;
-            if ($article->user_id !== Auth::id()) {
+            if ($article->user_id !== Auth::id()) {  // Don't notify if the author comments on their own article
                 Notification::create([
                     'user_id' => $article->user_id,
                     'type' => 'new_comment',
@@ -60,6 +61,7 @@ class ReactionController extends Controller
 
             DB::commit();
 
+            // Return the data needed for UI update
             return response()->json([
                 'success' => true,
                 'message' => 'Comment and rating added successfully!',

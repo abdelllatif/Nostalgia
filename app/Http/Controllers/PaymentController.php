@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\DB;
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
 use Illuminate\Support\Facades\Log;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Storage;
 
 class PaymentController extends Controller
 {
@@ -24,10 +26,8 @@ class PaymentController extends Controller
     /**
      * Show the form for creating a new payment.
      */
-    public function create($product_id)
+    public function create(Product $product)
     {
-        $product = Product::findOrFail($product_id);
-
         // Check if auction has ended
         if (!$product->auction_end_date->isPast()) {
             return redirect()->route('product.details', $product->id)
@@ -133,10 +133,8 @@ class PaymentController extends Controller
             ->with('success', 'Paiement effectué avec succès. Merci pour votre achat!');
     }
 
-    public function checkout(Request $request, $productId)
+    public function checkout(Request $request, Product $product)
     {
-        $product = Product::findOrFail($productId);
-
         // Get the highest bid for this product
         $highestBid = Bid::where('product_id', $product->id)
             ->orderBy('amount', 'desc')
@@ -148,58 +146,75 @@ class PaymentController extends Controller
                 ->with('error', 'Vous n\'êtes pas autorisé à effectuer ce paiement.');
         }
 
-        // Check if payment already exists and was successful
-        $existingPayment = Payment::where('product_id', $product->id)
-            ->where('status', 'completed')
-            ->first();
+        // Check if payment already exists
+        $existingPayment = Payment::where('product_id', $product->id)->first();
 
         if ($existingPayment) {
-            return redirect()->route('product.details', $product->id)
-                ->with('error', 'Ce produit a déjà été payé.');
-        }
+            // If payment was successful, redirect with message
+            if ($existingPayment->status === 'completed') {
+                return redirect()->route('product.details', $product->id)
+                    ->with('error', 'Ce produit a déjà été payé.');
+            }
 
-        // Create or update payment record
-        $payment = Payment::updateOrCreate(
-            ['product_id' => $product->id],
-            [
+            // If payment failed, update the existing payment
+            $existingPayment->update([
+                'status' => 'pending',
+                'paypal_transaction_id' => 'PP-' . uniqid()
+            ]);
+            $payment = $existingPayment;
+        } else {
+            // Create new payment record
+            $payment = Payment::create([
                 'user_id' => Auth::id(),
+                'product_id' => $product->id,
                 'amount' => $highestBid->amount,
                 'status' => 'pending',
-                'payment_method' => 'credit_card',
-                'attempts' => \Illuminate\Support\Facades\DB::raw('COALESCE(attempts, 0) + 1')
-            ]
-        );
+                'paypal_transaction_id' => 'PP-' . uniqid()
+            ]);
+        }
 
-        $session = Session::create([
-            'payment_method_types' => ['card'],
-            'line_items' => [[
-                'price_data' => [
-                    'currency' => 'eur',
-                    'unit_amount' => $highestBid->amount * 100,
-                    'product_data' => array_merge([
-                        'name' => $product->title,
-                        'description' => $product->description,
-                    ], $product->image_url ? ['images' => [$product->image_url]] : []),
+        try {
+            $session = Session::create([
+                'payment_method_types' => ['card'],
+                'line_items' => [[
+                    'price_data' => [
+                        'currency' => 'eur',
+                        'unit_amount' => $highestBid->amount * 100,
+                        'product_data' => array_merge([
+                            'name' => $product->title,
+                            'description' => $product->description,
+                        ], $product->image_url ? ['images' => [$product->image_url]] : []),
+                    ],
+                    'quantity' => 1,
+                ]],
+                'mode' => 'payment',
+                'success_url' => route('payment.success', ['product' => $product->id]),
+                'cancel_url' => route('payment.failed', ['product' => $product->id]),
+                'metadata' => [
+                    'product_id' => $product->id,
+                    'bid_id' => $highestBid->id,
+                    'user_id' => Auth::id(),
+                    'payment_id' => $payment->id
                 ],
-                'quantity' => 1,
-            ]],
-            'mode' => 'payment',
-            'success_url' => route('payment.success', ['productId' => $productId]),
-            'cancel_url' => route('payment.failed', ['productId' => $productId]),
-            'metadata' => [
-                'product_id' => $product->id,
-                'bid_id' => $highestBid->id,
-                'user_id' => Auth::id(),
-                'payment_id' => $payment->id
-            ],
-        ]);
+            ]);
 
-        return redirect($session->url);
+            return redirect($session->url);
+        } catch (\Exception $e) {
+            // Log the error
+            Log::error('Stripe session creation failed: ' . $e->getMessage());
+
+            // Update payment status to failed
+            $payment->update([
+                'status' => 'failed'
+            ]);
+
+            return redirect()->route('product.details', $product->id)
+                ->with('error', 'Une erreur est survenue lors de la création de la session de paiement. Veuillez réessayer.');
+        }
     }
 
-    public function success($productId)
+    public function success(Product $product)
     {
-        $product = Product::findOrFail($productId);
         $highestBid = Bid::where('product_id', $product->id)
             ->orderBy('amount', 'desc')
             ->first();
@@ -211,8 +226,7 @@ class PaymentController extends Controller
                 'user_id' => Auth::id(),
                 'amount' => $highestBid->amount,
                 'status' => 'completed',
-                'payment_date' => now(),
-                'payment_method' => 'credit_card'
+                'paypal_transaction_id' => 'PP-' . uniqid()
             ]
         );
 
@@ -228,20 +242,30 @@ class PaymentController extends Controller
             'read' => false,
         ]);
 
-        // Add to recent activities
-        RecentActivity::create([
-            'user_id' => Auth::id(),
-            'type' => 'payment_success',
-            'description' => 'Vous avez effectué le paiement pour "' . $product->title . '"',
-            'product_id' => $product->id,
+        // Return the success view
+        return view('payment.success', [
+            'product' => $product,
+            'payment' => $payment
         ]);
-
-        return view('payment.success', compact('product'));
     }
 
-    public function failed($productId)
+    /**
+     * Download the PDF ticket
+     */
+    public function downloadTicket(Product $product)
     {
-        $product = Product::findOrFail($productId);
+        $payment = Payment::where('product_id', $product->id)->firstOrFail();
+
+        $pdf = PDF::loadView('payments.ticket', [
+            'payment' => $payment,
+            'product' => $product
+        ]);
+
+        return $pdf->download('ticket_' . $product->title . '.pdf');
+    }
+
+    public function failed(Product $product)
+    {
         $highestBid = Bid::where('product_id', $product->id)
             ->orderBy('amount', 'desc')
             ->first();
@@ -253,9 +277,7 @@ class PaymentController extends Controller
                 'user_id' => Auth::id(),
                 'amount' => $highestBid->amount,
                 'status' => 'failed',
-                'payment_date' => now(),
-                'payment_method' => 'credit_card',
-                'last_error' => 'Payment was cancelled or failed'
+                'paypal_transaction_id' => 'PP-' . uniqid()
             ]
         );
 

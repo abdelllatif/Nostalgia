@@ -31,14 +31,11 @@ class BidController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Product $product)
     {
         $request->validate([
-            'amount' => 'required|numeric|min:0',
-            'product_id' => 'required|exists:products,id'
+            'amount' => 'required|numeric|min:0'
         ]);
-
-        $product = Product::findOrFail($request->product_id);
 
         // Check if auction has ended
         if ($product->auction_end_date->isPast()) {
@@ -60,7 +57,7 @@ class BidController extends Controller
         // Create the bid
         $bid = Bid::create([
             'amount' => $request->amount,
-            'product_id' => $request->product_id,
+            'product_id' => $product->id,
             'user_id' => $request->user()->id
         ]);
 

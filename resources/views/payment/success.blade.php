@@ -3,40 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Paiement Réussi - Nostalgia</title>
+    <title>Paiement Réussi</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-50 dark:bg-gray-900">
-    <nav class="bg-white shadow-md px-6 py-4 flex items-center justify-between">
-        <!-- Logo -->
-        <div class="flex items-center space-x-2">
-          <img src="https://img.icons8.com/ios-filled/50/000000/retro-tv.png" alt="Logo Nostalgia" class="w-8 h-8">
-          <span class="text-xl font-bold text-gray-800">Nostalgia</span>
-        </div>
+<body class="bg-gray-50">
+    <div class="min-h-screen flex items-center justify-center">
+        <div class="max-w-md w-full bg-white rounded-lg shadow-lg p-8">
+            <div class="text-center">
+                <svg class="mx-auto h-12 w-12 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+                <h2 class="mt-4 text-2xl font-bold text-gray-900">Paiement Réussi!</h2>
+                <p class="mt-2 text-gray-600">Votre paiement a été traité avec succès.</p>
+            </div>
 
-        <!-- Menu -->
-        <ul class="hidden md:flex space-x-6 text-gray-700 font-medium">
-          <li><a href="/" class="hover:text-blue-600">Accueil</a></li>
-          <li><a href="/catalogue" class="hover:text-blue-600">Catalogue</a></li>
-          <li><a href="/blog" class="hover:text-blue-600">Blog</a></li>
-          <li><a href="/about" class="hover:text-blue-600">À propos</a></li>
-          <li><a href="#" class="hover:text-blue-600">Contact</a></li>
-        </ul>
-    </nav>
-
-    <div class="container mx-auto px-4 py-16">
-        <div class="max-w-2xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
-            <div class="p-8 text-center">
-                <div class="mb-6">
-                    <svg class="mx-auto h-16 w-16 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
+            @if(isset($error))
+                <div class="mt-8">
+                    <div class="bg-red-50 rounded-lg p-4">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <svg class="h-5 w-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-sm font-medium text-red-800">Erreur</h3>
+                                <p class="mt-1 text-sm text-red-700">{{ $error }}</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Paiement réussi !</h2>
-                <p class="text-gray-600 dark:text-gray-400 mb-6">Merci pour votre achat de "{{ $product->title }}"</p>
-                <p class="text-gray-600 dark:text-gray-400 mb-8">Un email de confirmation vous sera envoyé prochainement.</p>
-                <a href="{{ route('product.details', ['product' => $product->id]) }}" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition-colors">
-                    Retour à l'accueil
+            @else
+                <div class="mt-8">
+                    <div class="bg-green-50 rounded-lg p-4">
+                        <h3 class="text-lg font-medium text-green-800">Télécharger votre ticket</h3>
+                        <p class="mt-1 text-sm text-green-700">
+                            Votre ticket de paiement est prêt. Vous pouvez le télécharger en cliquant sur le bouton ci-dessous.
+                        </p>
+                        <div class="mt-4">
+                            <a href="{{ route('payment.download-ticket', ['product' => $product->id]) }}"
+                               class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                                <svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                </svg>
+                                Télécharger le ticket
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            <div class="mt-8 text-center">
+                <a href="{{ route('catalogue') }}" class="text-blue-600 hover:text-blue-800">
+                    Retourner au catalogue
                 </a>
             </div>
         </div>

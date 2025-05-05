@@ -16,6 +16,7 @@ use App\Http\Controllers\BidController;
 use App\Models\Bid;
 use App\Services\BidService;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use App\Services\BidNotificationService;
 
 class ProductController extends Controller
 {
@@ -23,13 +24,14 @@ class ProductController extends Controller
     protected $tagService;
     protected $categoryService;
     protected $bidService;
-    public function __construct(ProductService $productService, TagService $tagService, CategorieService $categoryService,BidService $bidService)
+    protected $bidNotificationService;
+    public function __construct(ProductService $productService, TagService $tagService, CategorieService $categoryService,BidService $bidService, BidNotificationService $bidNotificationService)
     {
         $this->productService = $productService;
         $this->tagService = $tagService;
         $this->categoryService = $categoryService;
         $this->bidService = $bidService;
-
+        $this->bidNotificationService = $bidNotificationService;
     }
 //->where('products.status','=','active')
 public function index(Request $request)
@@ -83,10 +85,7 @@ public function index(Request $request)
             \Tymon\JWTAuth\Facades\JWTAuth::setToken($token);
             $user = \Tymon\JWTAuth\Facades\JWTAuth::authenticate();
         } catch (\Exception $e) {
-            // Log the error but continue without authentication
-            \Log::error('JWT Authentication error in public route:', [
-                'error' => $e->getMessage()
-            ]);
+
         }
     }
 
@@ -100,16 +99,73 @@ public function index(Request $request)
     public function show($id)
     {
         $product = $this->productService->getProductById($id);
-        $product->bids = $this->bidService->getproductbids($product->id);  // All bids
-        $product->simmilar_product = $this->productService->getSimilarProducts($product->category_id);
-
         if (!$product) {
-            return response('Product not found', 404);
+            return redirect()->route('404');
         }
 
-        $firstBids = $product->bids->slice(0, 5);
+        $product->bids = $this->bidService->getproductbids($product->id);
+        $product->simmilar_product = $this->productService->getSimilarProducts($product->category_id);
+        $firstBids = $product->bids->sortByDesc('amount')->take(5);
 
-        return view('product_details', compact('product', 'firstBids'));
+        // Check for JWT authentication
+        $auth_user = null;
+        try {
+            if (request()->hasCookie('jwt_token')) {
+                $token = request()->cookie('jwt_token');
+                JWTAuth::setToken($token);
+                $auth_user = JWTAuth::authenticate();
+            }
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('JWT Authentication error:', ['error' => $e->getMessage()]);
+        }
+
+        // Get user role and ticket status
+        $userRole = 'visitor';
+        $ticketStatus = null;
+        $isWinner = false;
+        $hasPaid = false;
+
+        if ($auth_user) {
+            // Check if user is the owner
+            if ($product->user_id === $auth_user->id) {
+                $userRole = 'owner';
+            } else {
+                // Check if user is the winner by finding the highest bid
+                $highestBid = $product->bids->sortByDesc('amount')->first();
+                if ($highestBid && $highestBid->user_id === $auth_user->id) {
+                    $userRole = 'winner';
+                    $isWinner = true;
+
+                    // Check payment status
+                    $payment = \App\Models\Payment::where('product_id', $product->id)
+                        ->where('user_id', $auth_user->id)
+                        ->where('status', 'completed')
+                        ->first();
+
+                    if ($payment) {
+                        $hasPaid = true;
+                        // Check if ticket was generated
+                        $ticketPath = storage_path('app/public/tickets/ticket_' . $payment->id . '_*.pdf');
+                        $ticketExists = !empty(glob($ticketPath));
+
+                        $ticketStatus = [
+                            'payment_completed' => true,
+                            'ticket_generated' => $ticketExists
+                        ];
+                    }
+                }
+            }
+        }
+
+        return view('product_details', compact(
+            'product',
+            'firstBids',
+            'auth_user',
+            'userRole',
+            'ticketStatus',
+            'isWinner',
+            'hasPaid'
+        ));
     }
 
     public function fetchActiveProducts()
@@ -171,10 +227,10 @@ public function index(Request $request)
                 $product->tags()->sync($request->tags);
             }
 
-            return redirect()->route('catalogue.show')->with('success', 'Product added successfully');
+            return back()->with('success', 'Product added successfully');
 
         } catch (\Exception $e) {
-            return redirect()->route('catalogue')->with('error', 'Error adding product: ' . $e->getMessage());
+            return back()->with('error', 'Error adding product: ' . $e->getMessage());
         }
     }
 
@@ -244,5 +300,18 @@ public function index(Request $request)
         }
     }
 
+    public function placeBid(Request $request, Product $product)
+    {
+        $validated = $request->validate([
+            'amount' => 'required|numeric|min:' . ($product->current_price + 1)
+        ]);
+
+        $bid = $this->bidService->placeBid($product, $validated['amount'], auth()->id());
+
+        return response()->json([
+            'message' => 'Bid placed successfully',
+            'bid' => $bid
+        ]);
+    }
 
 }
