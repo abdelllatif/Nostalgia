@@ -96,9 +96,9 @@ Route::middleware(['jwt.web'])->group(function () {
     Route::post('/profile/last-active-section', [UserProfileController::class, 'updateLastActiveSection'])->name('profile.last-active-section');
 
     // Public profiles
-    Route::get('/user/{id}', [PublicProfileController::class, 'show'])->name('users.show');
-    Route::get('/user/{id}/articles', [PublicProfileController::class, 'articles'])->name('users.articles');
-    Route::get('/user/{id}/products', [PublicProfileController::class, 'products'])->name('users.products');
+    Route::get('/user/{id}', [PublicProfileController::class, 'show'])->name('user.show');
+    Route::get('/user/{id}/articles', [PublicProfileController::class, 'articles'])->name('user.articles');
+    Route::get('/user/{id}/products', [PublicProfileController::class, 'products'])->name('user.products');
     Route::get('/users/{id}/reactions', [UserProfileController::class, 'reactions'])->name('users.reactions');
 
     // Notification routes

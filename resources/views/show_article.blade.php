@@ -58,7 +58,7 @@
             <section class="flex-1 min-w-0">
                 <div class="bg-white rounded-2xl shadow-lg p-8 mb-10">
                     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-8">
-                        <a href="{{route('users.show',['id'=> $article->user->id ])}}" class="flex items-center gap-4">
+                        <a href="{{route('user.show',['id'=> $article->user->id ])}}" class="flex items-center gap-4">
                             <img src="{{ $article->user->avatar_url }}" alt="{{ $article->user->name  }}" class="w-14 h-14 rounded-full border-2 border-blue-200 shadow object-cover">
                             <div>
                                 <h3 class="font-semibold text-lg text-gray-900">{{ $article->user->name }} {{ $article->user->first_name  }}</h3>
@@ -143,7 +143,7 @@
                     <h2 class="text-2xl font-bold mb-4 text-gray-900">Articles Similaires</h2>
                     <div class="overflow-x-auto flex gap-6 pb-4 mb-8">
                         @foreach ($similarArticles as $similarArticle)
-                            <a href="{{ route('Article.show', $similarArticle->id) }}" class="min-w-[280px] max-w-xs bg-white rounded-2xl shadow hover:shadow-lg transition-all flex-shrink-0 border border-gray-100">
+                            <a href="{{ route('blog.show', $similarArticle->id) }}" class="min-w-[280px] max-w-xs bg-white rounded-2xl shadow hover:shadow-lg transition-all flex-shrink-0 border border-gray-100">
                                 @if($similarArticle->image_url)
                                     <img src="{{ $similarArticle->image_url }}" alt="{{ $similarArticle->title }}" class="w-full h-40 object-cover rounded-t-2xl">
                                 @else

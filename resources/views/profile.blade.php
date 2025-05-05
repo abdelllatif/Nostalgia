@@ -65,19 +65,18 @@
     </div>
     @endif
 
-    <!-- Image Preview Modal -->
-    <div id="imagePreviewModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
-        <div class="bg-white rounded-lg p-6 max-w-md w-full">
-            <h3 class="text-lg font-medium text-gray-900 mb-4">Preview Profile Image</h3>
-            <div class="mb-4">
-                <img id="imagePreview" src="" alt="Preview" class="w-full h-auto rounded-lg">
-            </div>
-            <div class="flex justify-end space-x-3">
-                <button id="cancelImageBtn" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400">Cancel</button>
-                <button id="confirmImageBtn" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Use This Image</button>
-            </div>
-        </div>
+ <!-- Modal Preview -->
+<div id="imageModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white p-5 rounded-lg shadow-lg text-center max-w-md w-full">
+      <h2 class="text-xl font-semibold mb-4">Preview Selected Image</h2>
+      <img id="imagePreview" src="#" alt="Preview" class="mx-auto rounded mb-4 max-h-64">
+      <div class="flex justify-around">
+        <button id="confirmImageBtn" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Choose this image</button>
+        <button id="cancelImageBtn" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Annuler</button>
+      </div>
     </div>
+  </div>
+
 
     <!-- Statistics Cards -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">

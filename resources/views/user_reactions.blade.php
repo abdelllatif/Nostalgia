@@ -144,7 +144,7 @@
                     <p class="mb-0">All comments and ratings by {{ $user->first_name }}</p>
                 </div>
                 <div class="col-md-4 text-md-end">
-                    <a href="{{ route('users.show', $user->id) }}" class="btn btn-outline-light">
+                    <a href="{{ route('user.show', $user->id) }}" class="btn btn-outline-light">
                         <i class="fas fa-arrow-left me-2"></i>Back to Profile
                     </a>
                 </div>

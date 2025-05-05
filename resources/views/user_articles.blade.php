@@ -98,7 +98,7 @@
                     <p class="mb-0">Explore all articles written by {{ $user->first_name }}</p>
                 </div>
                 <div class="col-md-4 text-md-end">
-                    <a href="{{ route('users.show', $user->id) }}" class="btn btn-outline-light">
+                    <a href="{{ route('user.show', $user->id) }}" class="btn btn-outline-light">
                         <i class="fas fa-arrow-left me-2"></i>Back to Profile
                     </a>
                 </div>
@@ -122,7 +122,7 @@
                                     {{ $article->created_at->format('M d, Y') }}
                                 </div>
                                 <p class="card-text text-muted">{{ Str::limit($article->content, 150) }}</p>
-                                <a href="{{ route('Article.show', $article->id) }}" class="btn btn-primary">
+                                <a href="{{ route('blog.show', $article->id) }}" class="btn btn-primary">
                                     Read More
                                 </a>
                             </div>

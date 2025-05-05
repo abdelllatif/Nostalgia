@@ -99,7 +99,7 @@
                         <div class="p-4">
                           <h5 class="font-bold text-lg mb-2">{{ $article->title }}</h5>
                           <p class="text-gray-600 text-sm mb-4">{{ Str::limit($article->content, 100) }}</p>
-                          <a href="{{ route('Article.show', $article->id) }}" class="inline-block px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700">Read More</a>
+                          <a href="{{ route('blog.show', $article->id) }}" class="inline-block px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700">Read More</a>
                         </div>
                       </div>
                     @endforeach
