@@ -685,47 +685,83 @@
             document.querySelector('.mobile-menu').classList.toggle('hidden');
         });
 
-        // Image upload preview functionality
-        const profileImageInput = document.getElementById('profileImageInput');
-        const imagePreviewModal = document.getElementById('imagePreviewModal');
-        const imagePreview = document.getElementById('imagePreview');
-        const cancelImageBtn = document.getElementById('cancelImageBtn');
-        const confirmImageBtn = document.getElementById('confirmImageBtn');
-        const profileImage = document.getElementById('profileImage');
-        let selectedFile = null;
+       // Profile image upload and preview functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const profileImageInput = document.getElementById('profileImageInput');
+    const imageModal = document.getElementById('imageModal');
+    const imagePreview = document.getElementById('imagePreview');
+    const cancelImageBtn = document.getElementById('cancelImageBtn');
+    const confirmImageBtn = document.getElementById('confirmImageBtn');
+    const profileImage = document.getElementById('profileImage');
+    let selectedFile = null;
 
-        profileImageInput.addEventListener('change', function(e) {
-            if (this.files && this.files[0]) {
-                selectedFile = this.files[0];
-                const reader = new FileReader();
+    // When file input changes (user selects a file)
+    profileImageInput.addEventListener('change', function(e) {
+        if (this.files && this.files[0]) {
+            selectedFile = this.files[0];
+            const reader = new FileReader();
 
-                reader.onload = function(e) {
-                    imagePreview.src = e.target.result;
-                    imagePreviewModal.classList.remove('hidden');
-                }
-
-                reader.readAsDataURL(this.files[0]);
+            reader.onload = function(e) {
+                imagePreview.src = e.target.result;
+                imageModal.classList.remove('hidden'); // Show modal
             }
-        });
 
-        cancelImageBtn.addEventListener('click', function() {
-            imagePreviewModal.classList.add('hidden');
-            profileImageInput.value = '';
-            selectedFile = null;
-        });
+            reader.readAsDataURL(this.files[0]);
+        }
+    });
 
-        confirmImageBtn.addEventListener('click', function() {
-            if (selectedFile) {
-                const reader = new FileReader();
+    // Cancel button in modal
+    cancelImageBtn.addEventListener('click', function() {
+        imageModal.classList.add('hidden');
+        profileImageInput.value = ''; // Clear the file input
+        selectedFile = null;
+    });
 
-                reader.onload = function(e) {
-                    profileImage.src = e.target.result;
-                }
+    // Confirm button in modal
+    confirmImageBtn.addEventListener('click', function() {
+        if (selectedFile) {
+            // Create form data for submission
+            const formData = new FormData();
+            formData.append('profile_image', selectedFile);
+            formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
 
-                reader.readAsDataURL(selectedFile);
-                imagePreviewModal.classList.add('hidden');
-            }
-        });
+            // Submit the form with just this one file
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/profile/update-image'; // Adjust this to your route
+            form.enctype = 'multipart/form-data';
+
+            // Add the file input to the form
+            const hiddenFileInput = document.createElement('input');
+            hiddenFileInput.type = 'file';
+            hiddenFileInput.name = 'profile_image';
+            hiddenFileInput.files = profileImageInput.files;
+            hiddenFileInput.style.display = 'none';
+
+            // Add CSRF token
+            const csrfInput = document.createElement('input');
+            csrfInput.type = 'hidden';
+            csrfInput.name = '_token';
+            csrfInput.value = document.querySelector('input[name="_token"]').value;
+
+            // Append inputs to form
+            form.appendChild(hiddenFileInput);
+            form.appendChild(csrfInput);
+
+            // Append form to body and submit
+            document.body.appendChild(form);
+
+            // Update the UI preview first
+            profileImage.src = URL.createObjectURL(selectedFile);
+
+            // Submit form
+            form.submit();
+
+            // Hide modal
+            imageModal.classList.add('hidden');
+        }
+    });
+});
 
         // Chart.js Initialization
         document.addEventListener('DOMContentLoaded', function() {
