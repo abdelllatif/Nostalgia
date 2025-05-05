@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Events\AuctionUpdated;
 use App\Models\Product;
+use App\Services\BidNotificationService;
+use App\Notifications\BidNotification;
 
 class BidController extends Controller
 {
@@ -31,43 +33,42 @@ class BidController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, Product $product)
+    public function store(Request $request, $productId)
     {
-        $request->validate([
-            'amount' => 'required|numeric|min:0'
+        $product = Product::findOrFail($productId);
+        $userId = Auth::id();
+
+        // Calculate current price (highest bid or starting price)
+        $currentPrice = $product->bids()->max('amount') ?? $product->starting_price;
+
+        $validated = $request->validate([
+            'amount' => 'required|numeric|min:' . ($currentPrice + 1)
         ]);
 
-        // Check if auction has ended
-        if ($product->auction_end_date->isPast()) {
-            return back()->with('error', 'Cette enchère est terminée.');
+        try {
+            $bid = Bid::create([
+                'user_id' => $userId,
+                'product_id' => $productId,
+                'amount' => $validated['amount']
+            ]);
+
+            // Notify previous highest bidder if exists
+            $previousHighestBid = $product->bids()
+                ->where('id', '!=', $bid->id)
+                ->orderBy('amount', 'desc')
+                ->first();
+
+            if ($previousHighestBid) {
+                $previousHighestBidder = $previousHighestBid->user;
+                if ($previousHighestBidder && $previousHighestBidder->id !== $userId) {
+                    $previousHighestBidder->notify(new BidNotification('outbid', $product, $validated['amount']));
+                }
+            }
+
+            return redirect()->back()->with('success', 'Votre enchère a été placée avec succès!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Une erreur est survenue lors du placement de votre enchère.');
         }
-
-        $currentPrice = $product->bids->isNotEmpty() ? $product->bids->max('amount') : $product->starting_price;
-
-        // Check if bid amount is greater than current price
-        if ($request->amount <= $currentPrice) {
-            return back()->with('error', 'Le montant de l\'enchère doit être supérieur au prix actuel de ' . number_format($currentPrice, 2) . ' €.');
-        }
-
-        // Check if user is not bidding on their own product
-        if ($product->user_id === $request->user()->id) {
-            return back()->with('error', 'Vous ne pouvez pas enchérir sur votre propre produit.');
-        }
-
-        // Create the bid
-        $bid = Bid::create([
-            'amount' => $request->amount,
-            'product_id' => $product->id,
-            'user_id' => $request->user()->id
-        ]);
-
-        // Update product status if needed
-        if ($product->status === 'active') {
-            $product->status = 'active';
-            $product->save();
-        }
-
-        return back()->with('success', 'Votre enchère de ' . number_format($request->amount, 2) . ' € a été placée avec succès.');
     }
 
     /**

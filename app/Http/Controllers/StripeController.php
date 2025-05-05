@@ -24,26 +24,24 @@ class StripeController extends Controller
                 ->with('error', 'Vous n\'êtes pas autorisé à effectuer ce paiement.');
         }
 
-        $session = Session::create([
+        // Calculate current price (highest bid or starting price)
+        $currentPrice = $product->bids()->max('amount') ?? $product->starting_price;
+
+        $session = \Stripe\Checkout\Session::create([
             'payment_method_types' => ['card'],
             'line_items' => [[
                 'price_data' => [
                     'currency' => 'eur',
-                    'unit_amount' => $product->current_price * 100, // Convert to cents
                     'product_data' => [
-                        'name' => $product->name,
-                        'description' => $product->description,
+                        'name' => $product->title,
                     ],
+                    'unit_amount' => $currentPrice * 100, // Convert to cents
                 ],
                 'quantity' => 1,
             ]],
             'mode' => 'payment',
-            'success_url' => route('payment.success', ['productId' => $product->id]),
-            'cancel_url' => route('payment.failed', ['productId' => $product->id]),
-            'metadata' => [
-                'product_id' => $product->id,
-                'user_id' => auth()->id(),
-            ],
+            'success_url' => route('payment.success', ['product' => $product->getKey()]),
+            'cancel_url' => route('payment.cancel', ['product' => $product->getKey()]),
         ]);
 
         return redirect($session->url);

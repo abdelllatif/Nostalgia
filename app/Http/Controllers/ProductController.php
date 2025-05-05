@@ -16,7 +16,6 @@ use App\Http\Controllers\BidController;
 use App\Models\Bid;
 use App\Services\BidService;
 use Tymon\JWTAuth\Facades\JWTAuth;
-use App\Services\BidNotificationService;
 
 class ProductController extends Controller
 {
@@ -24,19 +23,19 @@ class ProductController extends Controller
     protected $tagService;
     protected $categoryService;
     protected $bidService;
-    protected $bidNotificationService;
-    public function __construct(ProductService $productService, TagService $tagService, CategorieService $categoryService,BidService $bidService, BidNotificationService $bidNotificationService)
+    public function __construct(ProductService $productService, TagService $tagService, CategorieService $categoryService,BidService $bidService)
     {
         $this->productService = $productService;
         $this->tagService = $tagService;
         $this->categoryService = $categoryService;
         $this->bidService = $bidService;
-        $this->bidNotificationService = $bidNotificationService;
+
     }
 //->where('products.status','=','active')
 public function index(Request $request)
 {
-    $query = Product::with(['category', 'user', 'images', 'tags:id,name']);
+    $query = Product::with(['category', 'user', 'images', 'tags:id,name'])
+        ->where('status', 'active');
 
     // Filter by category
     if ($request->filled('category')) {
@@ -85,7 +84,7 @@ public function index(Request $request)
             \Tymon\JWTAuth\Facades\JWTAuth::setToken($token);
             $user = \Tymon\JWTAuth\Facades\JWTAuth::authenticate();
         } catch (\Exception $e) {
-
+            // Handle JWT error silently
         }
     }
 
@@ -96,6 +95,7 @@ public function index(Request $request)
 
     return view('catalogue', compact('products', 'tags', 'categories', 'user'));
 }
+
     public function show($id)
     {
         $product = $this->productService->getProductById($id);
@@ -105,7 +105,6 @@ public function index(Request $request)
 
         $product->bids = $this->bidService->getproductbids($product->id);
         $product->simmilar_product = $this->productService->getSimilarProducts($product->category_id);
-        $firstBids = $product->bids->sortByDesc('amount')->take(5);
 
         // Check for JWT authentication
         $auth_user = null;
@@ -132,7 +131,7 @@ public function index(Request $request)
             } else {
                 // Check if user is the winner by finding the highest bid
                 $highestBid = $product->bids->sortByDesc('amount')->first();
-                if ($highestBid && $highestBid->user_id === $auth_user->id) {
+                if ($highestBid && $highestBid->user_id === $auth_user->id && $product->status === 'sold') {
                     $userRole = 'winner';
                     $isWinner = true;
 
@@ -159,7 +158,6 @@ public function index(Request $request)
 
         return view('product_details', compact(
             'product',
-            'firstBids',
             'auth_user',
             'userRole',
             'ticketStatus',
@@ -179,8 +177,8 @@ public function index(Request $request)
         $endTime = new DateTime($product->auction_end_date);
 
         if ($now >= $endTime) {
-            if ($product->status !== 'termine') {
-                $this->productService->updateStatus($product->id, 'termine');
+            if ($product->status === 'active') {
+                $this->productService->updateStatus($product->id, 'expired');
             }
             return 'Terminé';
         }
@@ -299,19 +297,4 @@ public function index(Request $request)
         ],200);
         }
     }
-
-    public function placeBid(Request $request, Product $product)
-    {
-        $validated = $request->validate([
-            'amount' => 'required|numeric|min:' . ($product->current_price + 1)
-        ]);
-
-        $bid = $this->bidService->placeBid($product, $validated['amount'], auth()->id());
-
-        return response()->json([
-            'message' => 'Bid placed successfully',
-            'bid' => $bid
-        ]);
-    }
-
 }

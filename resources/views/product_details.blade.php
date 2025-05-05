@@ -115,7 +115,10 @@
                         <div class="flex justify-between mb-2">
                             <span class="text-gray-700 dark:text-gray-300">Prix actuel:</span>
                             <span class="text-2xl font-bold text-gray-900 dark:text-white">
-                                {{ number_format($product->bids->isNotEmpty() ? $product->bids->max('amount') : $product->starting_price, 2) }} €
+                                @php
+                                    $currentPrice = $product->bids->isNotEmpty() ? $product->bids->max('amount') : $product->starting_price;
+                                @endphp
+                                {{ number_format($currentPrice, 2) }} €
                             </span>
                         </div>
                         <div class="flex justify-between text-sm text-gray-600 dark:text-gray-400 mb-4">
@@ -130,28 +133,45 @@
                             </div>
                             <div class="flex justify-between text-sm mt-1">
                                 <span class="text-gray-600 dark:text-gray-400">Temps restant:</span>
-                                <span class="text-red-600 dark:text-red-400 font-medium auction-timer" data-end-date="{{ $product->auction_end_date }}">
-                                    @if(!$product->auction_end_date->isFuture())
-                                        Terminée
-                                    @endif
-                                </span>
+                                <span class="text-red-600 dark:text-red-400 font-medium auction-timer" data-end-date="{{ $product->auction_end_date }}"></span>
                             </div>
                         </div>
 
                         <!-- Status Messages -->
-                        @if($isWinner)
+                        @if($product->status === 'sold' && $product->user_id === ($auth_user->id ?? null))
+                            <!-- Owner View -->
+                            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
+                                <strong class="font-bold">Félicitations!</strong>
+                                <span class="block sm:inline"> Votre enchère a trouvé un acheteur!</span>
+                                @php
+                                    $winner = $product->bids()->orderBy('amount', 'desc')->first()->user;
+                                @endphp
+                                <div class="mt-2">
+                                    <span class="block sm:inline">Gagnant: <a href="{{ route('user.show', $winner->id) }}" class="font-semibold hover:underline">{{ $winner->name }} {{ $winner->first_name }}</a></span>
+                                </div>
+                            </div>
+                        @elseif($product->status === 'expired' && $product->user_id === ($auth_user->id ?? null))
+                            <!-- Owner View - No Bids -->
+                            <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative mb-4">
+                                <strong class="font-bold">Malheureusement!</strong>
+                                <span class="block sm:inline"> Votre enchère n'a pas trouvé d'acheteur.</span>
+                                <div class="mt-4">
+                                    <a href="{{ route('catalogue') }}" class="inline-block bg-yellow-700 text-white px-6 py-2 rounded-md hover:bg-yellow-800 font-medium">
+                                        ajuouter d'autres enchères
+                                    </a>
+                                </div>
+                            </div>
+                        @elseif($product->status === 'sold' && $isWinner)
+                            <!-- Winner View -->
                             @if($hasPaid)
-                                @if($ticketStatus['ticket_generated'])
-                                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
-                                        <strong class="font-bold">Félicitations!</strong>
-                                        <span class="block sm:inline"> Vous avez gagné cette enchère et votre paiement a été effectué. Votre ticket a été généré.</span>
-                                    </div>
-                                @else
-                                    <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative mb-4">
-                                        <strong class="font-bold">Paiement effectué!</strong>
-                                        <span class="block sm:inline"> Votre ticket est en cours de génération.</span>
-                                    </div>
-                                @endif
+                                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
+                                    <strong class="font-bold">Félicitations!</strong>
+                                    <span class="block sm:inline"> Vous avez gagné cette enchère et votre paiement a été effectué.</span>
+                                </div>
+                                <a href="{{ route('payment.download-ticket', ['product' => $product->id]) }}"
+                                   class="block w-full text-center bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700 font-medium mb-4">
+                                    Télécharger votre ticket
+                                </a>
                             @else
                                 <div class="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative mb-4">
                                     <strong class="font-bold">Félicitations!</strong>
@@ -164,73 +184,64 @@
                             @endif
                         @endif
 
-                        @if($isOwner && !$product->auction_end_date->isFuture())
-                            @if($winner)
-                                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
-                                    <strong class="font-bold">Félicitations!</strong>
-                                    <span class="block sm:inline"> Vous avez un gagnant pour votre enchère!</span>
-                                    <div class="mt-2">
-                                        <span>Gagnant: {{ $winner->name }} {{ $winner->first_name }}</span>
-                                        <a href="{{ route('users.show', ['id' => $winner->id]) }}"
-                                           class="ml-2 text-blue-600 hover:text-blue-800">
-                                            Voir le profil
-                                        </a>
+                        <!-- Enchérir -->
+                        @if($product->status === 'active' && $product->auction_end_date->isFuture())
+                            @if($auth_user && $auth_user->id != $product->user_id)
+                                <div>
+                                    <div class="flex space-x-4 mb-4">
+                                        @php
+                                            $currentPrice = $product->bids->isNotEmpty() ? $product->bids->max('amount') : $product->starting_price;
+                                            $suggestedBids = [
+                                                $currentPrice + 100,
+                                                $currentPrice + 200,
+                                                $currentPrice + 500
+                                            ];
+                                        @endphp
+                                        @foreach($suggestedBids as $bid)
+                                            <button onclick="setBidAmount({{ $bid }})" class="flex-1 py-2 px-3 border rounded text-sm bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600">
+                                                {{ number_format($bid, 2) }} €
+                                            </button>
+                                        @endforeach
+                                    </div>
+                                    <div>
+                                        @if (session('success'))
+                                            <div class="alert alert-success bg-green-200 text-green-700 border py-2 border-green-700 rounded-xl text-center mb-4">
+                                                {{ session('success') }}
+                                            </div>
+                                        @endif
+
+                                        @if (session('error'))
+                                            <div class="alert alert-danger bg-red-200 text-red-700 border border-red-700 rounded-xl text-center mb-4">
+                                                {{ session('error') }}
+                                            </div>
+                                        @endif
+
+                                        <form action="{{ route('bids.store', $product->id) }}" method="post" class="flex items-center space-x-4">
+                                            @csrf
+                                            <input name="amount" id="bidAmount" type="number" min="{{ $currentPrice + 1 }}" step="0.01" placeholder="Autre montant (€)"
+                                                   class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white">
+                                            <input name="product_id" type="hidden" value="{{ $product->id }}">
+                                            <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 font-medium">Enchérir</button>
+                                        </form>
                                     </div>
                                 </div>
-                            @else
-                                <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative mb-4">
-                                    <strong class="font-bold">Malheureusement</strong>
-                                    <span class="block sm:inline"> Vous n'avez pas eu de gagnant pour cette enchère. Bonne chance pour la prochaine fois!</span>
-                                    <div class="mt-4">
-                                        <a href="{{ route('catalogue') }}"
-                                           class="inline-block bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
-                                            Retour au catalogue
-                                        </a>
+                            @elseif($auth_user && $auth_user->id === $product->user_id)
+                                <div class="bg-blue-50 dark:bg-blue-900 p-4 rounded-lg">
+                                    <h3 class="text-lg font-semibold text-blue-800 dark:text-blue-200 mb-2">Statut de votre enchère</h3>
+                                    <div class="space-y-2">
+                                        @if($product->bids->isNotEmpty())
+                                            <p class="text-blue-700 dark:text-blue-300">
+                                                Vous avez actuellement {{ $product->bids->count() }} enchère(s).
+                                                Les détails des enchères sont affichés ci-dessous.
+                                            </p>
+                                        @else
+                                            <p class="text-blue-700 dark:text-blue-300">
+                                                Aucune enchère n'a été placée pour le moment.
+                                            </p>
+                                        @endif
                                     </div>
                                 </div>
                             @endif
-                        @endif
-
-                        <!-- Enchérir -->
-                        @if($product->auction_end_date->isFuture() && !$isWinner)
-                            <div>
-                                <div class="flex space-x-4 mb-4">
-                                    @php
-                                        $currentPrice = $product->bids->isNotEmpty() ? $product->bids->max('amount') : $product->starting_price;
-                                        $suggestedBids = [
-                                            $currentPrice + 100,
-                                            $currentPrice + 200,
-                                            $currentPrice + 500
-                                        ];
-                                    @endphp
-                                    @foreach($suggestedBids as $bid)
-                                        <button onclick="setBidAmount({{ $bid }})" class="flex-1 py-2 px-3 border rounded text-sm bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600">
-                                            {{ number_format($bid, 2) }} €
-                                        </button>
-                                    @endforeach
-                                </div>
-                                <div>
-                                    @if (session('success'))
-                                        <div class="alert alert-success bg-green-200 text-green-700 border py-2 border-green-700 rounded-xl text-center mb-4">
-                                            {{ session('success') }}
-                                        </div>
-                                    @endif
-
-                                    @if (session('error'))
-                                        <div class="alert alert-danger bg-red-200 text-red-700 border border-red-700 rounded-xl text-center mb-4">
-                                            {{ session('error') }}
-                                        </div>
-                                    @endif
-
-                                    <form action="{{ route('bids.store') }}" method="post" class="flex items-center space-x-4">
-                                        @csrf
-                                        <input name="amount" id="bidAmount" type="number" min="{{ $currentPrice + 1 }}" step="0.01" placeholder="Autre montant (€)"
-                                               class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white">
-                                        <input name="product_id" type="hidden" value="{{ $product->id }}">
-                                        <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 font-medium">Enchérir</button>
-                                    </form>
-                                </div>
-                            </div>
                         @endif
                     </div>
 
@@ -351,24 +362,6 @@
                 @endforeach
             </div>
         </div>
-
-        <!-- Information de livraison et retours -->
-        <div class="mt-12 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-            <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">Informations </h2>
-            <div class="flex justify-center">
-                <div class=" p-4 text-center">
-                    <svg class="h-10 w-10 text-blue-600 dark:text-blue-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-                    </svg>
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Garanties</h3>
-                    <p class="text-gray-700 dark:text-gray-300">
-                        Certificat d'authenticité fourni<br>
-                        Garantie de satisfaction 14 jours<br>
-                        Transport assuré
-                    </p>
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- Footer -->
@@ -391,6 +384,25 @@
         document.getElementById('bidAmount').value = amount;
     }
 
+    function updateAuctionTimers() {
+        document.querySelectorAll('.auction-timer').forEach(timer => {
+            const endDate = new Date(timer.getAttribute('data-end-date'));
+            const now = new Date();
+
+            if (now >= endDate) {
+                timer.textContent = 'Terminé';
+                return;
+            }
+
+            const diff = endDate - now;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            timer.textContent = `${days}j ${hours}h ${minutes}m ${seconds}s`;
+        });
+    }
 
     // Update timers every second
     setInterval(updateAuctionTimers, 1000);

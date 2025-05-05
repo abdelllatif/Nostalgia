@@ -26,13 +26,14 @@ class PublicProfileController extends Controller
 
         // Get user's public articles
         $articles = Article::where('user_id', $user->id)
+        ->where('status', '=', 'posted')
             ->orderBy('created_at', 'desc')
             ->take(4)
             ->get();
 
         // Get user's active products
         $products = Product::where('user_id', $user->id)
-            ->where('status', '!=', 'finished')
+            ->where('status', '=', 'active')
             ->orderBy('created_at', 'desc')
             ->take(4)
             ->get();
@@ -67,7 +68,7 @@ class PublicProfileController extends Controller
         $user = User::findOrFail($id);
 
         $products = Product::where('user_id', $user->id)
-            ->where('status', '!=', 'finished')
+            ->where('status', '=', 'active')
             ->orderBy('created_at', 'desc')
             ->paginate(12);
 

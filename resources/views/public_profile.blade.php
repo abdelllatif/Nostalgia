@@ -88,7 +88,7 @@
             <div class="bg-white rounded-lg shadow-md mb-6">
               <div class="flex justify-between items-center p-4 border-b">
                 <h5 class="font-bold text-lg text-gray-800">Recent Articles</h5>
-                <a href="{{ route('users.articles', $user->id) }}" class="px-3 py-1 text-sm border border-gray-600 text-gray-600 rounded hover:bg-gray-100">View All</a>
+                <a href="{{ route('user.articles', $user->id) }}" class="px-3 py-1 text-sm border border-gray-600 text-gray-600 rounded hover:bg-gray-100">View All</a>
               </div>
               <div class="p-4">
                 @if($articles->count() > 0)
@@ -119,7 +119,7 @@
             <div class="bg-white rounded-lg shadow-md mb-6">
               <div class="flex justify-between items-center p-4 border-b">
                 <h5 class="font-bold text-lg text-gray-800">Active Products</h5>
-                <a href="{{ route('users.products', $user->id) }}" class="px-3 py-1 text-sm border border-gray-600 text-gray-600 rounded hover:bg-gray-100">View All</a>
+                <a href="{{ route('user.products', $user->id) }}" class="px-3 py-1 text-sm border border-gray-600 text-gray-600 rounded hover:bg-gray-100">View All</a>
               </div>
               <div class="p-4">
                 @if($products->count() > 0)
