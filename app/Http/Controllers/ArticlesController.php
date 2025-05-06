@@ -40,16 +40,20 @@ class ArticlesController extends Controller
 
         $owner = false;
         $user = null;
+
         if (request()->hasCookie('jwt_token')) {
-        
-                $user = JWTAuth::authenticate();
+            try {
+                $user = JWTAuth::parseToken()->authenticate();
                 if ($user && $user->id === $article->user_id) {
                     $owner = true;
                 }
-
+            } catch (\Exception $e) {
+                // Token is invalid or expired
+                // We'll just continue with $owner = false
+            }
         }
 
-        return view('show_article', compact('article', 'similarArticles', 'categories', 'tags', 'owner'));
+        return view('show_article', compact('user','article', 'similarArticles', 'categories', 'tags', 'owner'));
     }
 
     public function store(Request $request)

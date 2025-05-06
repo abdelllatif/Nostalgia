@@ -106,11 +106,11 @@ class ArticleRepository implements ArticleRepositoryInterface
             ->findOrFail($id);
     }
 
-    public function getSimilarArticles(int $articleId, int $limit = 4)
+    public function getSimilarArticles(int $articleId)
     {
         return Article::where('id', '!=', $articleId)
             ->with(['user', 'categorie', 'tags'])
-            ->take($limit)
+            ->take(3)
             ->get();
     }
 
