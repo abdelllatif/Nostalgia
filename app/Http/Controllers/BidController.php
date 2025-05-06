@@ -45,7 +45,6 @@ class BidController extends Controller
             'amount' => 'required|numeric|min:' . ($currentPrice + 1)
         ]);
 
-        try {
             $bid = Bid::create([
                 'user_id' => $userId,
                 'product_id' => $productId,
@@ -66,9 +65,6 @@ class BidController extends Controller
             }
 
             return redirect()->back()->with('success', 'Votre enchère a été placée avec succès!');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Une erreur est survenue lors du placement de votre enchère.');
-        }
     }
 
     /**
@@ -79,19 +75,5 @@ class BidController extends Controller
         return $this->bidservice->getproductbids($bidId);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Bid $bid)
-    {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Bid $bid)
-    {
-        //
-    }
 }

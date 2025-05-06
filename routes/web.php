@@ -140,3 +140,17 @@ Route::delete('/reactions/{id}', [ReactionController::class, 'destroy'])->name('
     Route::get('/dashboard/articles', [DashboardArticleController::class, 'index'])->name('dashboard.articles');
     Route::patch('/dashboard/articles/{article}/suspend', [DashboardArticleController::class, 'suspend'])->name('dashboard.articles.suspend');
     Route::patch('/dashboard/articles/{article}/restore', [DashboardArticleController::class, 'restore'])->name('dashboard.articles.restore');
+
+
+
+    //about
+
+    Route::get('/about', function () {
+        return view('about');
+    })->name('about');
+    Route::get('/terms', function () {
+        return view('terms');
+    })->name('terms');
+    Route::get('/contact', function () {
+        return view('contact');
+    })->name('contact');

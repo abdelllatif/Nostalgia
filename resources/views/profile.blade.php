@@ -14,10 +14,13 @@
                              alt="Profile"
                              class="w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg"
                              id="profileImage">
-                        <label for="profileImageInput" class="absolute bottom-0 right-0 bg-white rounded-full p-2 shadow-lg cursor-pointer">
-                            <i class="fas fa-camera text-gray-600"></i>
-                        </label>
-                        <input type="file" id="profileImageInput" class="hidden" accept="image/*" name="profile_image">
+                        <form id="profileImageForm" action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <input type="file" id="profileImageInput" name="profile_image" class="hidden" accept="image/*" onchange="this.form.submit()">
+                            <label for="profileImageInput" class="absolute bottom-0 right-0 bg-white rounded-full p-2 shadow-lg cursor-pointer">
+                                <i class="fas fa-camera text-gray-600"></i>
+                            </label>
+                        </form>
                     </div>
                 </div>
                 <div class="md:w-2/3 text-white">
@@ -65,18 +68,19 @@
     </div>
     @endif
 
- <!-- Modal Preview -->
-<div id="imageModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
-    <div class="bg-white p-5 rounded-lg shadow-lg text-center max-w-md w-full">
-      <h2 class="text-xl font-semibold mb-4">Preview Selected Image</h2>
-      <img id="imagePreview" src="#" alt="Preview" class="mx-auto rounded mb-4 max-h-64">
-      <div class="flex justify-around">
-        <button id="confirmImageBtn" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Choose this image</button>
-        <button id="cancelImageBtn" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Annuler</button>
-      </div>
+    <!-- Image Preview Modal -->
+    <div id="imagePreviewModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-lg p-6 max-w-md w-full">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Preview Profile Image</h3>
+            <div class="mb-4">
+                <img id="imagePreview" src="" alt="Preview" class="w-full h-auto rounded-lg">
+            </div>
+            <div class="flex justify-end space-x-3">
+                <button id="cancelImageBtn" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400">Cancel</button>
+                <button id="confirmImageBtn" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Use This Image</button>
+            </div>
+        </div>
     </div>
-  </div>
-
 
     <!-- Statistics Cards -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
@@ -164,45 +168,40 @@
             </div>
         </div>
 
-        <!-- Advanced Statistics with Charts -->
-        <div class="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <!-- Auction Statistics -->
-            <div class="bg-white rounded-xl shadow-lg p-6">
-                <h3 class="text-xl font-bold text-gray-900 mb-4">Performance des Enchères</h3>
-                <canvas id="auctionChart" class="w-full h-64"></canvas>
-                <div class="mt-4 grid grid-cols-3 gap-4 text-center">
-                    <div>
-                        <p class="text-2xl font-bold text-green-600">{{ $statistics['auctions_won'] }}</p>
-                        <p class="text-sm text-gray-600">Enchères Gagnées</p>
-                    </div>
-                    <div>
-                        <p class="text-2xl font-bold text-red-600">{{ $statistics['auctions_lost'] }}</p>
-                        <p class="text-sm text-gray-600">Enchères Perdues</p>
-                    </div>
-                    <div>
-                        <p class="text-2xl font-bold text-blue-600">{{ $statistics['auctions_active'] }}</p>
-                        <p class="text-sm text-gray-600">Enchères Actives</p>
-                    </div>
+        <!-- Auction Performance Statistics -->
+        <div class="bg-white rounded-xl shadow-lg p-6">
+            <h3 class="text-xl font-bold text-gray-900 mb-4">Performance des Enchères</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-gray-100 p-4 rounded-lg text-center">
+                    <h4 class="text-lg font-semibold text-gray-700">Gagnées</h4>
+                    <p class="text-2xl font-bold text-green-600">{{ $statistics['auctions_won'] ?? 0 }}</p>
+                </div>
+                <div class="bg-gray-100 p-4 rounded-lg text-center">
+                    <h4 class="text-lg font-semibold text-gray-700">Perdues</h4>
+                    <p class="text-2xl font-bold text-red-600">{{ $statistics['auctions_lost'] ?? 0 }}</p>
+                </div>
+                <div class="bg-gray-100 p-4 rounded-lg text-center">
+                    <h4 class="text-lg font-semibold text-gray-700">Actives</h4>
+                    <p class="text-2xl font-bold text-blue-600">{{ $statistics['auctions_active'] ?? 0 }}</p>
                 </div>
             </div>
+        </div>
 
-            <!-- Product Statistics -->
-            <div class="bg-white rounded-xl shadow-lg p-6">
-                <h3 class="text-xl font-bold text-gray-900 mb-4">Performance des Produits</h3>
-                <canvas id="productChart" class="w-full h-64"></canvas>
-                <div class="mt-4 grid grid-cols-3 gap-4 text-center">
-                    <div>
-                        <p class="text-2xl font-bold text-blue-600">{{ $statistics['products_listed'] }}</p>
-                        <p class="text-sm text-gray-600">Produits Listés</p>
-                    </div>
-                    <div>
-                        <p class="text-2xl font-bold text-green-600">{{ $statistics['products_sold'] }}</p>
-                        <p class="text-sm text-gray-600">Produits Vendus</p>
-                    </div>
-                    <div>
-                        <p class="text-2xl font-bold text-red-600">{{ $statistics['products_unsold'] }}</p>
-                        <p class="text-sm text-gray-600">Produits Non Vendus</p>
-                    </div>
+        <!-- Product Performance Statistics -->
+        <div class="bg-white rounded-xl shadow-lg p-6">
+            <h3 class="text-xl font-bold text-gray-900 mb-4">Performance des Produits</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-gray-100 p-4 rounded-lg text-center">
+                    <h4 class="text-lg font-semibold text-gray-700">Listés</h4>
+                    <p class="text-2xl font-bold text-blue-600">{{ $statistics['products_listed'] ?? 0 }}</p>
+                </div>
+                <div class="bg-gray-100 p-4 rounded-lg text-center">
+                    <h4 class="text-lg font-semibold text-gray-700">Vendus</h4>
+                    <p class="text-2xl font-bold text-green-600">{{ $statistics['products_sold'] ?? 0 }}</p>
+                </div>
+                <div class="bg-gray-100 p-4 rounded-lg text-center">
+                    <h4 class="text-lg font-semibold text-gray-700">Non Vendus</h4>
+                    <p class="text-2xl font-bold text-red-600">{{ $statistics['products_unsold'] ?? 0 }}</p>
                 </div>
             </div>
         </div>
@@ -684,170 +683,6 @@
         document.querySelector('.mobile-menu-button').addEventListener('click', function() {
             document.querySelector('.mobile-menu').classList.toggle('hidden');
         });
-
-       // Profile image upload and preview functionality
-document.addEventListener('DOMContentLoaded', function() {
-    const profileImageInput = document.getElementById('profileImageInput');
-    const imageModal = document.getElementById('imageModal');
-    const imagePreview = document.getElementById('imagePreview');
-    const cancelImageBtn = document.getElementById('cancelImageBtn');
-    const confirmImageBtn = document.getElementById('confirmImageBtn');
-    const profileImage = document.getElementById('profileImage');
-    let selectedFile = null;
-
-    // When file input changes (user selects a file)
-    profileImageInput.addEventListener('change', function(e) {
-        if (this.files && this.files[0]) {
-            selectedFile = this.files[0];
-            const reader = new FileReader();
-
-            reader.onload = function(e) {
-                imagePreview.src = e.target.result;
-                imageModal.classList.remove('hidden'); // Show modal
-            }
-
-            reader.readAsDataURL(this.files[0]);
-        }
-    });
-
-    // Cancel button in modal
-    cancelImageBtn.addEventListener('click', function() {
-        imageModal.classList.add('hidden');
-        profileImageInput.value = ''; // Clear the file input
-        selectedFile = null;
-    });
-
-    // Confirm button in modal
-    confirmImageBtn.addEventListener('click', function() {
-        if (selectedFile) {
-            // Create form data for submission
-            const formData = new FormData();
-            formData.append('profile_image', selectedFile);
-            formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
-
-            // Submit the form with just this one file
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = '/profile/update-image'; // Adjust this to your route
-            form.enctype = 'multipart/form-data';
-
-            // Add the file input to the form
-            const hiddenFileInput = document.createElement('input');
-            hiddenFileInput.type = 'file';
-            hiddenFileInput.name = 'profile_image';
-            hiddenFileInput.files = profileImageInput.files;
-            hiddenFileInput.style.display = 'none';
-
-            // Add CSRF token
-            const csrfInput = document.createElement('input');
-            csrfInput.type = 'hidden';
-            csrfInput.name = '_token';
-            csrfInput.value = document.querySelector('input[name="_token"]').value;
-
-            // Append inputs to form
-            form.appendChild(hiddenFileInput);
-            form.appendChild(csrfInput);
-
-            // Append form to body and submit
-            document.body.appendChild(form);
-
-            // Update the UI preview first
-            profileImage.src = URL.createObjectURL(selectedFile);
-
-            // Submit form
-            form.submit();
-
-            // Hide modal
-            imageModal.classList.add('hidden');
-        }
-    });
-});
-
-        // Chart.js Initialization
-        document.addEventListener('DOMContentLoaded', function() {
-            // Load Chart.js from CDN
-            const script = document.createElement('script');
-            script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
-            script.onload = initializeCharts;
-            document.head.appendChild(script);
-        });
-
-        function initializeCharts() {
-            // Auction Performance Chart
-            const auctionCtx = document.getElementById('auctionChart').getContext('2d');
-            new Chart(auctionCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Gagnées', 'Perdues', 'Actives'],
-                    datasets: [{
-                        data: [
-                            {{ $statistics['auctions_won'] }},
-                            {{ $statistics['auctions_lost'] }},
-                            {{ $statistics['auctions_active'] }}
-                        ],
-                        backgroundColor: [
-                            'rgba(72, 187, 120, 0.8)',  // green for won
-                            'rgba(237, 100, 100, 0.8)', // red for lost
-                            'rgba(66, 153, 225, 0.8)'   // blue for active
-                        ]
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'bottom'
-                        },
-                        title: {
-                            display: true,
-                            text: 'Participation aux Enchères'
-                        }
-                    }
-                }
-            });
-
-            // Product Performance Chart
-            const productCtx = document.getElementById('productChart').getContext('2d');
-            new Chart(productCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['Listés', 'Vendus', 'Non Vendus'],
-                    datasets: [{
-                        label: 'Produits',
-                        data: [
-                            {{ $statistics['products_listed'] }},
-                            {{ $statistics['products_sold'] }},
-                            {{ $statistics['products_unsold'] }}
-                        ],
-                        backgroundColor: [
-                            'rgba(66, 153, 225, 0.8)',  // blue for listed
-                            'rgba(72, 187, 120, 0.8)',  // green for sold
-                            'rgba(237, 100, 100, 0.8)'  // red for unsold
-                        ]
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                stepSize: 1
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        title: {
-                            display: true,
-                            text: 'Statut des Produits'
-                        }
-                    }
-                }
-            });
-        }
 
         // Unpaid Winners Modal Functions
         function showUnpaidWinnersModal() {

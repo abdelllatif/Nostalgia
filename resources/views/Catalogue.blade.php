@@ -1,41 +1,8 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catalogue - Enchères de Patrimoine Culturel</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
-<body class="bg-gray-50">
-    <!-- Navigation -->
-    <nav class="bg-white shadow-md px-6 py-4 flex items-center justify-between">
-        <div class="flex items-center space-x-2">
-            <img src="https://img.icons8.com/ios-filled/50/000000/retro-tv.png" alt="Logo Nostalgia" class="w-8 h-8">
-            <span class="text-xl font-bold text-gray-800">Nostalgia</span>
-        </div>
+@extends('components.layout')
 
-        <ul class="hidden md:flex space-x-6 text-gray-700 font-medium">
-            <li><a href="\" class="hover:text-blue-600">Accueil</a></li>
-            <li><a href="catalogue" class="text-blue-600 font-bold">Catalogue</a></li>
-            <li><a href="blog" class="hover:text-blue-600">Blog</a></li>
-            <li><a href="about" class="hover:text-blue-600">À propos</a></li>
-            <li><a href="#" class="hover:text-blue-600">Contact</a></li>
-        </ul>
+@section('title', 'Catalogue - Enchères de Patrimoine Culturel')
 
-        <div class="hidden md:flex space-x-4">
-            <a href="login" class="px-4 py-2 border rounded-full text-sm hover:bg-gray-100">Connexion</a>
-            <a href="register" class="px-4 py-2 bg-blue-600 text-white rounded-full text-sm hover:bg-blue-700">Inscription</a>
-        </div>
-
-        <div class="md:hidden">
-            <button id="mobileMenuBtn">
-                <svg class="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                </svg>
-            </button>
-        </div>
-    </nav>
-
+@section('content')
     <!-- Header Section with Background -->
     <section class="relative overflow-hidden py-20">
         <div class="absolute inset-0 overflow-hidden">
@@ -298,12 +265,6 @@
         </div>
     </section>
 
-    <!-- Footer Section -->
-    <footer class="bg-gray-900 text-white py-6">
-        <div class="max-w-7xl mx-auto text-center">
-            <p>&copy; 2025 Nostalogia. Tous droits réservés.</p>
-        </div>
-    </footer>
 
     <!-- Modal for adding products -->
     @if(request()->has('auth_user'))
@@ -565,5 +526,5 @@ function removeTag(tagId) {
     }
 }
     </script>
-</body>
-</html>
+
+@endsection

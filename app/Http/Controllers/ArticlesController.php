@@ -41,18 +41,12 @@ class ArticlesController extends Controller
         $owner = false;
         $user = null;
         if (request()->hasCookie('jwt_token')) {
-            try {
-                $token = request()->cookie('jwt_token');
-                JWTAuth::setToken($token);
+        
                 $user = JWTAuth::authenticate();
                 if ($user && $user->id === $article->user_id) {
                     $owner = true;
                 }
-            } catch (\Exception $e) {
-                \Log::error('JWT Authentication error in article show:', [
-                    'error' => $e->getMessage()
-                ]);
-            }
+
         }
 
         return view('show_article', compact('article', 'similarArticles', 'categories', 'tags', 'owner'));
