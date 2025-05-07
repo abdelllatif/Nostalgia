@@ -33,13 +33,13 @@
                 <a href="/logout" class="px-4 py-2 bg-red-600 text-white rounded-full text-sm hover:bg-red-700">Déconnexion</a>
             @endif
         </div>
-        <div class="md:hidden" >
-            <button >
+        <div class="md:hidden" x-data="{ open: false }">
+            <button @click="open = !open">
                 <svg class="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                 </svg>
             </button>
-            <div class="absolute top-16 right-0 left-0 bg-white shadow-md p-4 z-50">
+            <div x-show="open" @click.away="open = false" class="absolute top-16 right-0 left-0 bg-white shadow-md p-4 z-50">
                 <ul class="space-y-3">
                     <li><a href="/" class="block py-2 hover:text-blue-600">Accueil</a></li>
                     <li><a href="/catalogue" class="block py-2 hover:text-blue-600">Catalogue</a></li>
@@ -76,6 +76,26 @@
 
                     <!-- Article Title and Content -->
                     <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">{{ $article->title }}</h1>
+                    @if(auth()->check() || request()->has('owner'))
+                    <p class="text-red-500 font-bold text-lg">Hey Owner</p>
+                        <div class="relative inline-block text-left">
+                            <button @click="open = !open" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zm6 0a2 2 0 11-4 0 2 2 0 014 0zm6 0a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                            </button>
+                            <div x-show="open" @click.away="open = false" class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                                    <a href="{{ route('article.edit', $article->id) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Edit</a>
+                                    <form method="POST" action="{{ route('article.destroy', $article->id) }}">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
                     @if($article->image)
                         <img src="{{ $article->image_url }}" alt="{{ $article->title }}" class="w-full h-80 object-cover rounded-xl mb-8 border shadow-sm">
                     @endif
@@ -177,7 +197,7 @@
                     <!-- Alert container -->
                     <div id="alertContainer" class="mb-4" style="display: none;"></div>
 
-                    @if($user)
+                    @if(Cookie::has('jwt_token'))
                         <form id="commentForm" action="{{ route('reaction.add') }}" method="POST" class="space-y-4">
                             @csrf
                             <div class="flex items-center gap-2 mb-2">

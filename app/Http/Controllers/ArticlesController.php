@@ -38,20 +38,8 @@ class ArticlesController extends Controller
         $categories = Categorie::all();
         $tags = Tag::all();
 
-        $owner = false;
-        $user = null;
-
-        if (request()->hasCookie('jwt_token')) {
-            try {
-                $user = JWTAuth::parseToken()->authenticate();
-                if ($user && $user->id === $article->user_id) {
-                    $owner = true;
-                }
-            } catch (\Exception $e) {
-                // Token is invalid or expired
-                // We'll just continue with $owner = false
-            }
-        }
+        $user = auth()->check() || request()->has('auth_user');
+        $owner = auth()->check() && auth()->user()->id === $article->user_id;
 
         return view('show_article', compact('user','article', 'similarArticles', 'categories', 'tags', 'owner'));
     }
